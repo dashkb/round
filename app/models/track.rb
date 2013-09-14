@@ -5,6 +5,10 @@ class Track < ActiveRecord::Base
 
   validates :name, presence: true
 
+  def local_path
+    Rails.root.join 'loop.mp3'
+  end
+
   def self.import(track)
     artist = Artist.find_or_initialize_by_name track['Artist'].downcase rescue nil
     artist.update_attributes display_name: track['Artist'] if artist

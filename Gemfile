@@ -7,9 +7,13 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'therubyracer', platforms: :ruby
 gem 'ox'
-gem 'ruby-progressbar'
+gem 'coreaudio'
+gem 'zmq'
+gem 'dotenv'
 
 group :development, :test do
   gem 'pry-rails'
   gem 'pry-awesome_print'
+  gem 'pry-coolline'
+  gem 'pry-remote'
 end
