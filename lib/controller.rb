@@ -23,7 +23,7 @@ class Controller
     @socket.connect Player.endpoint
     trap_signals
 
-    while line = Readline.readline('command> ')
+    while line = Readline.readline('command> ', true)
       cmd = line.chomp
       @socket.send cmd
 
