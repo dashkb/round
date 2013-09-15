@@ -6,7 +6,6 @@ class CreateTracks < ActiveRecord::Migration
       t.string :display_name
       t.string :file
       t.string :sort_name
-      t.string :source
       t.integer :track_number
       t.integer :track_count
       t.integer :year

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130903195336) do
+ActiveRecord::Schema.define(version: 20130915180750) do
 
   create_table "albums", force: true do |t|
     t.string   "name"
@@ -48,13 +48,17 @@ ActiveRecord::Schema.define(version: 20130903195336) do
 
   add_index "genres", ["name"], name: "index_genres_on_name"
 
+  create_table "sources", force: true do |t|
+    t.string "name"
+    t.string "root_path"
+  end
+
   create_table "tracks", force: true do |t|
     t.string   "itunes_id"
     t.string   "name"
     t.string   "display_name"
     t.string   "file"
     t.string   "sort_name"
-    t.string   "source"
     t.integer  "track_number"
     t.integer  "track_count"
     t.integer  "year"
@@ -66,6 +70,9 @@ ActiveRecord::Schema.define(version: 20130903195336) do
     t.integer  "genre_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "source_id"
   end
+
+  add_index "tracks", ["source_id"], name: "index_tracks_on_source_id"
 
 end

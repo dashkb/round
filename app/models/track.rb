@@ -2,14 +2,15 @@ class Track < ActiveRecord::Base
   belongs_to :artist
   belongs_to :album
   belongs_to :genre
+  belongs_to :source
 
-  validates :name, presence: true
+  validates :name, :source, presence: true
 
   def local_path
     Rails.root.join 'loop.mp3'
   end
 
-  def self.import(track)
+  def self.import(track, source)
     artist = Artist.find_or_initialize_by_name track['Artist'].downcase rescue nil
     artist.update_attributes display_name: track['Artist'] if artist
 
@@ -36,7 +37,7 @@ class Track < ActiveRecord::Base
     genre = Genre.find_or_initialize_by_name track['Genre'].downcase rescue nil
     genre.update_attributes display_name: track['Genre'] if genre
 
-    create({
+    source.tracks.create({
       itunes_id: track['Track ID'],
       name: track['Name'].try(:downcase),
       display_name: track['Name'],
@@ -49,8 +50,7 @@ class Track < ActiveRecord::Base
       compilation: track['Compilation'].present?,
       album: album,
       artist: artist,
-      genre: genre,
-      source: ENV['TRACK_SOURCE']
+      genre: genre
     })
   end
 end
