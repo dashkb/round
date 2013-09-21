@@ -15,56 +15,76 @@ class Track < ActiveRecord::Base
     end
   end
 
-  def self.import(track, source, save = true)
-    track_record = Track.find_or_initialize_by_file_and_source_id track['Location'], source.id
+  def self.import(track_attrs, source, opts = {})
+    opts.reverse_merge!({update: false})
 
-    artist = Artist.find_or_initialize_by_name track['Artist'].downcase rescue nil
-    artist.update_attributes display_name: track['Artist'] if artist
+    track = if opts[:update]
+      Track.find_or_initialize_by({
+        file: track_attrs['Location'],
+        source_id: source.id
+      })
+    else
+      nil
+    end
 
-    album_artist = if track['Album Artist'].present?
-      Artist.find_or_initialize_by({
-        name: track['Album Artist'].downcase,
-      }) rescue artist
+    artist = Artist.find_or_create_by({
+      name: track_attrs['Artist'].downcase
+    }) do |artist|
+      artist.update_attributes display_name: track_attrs['Artist']
+    end
+
+    album_artist = if track_attrs['Album Artist'].present?
+      Artist.find_or_create_by({
+        name: track_attrs['Album Artist'].downcase,
+      })
     else
       artist
     end
 
-    if artist && artist.id == album_artist.id && artist.sort_name.blank?
+    # Snag sort name from album artist if needed/possible
+    if artist.id == album_artist.id && artist.sort_name.blank?
       [artist, album_artist].each do |a|
-        a.update_attributes sort_name: track['Sort Artist']
+        a.update_attributes sort_name: track_attrs['Sort Artist']
       end
     end
 
-    album = album_artist.albums.find_or_initialize_by_name track['Album'].downcase rescue nil
-    album.update_attributes({
-      display_name: track['Album'],
-      sort_name: track['Sort Album']
-    }) if album
+    album = album_artist.albums.find_or_create_by({
+     name: track_attrs['Album'].downcase
+    }) do |album|
+      album.update_attributes({
+        display_name: track_attrs['Album'],
+        sort_name: track_attrs['Sort Album']
+      })
+    end
 
-    genre = Genre.find_or_initialize_by_name track['Genre'].downcase rescue nil
-    genre.update_attributes display_name: track['Genre'] if genre
+    genre = Genre.find_or_initialize_by({
+      name: track_attrs['Genre'].downcase
+    }) do |genre|
+      genre.update_attributes display_name: track_attrs['Genre'] if genre
+    end
 
-    track_record.attributes = {
-      itunes_id: track['Track ID'],
-      name: track['Name'].try(:downcase),
-      display_name: track['Name'],
-      sort_name: track['Sort Name'],
-      runtime: track['Total Time'],
-      track_number: track['Track Number'],
-      track_count: track['Track Count'],
-      year: track['Year'],
-      file: track['Location'],
-      compilation: track['Compilation'].present?,
+    attributes = {
+      itunes_id: track_attrs['Track ID'],
+      name: track_attrs['Name'].try(:downcase),
+      display_name: track_attrs['Name'],
+      sort_name: track_attrs['Sort Name'],
+      runtime: track_attrs['Total Time'],
+      track_number: track_attrs['Track Number'],
+      track_count: track_attrs['Track Count'],
+      year: track_attrs['Year'],
+      file: track_attrs['Location'],
+      compilation: track_attrs['Compilation'].present?,
       album: album,
       artist: artist,
       genre: genre
     }
 
-    if (save)
-      raise "#{track_record.file} - #{track_record.errors.to_a}" unless track_record.valid?
-      track_record.save
+    if track
+      track.update_attributes attributes
+    else
+      track = source.tracks.create attributes
     end
 
-    track_record
+    track
   end
 end

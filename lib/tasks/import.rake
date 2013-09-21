@@ -6,15 +6,19 @@ require 'taglib'
 desc 'Read an iTunes library into the db (options: FILE=path)'
 namespace :import do
   task :itunes => [:environment] do
-    source = Source.create name: ENV['SOURCE_NAME']
+    source = Source.find_or_initialize_by_name name: ENV['SOURCE_NAME']
     raise "#{source.errors.to_a}" unless source.valid?
+    is_update = !source.new_record?
+    source.save
+
+    puts "#{is_update ? 'Updating' : 'Importing'} #{ENV['SOURCE_NAME']}"
 
     counter = 0
     start_time = Time.now
 
     handler = ItunesLibParser.new
     handler.on_track do |track|
-      Track.import track, source
+      Track.import track, source, update: is_update
 
       if (counter += 1) % 1000 == 0
         puts "Finished #{counter} tracks"
@@ -31,11 +35,17 @@ namespace :import do
     raise "#{source.errors.to_a}" unless source.valid?
     raise "The given path does not exist." unless Dir.exist? source.root_path
     raise "Relative paths are forbidden!" unless source.root_path.start_with? '/'
+    is_update = !source.new_record?
     source.save
 
     valid_exts = ['.mp3', '.m4a']
 
     root = Pathname.new(source.root_path)
+
+    counter = 0
+    start_time = Time.now
+
+    puts "#{is_update ? 'Updating' : 'Importing'} #{ENV['SOURCE_NAME']}"
 
     Find.find(source.root_path) do |path|
       rel_path = Pathname.new(path).relative_path_from(root)
@@ -59,12 +69,16 @@ namespace :import do
               'Location' => rel_path.to_s,
               'Year' => tag.year
             }
-            Track.import(result, source)
+            Track.import(result, source, update: is_update)
             did_import = true
           end
         end
 
         puts "Warning: did not import #{rel_path.to_s} because the tag could not be read" unless did_import
+        if did_import && (counter += 1) % 1000 == 0
+          puts "Finished #{counter} tracks"
+          puts "#{Time.now - start_time} elapsed"
+        end
       end
     end
   end
