@@ -10,6 +10,7 @@ gem 'ox'
 gem 'coreaudio'
 gem 'zmq'
 gem 'dotenv'
+gem 'taglib-ruby'
 
 group :development, :test do
   gem 'pry-rails'

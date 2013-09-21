@@ -1,4 +1,7 @@
 require File.join Rails.root, 'lib', 'itunes_lib_parser'
+require 'find'
+require 'fileutils'
+require 'taglib'
 
 desc 'Read an iTunes library into the db (options: FILE=path)'
 namespace :import do
@@ -24,28 +27,45 @@ namespace :import do
   end
 
   task :filesystem => [:environment] do
-    source = Source.create name: ENV['SOURCE_NAME']
+    source = Source.find_or_initialize_by_name_and_root_path ENV['SOURCE_NAME'], ENV['ROOT_PATH']
     raise "#{source.errors.to_a}" unless source.valid?
+    raise "The given path does not exist." unless Dir.exist? source.root_path
+    raise "Relative paths are forbidden!" unless source.root_path.start_with? '/'
+    source.save
 
-    # TODO Ivan:
-    # All you need to do is iterate through your tracks
-    # passing hashes to Track.import
-    # That method is expecting the following keys:
-    # required: 'Artist', 'Album Artist', 'Album'
-    # 'Genre', 'Total Time', 'Track Number', 'Location'
-    # optional: 'Sort Name', 'Sort Artist', 'Sort Album'
-    # 'Track Count'
-    #
-    # Track.import will take care of creating artists and albums
-    # and associating them for you, or detecting existing ones
-    # and using those associations. It will return the created Track
-    # if you want to make any further modifications.  Martin's
-    # library import takes about a half an hour; so don't waste
-    # too much time.  We'll make sure we have a rails console available
-    # to fix errors like 'Sphongle' or whatever at the burn.
-    #
-    # Track.import takes a Source as well
-    # and honestly should probably be Source#import(track)
-    # but I will deal with that later
+    valid_exts = ['.mp3', '.m4a']
+
+    root = Pathname.new(source.root_path)
+
+    Find.find(source.root_path) do |path|
+      rel_path = Pathname.new(path).relative_path_from(root)
+      if valid_exts.include? rel_path.extname
+
+        did_import = false
+
+        TagLib::FileRef.open(path.to_s) do |fileref|
+          unless fileref.null?
+            tag = fileref.tag
+            properties = fileref.audio_properties
+
+            result = {
+              'Name' => tag.title,
+              'Artist' => tag.artist,
+              'Album Artist' => tag.artist,
+              'Album' => tag.album,
+              'Genre' => tag.genre,
+              'Total Time' => properties.length,
+              'Track Number' => tag.track,
+              'Location' => rel_path.to_s,
+              'Year' => tag.year
+            }
+            Track.import(result, source)
+            did_import = true
+          end
+        end
+
+        puts "Warning: did not import #{rel_path.to_s} because the tag could not be read" unless did_import
+      end
+    end
   end
 end

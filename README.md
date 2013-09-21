@@ -5,6 +5,8 @@
 * a slightly out of date zmq
   * `brew tap homebrew/versions`
   * `brew install zeromq22`
+* taglib
+  * `brew install taglib
 
 ### Proof of concept: gapless loop
 
