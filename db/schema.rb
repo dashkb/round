@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20130915180750) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "albums", force: true do |t|
     t.string   "name"
     t.string   "display_name"
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 20130915180750) do
     t.datetime "updated_at"
   end
 
-  add_index "albums", ["name"], name: "index_albums_on_name"
+  add_index "albums", ["name"], name: "index_albums_on_name", using: :btree
 
   create_table "artist_genres", id: false, force: true do |t|
     t.integer "artist_id_id"
@@ -37,7 +40,7 @@ ActiveRecord::Schema.define(version: 20130915180750) do
     t.datetime "updated_at"
   end
 
-  add_index "artists", ["name"], name: "index_artists_on_name"
+  add_index "artists", ["name"], name: "index_artists_on_name", using: :btree
 
   create_table "genres", force: true do |t|
     t.string   "name"
@@ -46,19 +49,20 @@ ActiveRecord::Schema.define(version: 20130915180750) do
     t.datetime "updated_at"
   end
 
-  add_index "genres", ["name"], name: "index_genres_on_name"
+  add_index "genres", ["name"], name: "index_genres_on_name", using: :btree
 
   create_table "sources", force: true do |t|
     t.string "name"
-    t.string "root_path"
+    t.text   "root_path"
+    t.text   "path_fix"
   end
 
   create_table "tracks", force: true do |t|
     t.string   "itunes_id"
-    t.string   "name"
-    t.string   "display_name"
-    t.string   "file"
-    t.string   "sort_name"
+    t.text     "name"
+    t.text     "display_name"
+    t.text     "file"
+    t.text     "sort_name"
     t.integer  "track_number"
     t.integer  "track_count"
     t.integer  "year"
@@ -73,6 +77,6 @@ ActiveRecord::Schema.define(version: 20130915180750) do
     t.integer  "source_id"
   end
 
-  add_index "tracks", ["source_id"], name: "index_tracks_on_source_id"
+  add_index "tracks", ["source_id"], name: "index_tracks_on_source_id", using: :btree
 
 end

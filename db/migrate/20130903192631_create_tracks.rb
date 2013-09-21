@@ -2,10 +2,10 @@ class CreateTracks < ActiveRecord::Migration
   def change
     create_table :tracks do |t|
       t.string :itunes_id
-      t.string :name
-      t.string :display_name
-      t.string :file
-      t.string :sort_name
+      t.text :name
+      t.text :display_name
+      t.text :file
+      t.text :sort_name
       t.integer :track_number
       t.integer :track_count
       t.integer :year
