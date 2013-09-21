@@ -12,8 +12,12 @@ gem 'zmq'
 gem 'dotenv'
 gem 'taglib-ruby'
 gem 'rails_12factor'
-gem 'haml'
-gem 'sass'
+
+group :assets, :development do
+  gem 'haml'
+  gem 'sass'
+  gem 'haml_coffee_assets'
+end
 
 group :development, :test do
   gem 'pry-rails'

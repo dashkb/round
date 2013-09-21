@@ -16,3 +16,4 @@
 //= require deferred
 //= require backbone
 //= require app
+//= require_tree .
