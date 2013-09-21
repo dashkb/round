@@ -43,6 +43,8 @@ GEM
     dotenv (0.9.0)
     erubis (2.7.0)
     execjs (2.0.1)
+    haml (4.0.3)
+      tilt
     hike (1.2.3)
     i18n (0.6.5)
     io-console (0.3)
@@ -135,6 +137,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   coreaudio
   dotenv
+  haml
   ox
   pg
   pry-awesome_print
@@ -143,6 +146,7 @@ DEPENDENCIES
   pry-remote
   rails (= 4.0.0)
   rails_12factor
+  sass
   sass-rails (~> 4.0.0)
   taglib-ruby
   therubyracer

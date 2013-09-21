@@ -12,6 +12,8 @@ gem 'zmq'
 gem 'dotenv'
 gem 'taglib-ruby'
 gem 'rails_12factor'
+gem 'haml'
+gem 'sass'
 
 group :development, :test do
   gem 'pry-rails'

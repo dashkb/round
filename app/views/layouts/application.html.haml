@@ -1,0 +1,30 @@
+!!!
+%html
+  %head
+    %title Round
+    = javascript_include_tag "application"
+    = stylesheet_link_tag    "application", media: "all"
+    = csrf_meta_tags
+    %meta{:charset => "utf-8"}
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+  %body
+    %nav#top-nav.navbar.navbar-fixed-top.navbar-default
+      .navbar-header
+        %a.navbar-brand{:href => "#"}
+          Round
+        %button.navbar-toggle.pull-right{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+
+      .collapse.navbar-collapse
+        .navbar-text.hidden-xs
+          Loaded at
+          = Time.now.strftime '%M:%S'
+        %form.navbar-form.navbar-left
+          .btn-group
+            %button#global-play.btn.btn-success{type: 'button'}
+              %i.icon-play
+            %button#global-stop.btn.btn-danger{type: 'button'}
+              %i.icon-stop
+    #page

@@ -3,4 +3,6 @@ Round::Application.routes.draw do
 
   get :search, to: 'search#search'
   get :queue, to: 'player#queue'
+
+  root to: 'search#search'
 end
