@@ -8,7 +8,11 @@ class Track < ActiveRecord::Base
   validates :file, :uniqueness => { :scope => :source_id }
 
   def local_path
-    File.join(source.root_path, file)
+    if source.path_fix.present?
+      eval source.path_fix
+    else
+      File.join(source.root_path, file)
+    end
   end
 
   def self.import(track, source, save = true)

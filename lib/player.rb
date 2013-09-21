@@ -91,7 +91,14 @@ class Player
     attr_reader :position
 
     def initialize(path)
-      @cafile = CoreAudio::AudioFile.new path.to_s
+      begin
+        path.gsub! '%20', ' '
+        puts "Opening #{path.to_s}"
+        @cafile = CoreAudio::AudioFile.new path.to_s
+      rescue StandardError => e
+        puts "Error opening audio file: "
+        puts e.to_s
+      end
     end
 
     def read(frames)
