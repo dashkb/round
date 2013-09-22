@@ -17,12 +17,10 @@ ActiveRecord::Schema.define(version: 20130915180750) do
   enable_extension "plpgsql"
 
   create_table "albums", force: true do |t|
-    t.string   "name"
-    t.string   "display_name"
-    t.string   "sort_name"
-    t.integer  "artist_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "name"
+    t.string  "display_name"
+    t.string  "sort_name"
+    t.integer "artist_id"
   end
 
   add_index "albums", ["name"], name: "index_albums_on_name", using: :btree
@@ -33,20 +31,16 @@ ActiveRecord::Schema.define(version: 20130915180750) do
   end
 
   create_table "artists", force: true do |t|
-    t.string   "name"
-    t.string   "display_name"
-    t.string   "sort_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "name"
+    t.string "display_name"
+    t.string "sort_name"
   end
 
   add_index "artists", ["name"], name: "index_artists_on_name", using: :btree
 
   create_table "genres", force: true do |t|
-    t.string   "name"
-    t.string   "display_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "name"
+    t.string "display_name"
   end
 
   add_index "genres", ["name"], name: "index_genres_on_name", using: :btree
@@ -58,25 +52,24 @@ ActiveRecord::Schema.define(version: 20130915180750) do
   end
 
   create_table "tracks", force: true do |t|
-    t.string   "itunes_id"
-    t.text     "name"
-    t.text     "display_name"
-    t.text     "file"
-    t.text     "sort_name"
-    t.integer  "track_number"
-    t.integer  "track_count"
-    t.integer  "year"
-    t.integer  "runtime"
-    t.boolean  "compilation"
-    t.integer  "album_artist_id"
-    t.integer  "album_id"
-    t.integer  "artist_id"
-    t.integer  "genre_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "source_id"
+    t.string  "itunes_id"
+    t.text    "name"
+    t.text    "display_name"
+    t.text    "file"
+    t.text    "sort_name"
+    t.integer "track_number"
+    t.integer "track_count"
+    t.integer "year"
+    t.integer "runtime"
+    t.boolean "compilation"
+    t.integer "album_artist_id"
+    t.integer "album_id"
+    t.integer "artist_id"
+    t.integer "genre_id"
+    t.integer "source_id"
   end
 
+  add_index "tracks", ["name"], name: "index_tracks_on_name", using: :btree
   add_index "tracks", ["source_id"], name: "index_tracks_on_source_id", using: :btree
 
 end

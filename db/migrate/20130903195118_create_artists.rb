@@ -4,10 +4,7 @@ class CreateArtists < ActiveRecord::Migration
       t.string :name
       t.string :display_name
       t.string :sort_name
-
       t.index :name
-
-      t.timestamps
     end
 
   end

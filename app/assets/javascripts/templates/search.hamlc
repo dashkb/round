@@ -1,3 +1,7 @@
 %form
   %input.form-control{type: 'text', placeholder: 'Search for music'}
 
+.too-short-notice.hide
+  Enter at least
+  = @minSearchLength
+  characters to get search results

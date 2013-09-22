@@ -5,10 +5,7 @@ class CreateAlbums < ActiveRecord::Migration
       t.string :display_name
       t.string :sort_name
       t.references :artist
-
       t.index :name
-
-      t.timestamps
     end
   end
 end

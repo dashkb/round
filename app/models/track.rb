@@ -16,13 +16,8 @@ class Track < ActiveRecord::Base
   end
 
   def as_json(opts = {})
-    super(opts).merge({
-      artist_name: artist.name,
-      artist_id: artist.id,
-      album_name: album.name,
-      album_id: album.id,
-      genre_name: genre.name,
-      genre_id: genre.id
+    super opts.reverse_merge({
+      include: [:artist, :album, :genre]
     })
   end
 
@@ -38,14 +33,14 @@ class Track < ActiveRecord::Base
       nil
     end
 
-    artist = Artist.find_or_create_by({
+    artist = Artist.find_or_initialize_by({
       name: track_attrs['Artist'].downcase
     }) do |artist|
       artist.update_attributes display_name: track_attrs['Artist']
     end
 
     album_artist = if track_attrs['Album Artist'].present?
-      Artist.find_or_create_by({
+      Artist.find_or_initialize_by({
         name: track_attrs['Album Artist'].downcase,
       })
     else
@@ -59,7 +54,7 @@ class Track < ActiveRecord::Base
       end
     end
 
-    album = album_artist.albums.find_or_create_by({
+    album = album_artist.albums.find_or_initialize_by({
      name: track_attrs['Album'].downcase
     }) do |album|
       album.update_attributes({
@@ -93,9 +88,10 @@ class Track < ActiveRecord::Base
     if track
       track.update_attributes attributes
     else
-      track = source.tracks.create attributes
+      track = source.tracks.build attributes
     end
 
-    track
+
+    track.save!
   end
 end

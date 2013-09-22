@@ -3,10 +3,16 @@ require 'find'
 require 'fileutils'
 require 'taglib'
 
+START_AT = ENV['START_AT'] ? ENV['START_AT'].to_i : 0
+
 desc 'Read an iTunes library into the db (options: FILE=path)'
 namespace :import do
   task :itunes => [:environment] do
-    source = Source.find_or_initialize_by_name name: ENV['SOURCE_NAME']
+    source = Source.find_or_initialize_by({
+      name: ENV['SOURCE_NAME'],
+      root_path: "itunes-#{ENV['SOURCE_NAME']}"
+    })
+
     raise "#{source.errors.to_a}" unless source.valid?
     is_update = !source.new_record?
     source.save
@@ -18,7 +24,9 @@ namespace :import do
 
     handler = ItunesLibParser.new
     handler.on_track do |track|
-      Track.import track, source, update: is_update
+      if counter >= START_AT
+        Track.import track, source, update: is_update
+      end
 
       if (counter += 1) % 1000 == 0
         puts "Finished #{counter} tracks"

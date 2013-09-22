@@ -7,20 +7,27 @@ window.App =
     @searchView = new @SearchView
     @searchView.render().appendTo @$page
 
+  searchIsTooShort: ->
+    _.each [@trackView, @artistView, @albumView], (view) ->
+      view?.destroy()
+
   gotSearchResult: (data) ->
     newTrackView = new @CollectionView
       collection: new Backbone.Collection data.tracks
       type: 'track'
+      heading: 'Tracks'
     .render()
 
     newArtistView = new @CollectionView
       collection: new Backbone.Collection data.artists
       type: 'artist'
+      heading: 'Artists'
     .render()
 
     newAlbumView = new @CollectionView
       collection: new Backbone.Collection data.albums
       type: 'album'
+      heading: 'Albums'
 
     @trackView?.destroy()
     @trackView = newTrackView
