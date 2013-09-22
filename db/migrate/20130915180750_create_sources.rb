@@ -5,7 +5,5 @@ class CreateSources < ActiveRecord::Migration
       t.text :root_path
       t.text :path_fix
     end
-
-    add_reference :tracks, :source, index: true
   end
 end

@@ -15,6 +15,8 @@ class CreateTracks < ActiveRecord::Migration
       t.references :album
       t.references :artist
       t.references :genre
+      t.references :source
+
       t.index :name
     end
   end

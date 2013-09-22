@@ -6,6 +6,5 @@ class CreateArtists < ActiveRecord::Migration
       t.string :sort_name
       t.index :name
     end
-
   end
 end
