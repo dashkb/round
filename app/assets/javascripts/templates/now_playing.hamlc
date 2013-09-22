@@ -1,0 +1,5 @@
+- if @model
+  %span.artist= @model.get('artist').name
+  %span.name= @model.get 'name'
+- else
+  %span.idle Player is idle

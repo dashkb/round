@@ -8,6 +8,10 @@ class PlayerController < ApplicationController
 
     reply = PlayerService.queue track
 
-    respond_with reply
+    render nothing: true, status: 200
+  end
+
+  def status
+    respond_with PlayerService.status
   end
 end

@@ -1,3 +1,6 @@
+require 'queue_service'
+require 'audio_file'
+
 class Player
   include Singleton
 
@@ -6,10 +9,10 @@ class Player
   def self.endpoint; 'ipc://round-player' end
 
   def initialize
+    STDOUT.sync = true
     @buffer_size = 2 ** 16 # TODO make adjustable
     @device      = CoreAudio.default_output_device
     @buffer      = @device.output_buffer @buffer_size
-    @queue       = Queue.new
     trap_signals
   end
 
@@ -75,58 +78,36 @@ class Player
       # Sweet we got some audio, play that shit
       # Won't return until the audio has played
       # TODO watch possible pause/stop lag?
-      puts "Loading the buffer"
+      puts "#{@nowPlaying[:track]} - #{@nowPlaying[:audiofile].position_str} / #{@nowPlaying[:track].length_str}"
       @buffer << buf
     else
       # Sleeps the player thread until a new
       # track is enqueued
-      @nowPlaying = @queue.deq
-      puts "got a track"
-      playerTick
+      track = QueueService.next
+      puts "Playing #{track}"
+      @nowPlaying = {
+        track: track,
+        audiofile: AudioFile.new(track.local_path)
+      }
+
+      unless @nowPlaying[:audiofile].ok?
+        puts "track was no good"
+        @nowPlaying = nil
+      end
     end
   end
 
   private
-  class AudioFile
-    attr_reader :position
-
-    def initialize(path)
-      begin
-        path.gsub! '%20', ' '
-        puts "Opening #{path.to_s}"
-        @cafile = CoreAudio::AudioFile.new path.to_s
-      rescue StandardError => e
-        puts "Error opening audio file: "
-        puts e.to_s
-      end
-    end
-
-    def read(frames)
-      @position ||= 0
-      @position += frames / @cafile.rate
-      @cafile.read frames
-    end
-  end
-
-  def api_play(track_id)
-    track = Track.find track_id
-    @queue.clear
-    @nowPlaying = nil
-    @queue.push(
-      track: track,
-      audiofile: AudioFile.new(track.local_path)
-    )
-
-    track.name
-  end
-
   def api_queue(track_id)
-    track = Track.find track_id
-    @queue.push(
-      track: track,
-      audiofile: AudioFile.new(track.local_path)
-    )
+    QueueService.push Track.find(track_id)
 
-    track.name
+    'OK'
+  end
+
+  def api_status
+    return {
+      now_playing: (@nowPlaying[:track].id rescue nil),
+      queue: QueueService.map { |item| item[:track].id }
+    }.to_json
   end
 end

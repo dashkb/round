@@ -70,6 +70,5 @@ ActiveRecord::Schema.define(version: 20130915180750) do
   end
 
   add_index "tracks", ["name"], name: "index_tracks_on_name", using: :btree
-  add_index "tracks", ["source_id"], name: "index_tracks_on_source_id", using: :btree
 
 end

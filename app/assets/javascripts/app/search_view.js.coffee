@@ -3,12 +3,17 @@ class App.SearchView extends App.View
   template: JST['search']
   events:
     'input input': 'queryChanged'
+    'click .clear-button': 'clearQuery'
 
   render: ->
     @templateHelpers.minSearchLength = @minSearchLength
     _.tap super(), =>
       @$searchBox = (@$ 'input')
       @$tooShortNotice = (@$ '.too-short-notice')
+
+  clearQuery: (event) ->
+    event.stopPropagation()
+    @$searchBox.val ''
 
   queryChanged: ->
     @__queryChanged ?= _.throttle =>
@@ -22,7 +27,7 @@ class App.SearchView extends App.View
           log.error "Error searching tracks"
           log.error args...
       else
-        App.searchIsTooShort()
+        App.resetSearch()
         @$tooShortNotice.removeClass 'hide'
     , 3000
     @__queryChanged()

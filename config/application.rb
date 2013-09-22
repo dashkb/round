@@ -13,8 +13,10 @@ require "sprockets/railtie"
 Bundler.require(:default, Rails.env)
 Dotenv.load
 
+
 module Round
   class Application < Rails::Application
+    $LOAD_PATH << Rails.root.join('lib')
     config.assets.paths << Rails.root.join('app', 'assets', 'font')
     config.assets.precompile += %w( .svg .eot .woff .ttf )
   end

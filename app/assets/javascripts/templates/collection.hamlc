@@ -2,9 +2,9 @@
   .panel-heading= @heading || 'Untitled Collection'
   .list-group
     - @collection.each (item) =>
-      .list-group-item.item
-        - if @itemTpl
-          != @itemTpl model: item
-        - else
+      - if @itemTpl
+        != @itemTpl model: item
+      - else
+        .list-group-item.item
           %span.name!= item.get 'name'
           %button.btn.btn-primary.browse Browse

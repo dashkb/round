@@ -7,6 +7,10 @@ class Track < ActiveRecord::Base
   validates :name, :file, :source,  presence: true
   validates :file, :uniqueness => { :scope => :source_id }
 
+  def to_s
+    "#{artist} - #{display_name}"
+  end
+
   def local_path
     if source.path_fix.present?
       eval source.path_fix
@@ -19,6 +23,12 @@ class Track < ActiveRecord::Base
     super opts.reverse_merge({
       include: [:artist, :album, :genre]
     })
+  end
+
+
+  def length_str
+    m, s = (runtime.to_i / 1000).divmod 60
+    "%d:%02d" % [m, s]
   end
 
   def self.import(track_attrs, source, opts = {})
@@ -37,7 +47,7 @@ class Track < ActiveRecord::Base
       name: track_attrs['Artist'].downcase
     }) do |artist|
       artist.update_attributes display_name: track_attrs['Artist']
-    end
+    end if track_attrs['Artist'].present?
 
     album_artist = if track_attrs['Album Artist'].present?
       Artist.find_or_initialize_by({
@@ -61,13 +71,13 @@ class Track < ActiveRecord::Base
         display_name: track_attrs['Album'],
         sort_name: track_attrs['Sort Album']
       })
-    end
+    end if track_attrs['Album'].present?
 
     genre = Genre.find_or_initialize_by({
       name: track_attrs['Genre'].downcase
     }) do |genre|
       genre.update_attributes display_name: track_attrs['Genre'] if genre
-    end
+    end if track_attrs['Genre'].present?
 
     attributes = {
       itunes_id: track_attrs['Track ID'],

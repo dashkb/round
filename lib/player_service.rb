@@ -2,11 +2,18 @@ require Rails.root.join 'lib', 'player'
 
 module PlayerService
   def self.queue(track)
-    Rails.logger.debug "Sending `play #{track.id}`"
-    socket.send "play #{track.id}"
+    socket.send "queue #{track.id}"
     reply = socket.recv
-    Rails.logger.debug "Got #{reply}"
     reply
+  end
+
+  def self.status
+    socket.send "status"
+    reply = JSON.parse(socket.recv)
+    return {
+      now_playing: (Track.find(reply['now_playing']) rescue nil),
+      queue: reply['queue'].map { |id| Track.find id }
+    }
   end
 
   def self.socket
