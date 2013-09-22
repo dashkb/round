@@ -12,6 +12,7 @@ gem 'zmq'
 gem 'dotenv'
 gem 'taglib-ruby'
 gem 'rails_12factor'
+gem 'unicorn'
 
 group :assets, :development do
   gem 'haml'

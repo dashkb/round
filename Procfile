@@ -1,2 +1,2 @@
-web: rails s -p ${PORT}
+web: unicorn -p ${PORT}
 player: bundle exec rake play
