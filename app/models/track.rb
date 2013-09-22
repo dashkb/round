@@ -15,6 +15,17 @@ class Track < ActiveRecord::Base
     end
   end
 
+  def as_json(opts = {})
+    super(opts).merge({
+      artist_name: artist.name,
+      artist_id: artist.id,
+      album_name: album.name,
+      album_id: album.id,
+      genre_name: genre.name,
+      genre_id: genre.id
+    })
+  end
+
   def self.import(track_attrs, source, opts = {})
     opts.reverse_merge!({update: false})
 

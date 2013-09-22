@@ -1,0 +1,3 @@
+%form
+  %input.form-control{type: 'text', placeholder: 'Search for music'}
+

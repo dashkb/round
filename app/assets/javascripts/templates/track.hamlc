@@ -1,0 +1,4 @@
+%span.artist= @model.get 'artist_name'
+%span.divider &nbsp;-&nbsp;
+%span.name= @model.get 'name'
+%button.btn.btn-primary Queue

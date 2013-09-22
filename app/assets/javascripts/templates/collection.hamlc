@@ -1,0 +1,8 @@
+.list-group.collection
+  - @collection.each (item) =>
+    .list-group-item.item
+      - if @itemTpl
+        != @itemTpl model: item
+      - else
+        %span.name= item.get 'name'
+        %button.btn.btn-primary.browse Browse
