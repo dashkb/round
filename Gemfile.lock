@@ -103,6 +103,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.12.0)
     rake (10.1.0)
+    redis (3.0.4)
     ref (1.0.5)
     sass (3.2.10)
     sass-rails (4.0.0)
@@ -157,6 +158,7 @@ DEPENDENCIES
   pry-remote
   rails (= 4.0.0)
   rails_12factor
+  redis
   sass
   sass-rails (~> 4.0.0)
   taglib-ruby

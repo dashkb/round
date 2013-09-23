@@ -25,8 +25,12 @@
         - if Rails.env.development?
           %form.navbar-form.navbar-left
             .btn-group
+              %button#global-pause.btn.btn-default{type: 'button'}
+                %i.icon-pause
               %button#global-play.btn.btn-success{type: 'button'}
                 %i.icon-play
               %button#global-stop.btn.btn-danger{type: 'button'}
                 %i.icon-stop
+              %button#global-skip.btn.btn-primary{type: 'button'}
+                %i.icon-forward
     #page

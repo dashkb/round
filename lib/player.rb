@@ -74,6 +74,9 @@ class Player
 
   # Executes in the player thread
   def playerTick
+    @nowPlaying = nil if @skip
+    @skip = false
+
     if @nowPlaying && buf = @nowPlaying[:audiofile].read(@buffer_size)
       # Sweet we got some audio, play that shit
       # Won't return until the audio has played
@@ -83,16 +86,19 @@ class Player
     else
       # Sleeps the player thread until a new
       # track is enqueued
-      track = QueueService.next
-      puts "Playing #{track}"
-      @nowPlaying = {
-        track: track,
-        audiofile: AudioFile.new(track.local_path)
-      }
+      if track = QueueService.next
+        puts "Playing #{track}"
+        @nowPlaying = {
+          track: track,
+          audiofile: AudioFile.new(track.local_path)
+        }
 
-      unless @nowPlaying[:audiofile].ok?
-        puts "track was no good"
-        @nowPlaying = nil
+        unless @nowPlaying[:audiofile].ok?
+          puts "track was no good"
+          @nowPlaying = nil
+        end
+      else
+        sleep 2
       end
     end
   end
@@ -107,7 +113,13 @@ class Player
   def api_status
     return {
       now_playing: (@nowPlaying[:track].id rescue nil),
-      queue: QueueService.map { |item| item[:track].id }
+      queue: QueueService.all
     }.to_json
+  end
+
+  def api_skip
+    @skip = true
+
+    'OK'
   end
 end

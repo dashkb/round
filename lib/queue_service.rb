@@ -1,22 +1,19 @@
 module QueueService
-  def self.queue
-    # this is our threadsafe queue, we're only going to keep the
-    # next track on here
-    @queue ||= Queue.new
-  end
-
+  QUEUE = 'queue:main'
 
   # responsible for returning a track to play
   def self.next
-    queue.deq
+    if next_id = REDIS.lpop(QUEUE)
+      Track.find next_id
+    end
   end
 
   # queue a track
   def self.push(track)
-    queue.push track
+    REDIS.rpush QUEUE, track.id
   end
 
-  def self.map
-    []
+  def self.all
+    REDIS.lrange(QUEUE, 0, -1)
   end
 end

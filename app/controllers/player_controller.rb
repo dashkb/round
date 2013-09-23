@@ -12,6 +12,9 @@ class PlayerController < ApplicationController
   end
 
   def status
-    respond_with PlayerService.status
+    PlayerService.status.tap do |status|
+      puts "Player status response: #{status}"
+      respond_with status
+    end
   end
 end

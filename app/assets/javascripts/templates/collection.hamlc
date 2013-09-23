@@ -1,5 +1,6 @@
 .panel.panel-default.collection
-  .panel-heading= @heading || 'Untitled Collection'
+  - unless @minimal
+    .panel-heading= @heading || 'Untitled Collection'
   .list-group
     - @collection.each (item) =>
       - if @itemTpl

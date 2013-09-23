@@ -1,11 +1,16 @@
 class App.CollectionView extends App.View
   template: JST['collection']
   initialize: (opts) ->
-    _.tap super(_.omit opts, 'type'), =>
-      {@type, @heading} = opts
+    _.tap super(_.omit opts, 'type', 'heading', 'minimal'), =>
+      {@type, @heading, @minimal} = opts
+      @type ||= @heading?.toLowerCase().substr(0, @heading.length - 1)
+      log.debug "view type is #{@type}"
       @templateHelpers =
         itemTpl: JST[@type]
+        type: @type
         heading: @heading
+        minimal: @minimal
+
 
   events:
     'click .track .queue-button': 'queueTrack'

@@ -14,7 +14,7 @@ window.App =
     @nowPlayingView.render().appendTo ($ '#top-nav .topnav-main')
 
     setInterval =>
-      $.get '/player/status', (response) =>
+      $.get "/player/status?now=#{Date.now()}", (response) =>
         nowPlaying = if response.now_playing? then new Backbone.Model(response.now_playing) else null
         @playerStatus =
           nowPlaying: nowPlaying
@@ -27,35 +27,17 @@ window.App =
       view?.destroy()
 
   gotSearchResult: (data) ->
-    newTrackView = new @CollectionView
-      collection: new Backbone.Collection data.tracks
-      type: 'track'
-      heading: 'Tracks'
+    resultView = new @ColumnCollectionView
+      collections:
+        'Tracks': new Backbone.Collection data.tracks
+        'Artists': new Backbone.Collection data.artists
+        'Albums': new Backbone.Collection data.albums
+      default: 'Tracks' # TODO remember
     .render()
 
-    newArtistView = new @CollectionView
-      collection: new Backbone.Collection data.artists
-      type: 'artist'
-      heading: 'Artists'
-    .render()
+    @resultView?.destroy()
+    @resultView = resultView.appendTo @$page
 
-    newAlbumView = new @CollectionView
-      collection: new Backbone.Collection data.albums
-      type: 'album'
-      heading: 'Albums'
-    .render()
-
-    @trackView?.destroy()
-    @trackView = newTrackView
-    @trackView.appendTo @$page
-
-    @artistView?.destroy()
-    @artistView = newArtistView
-    @artistView.appendTo @$page
-
-    @albumView?.destroy()
-    @albumView = newAlbumView
-    @albumView.appendTo @$page
 
   setupAjax: ->
     spinnerTimeout = null

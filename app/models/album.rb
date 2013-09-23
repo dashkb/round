@@ -3,4 +3,10 @@ class Album < ActiveRecord::Base
   has_many :tracks
 
   validates :name, :artist, presence: true
+
+  def as_json(opts = {})
+    super opts.reverse_merge({
+      include: [:artist]
+    })
+  end
 end

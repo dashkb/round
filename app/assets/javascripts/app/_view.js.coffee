@@ -13,10 +13,6 @@ class App.View extends Backbone.View
         model: @model,
         collection: @collection
 
-      if @model
-        @bindModel()
-        @listenTo @model, 'change', @bindModel
-
   appendTo: (el) ->
     _.tap @, =>
       @$el.appendTo el
@@ -27,31 +23,15 @@ class App.View extends Backbone.View
       @$el.insertBefore el
       @trigger 'show'
 
-  bindModel: ->
-    return unless @model
-    _.each @modelBindings(), (binding) ->
-      if binding.text?
-        binding.$el.html binding.text.call()
-      #binder.attrs?.call()
+  hide: ->
+    _.tap @, =>
+      @$el.addClass 'hide'
+      @trigger 'hide'
 
-  modelBindings: ->
-    return unless @model && @$el
-    @bindings ?= (@$ '.bind').map (i, el) =>
-      $el = $ el
-      _.merge @bindersFor($el), $el: $el
-
-  bindersFor: ($el) ->
-    text  = $el.text()
-    attrs = $el.attrs()
-
-    text: =>
-      text.replace /\{([^}]+)\}/g, (match, expr) =>
-        expr = expr.split ' '
-        val = _.escape @model.get _.last expr
-        if expr.length == 2 && expr[0] == 'md'
-          val = marked val
-        val
-    attrs: =>
+  show: ->
+    _.tap @, =>
+      @$el.removeClass 'hide'
+      @trigger 'show'
 
   destroy: ->
     return if @__destroyed__

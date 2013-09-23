@@ -15,11 +15,12 @@ $trap_signals_like_a_boss = Proc.new do
 end
 
 task play: :environment do
-  require Rails.root.join 'lib', 'player'
+  require 'player'
+  Thread.abort_on_exception = true
   Player.start
 end
 
 task control: :environment do
-  require Rails.root.join 'lib', 'controller'
+  require 'controller'
   Controller.start
 end
