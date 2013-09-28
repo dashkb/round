@@ -13,12 +13,15 @@ window.App =
 
     @queueView = new @QueueView el: ($ '#queue')
     @queueView.render()
+    ($ '#queue-link').on 'click', => @touched(); @show @queueView
 
     @searchView = new @SearchView el: ($ '#search')
-    @searchView.render().show()
+    @searchView.render()
+    @show @searchView
+    ($ '#search-link').on 'click', => @touched(); @show @searchView
 
-    @nowPlayingView = new @NowPlayingView
-    @nowPlayingView.render().appendTo ($ '#top-nav .topnav-main')
+    @nowPlayingView = new @NowPlayingView el: ($ '#now-playing')
+    @nowPlayingView.render()
 
     setInterval =>
       $.get "/player/status?now=#{Date.now()}", (response) =>
@@ -36,19 +39,16 @@ window.App =
       , 2000
     , 300
 
+  show: (viewToShow) ->
+    _.each [@searchView, @queueView, @idleView], (view) ->
+      if view == viewToShow then view.show() else view.hide()
+
   touched: ->
     @lastTouchAt = Date.now()
-
-    if @idleView.shown
-      @idleView.hide()
-      @searchView.show()
+    @show @searchView if @idleView.shown
 
   checkLastTouch: ->
-    sinceLastTouch = Date.now() - @lastTouchAt
-    if sinceLastTouch > @idleTimeout
-      @searchView.hide()
-      @queueView.hide()
-      @idleView.show()
+    @show @idleView if Date.now() - @lastTouchAt > @idleTimeout
 
   setupAjax: ->
     spinnerTimeout = null

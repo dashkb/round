@@ -19,20 +19,13 @@
           %span.icon-bar
 
       .collapse.navbar-collapse.topnav-main
-        .navbar-text.hidden-xs
-          Loaded at
-          = Time.now.strftime '%M:%S'
-        - if Rails.env.development?
-          %form.navbar-form.navbar-left
-            .btn-group
-              %button#global-pause.btn.btn-default{type: 'button'}
-                %i.icon-pause
-              %button#global-play.btn.btn-success{type: 'button'}
-                %i.icon-play
-              %button#global-stop.btn.btn-danger{type: 'button'}
-                %i.icon-stop
-              %button#global-skip.btn.btn-primary{type: 'button'}
-                %i.icon-forward
+        .navbar-text.hidden-xs#now-playing
+        %ul.nav.navbar-nav
+          %li#search-link
+            %a Search for Music
+          %li#queue-link
+            %a See the Queue
+        %a.navbar-btn
     #queue.hide
     #idle.hide
     #search.hide

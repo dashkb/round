@@ -17,26 +17,26 @@ class App.View extends Backbone.View
   appendTo: (el) ->
     _.tap @, =>
       @$el.appendTo el
-      @trigger 'show'
+      @bubble 'show'
 
   insertBefore: (el) ->
     _.tap @, =>
       @$el.insertBefore el
-      @trigger 'show'
+      @bubble 'show'
 
   hide: ->
     _.tap @, =>
       if @shown
         @shown = false
         @$el.addClass 'hide'
-        @trigger 'hide'
+        @bubble 'hide'
 
   show: ->
     _.tap @, =>
       unless @shown
         @shown = true
         @$el.removeClass 'hide'
-        @trigger 'show'
+        @bubble 'show'
 
   destroy: ->
     return if @__destroyed__

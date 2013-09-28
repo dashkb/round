@@ -5,6 +5,8 @@ class App.SearchView extends App.View
   events:
     'input input': 'queryChanged'
     'click .clear-button': 'clearQuery'
+    'show': -> ($ '#search-link').addClass('active')
+    'hide': -> ($ '#search-link').removeClass('active')
 
   render: ->
     @templateHelpers.minSearchLength = @minSearchLength
