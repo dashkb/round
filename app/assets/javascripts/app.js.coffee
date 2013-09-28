@@ -5,11 +5,17 @@ window.App =
     Deferred.installInto(Zepto)
     @csrf_token = ($ 'meta[name="csrf-token"]').attr('content')
     @$spinner   = ($ '#app-spinner')
-    @$page      = ($ '#page')
     @setupAjax()
 
-    @searchView = new @SearchView
-    @searchView.render().appendTo @$page
+
+    @idleView = new @IdleView el: ($ '#idle')
+    @idleView.render()
+
+    @queueView = new @QueueView el: ($ '#queue')
+    @queueView.render()
+
+    @searchView = new @SearchView el: ($ '#search')
+    @searchView.render().show()
 
     @nowPlayingView = new @NowPlayingView
     @nowPlayingView.render().appendTo ($ '#top-nav .topnav-main')

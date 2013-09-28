@@ -6,6 +6,7 @@ class App.View extends Backbone.View
     log.debug "Initializing view: #{@constructor.name}"
     log.debug @model, @collection
     super args...
+    @shown = not @$el.hasClass 'hide'
 
   render: ->
     _.tap @, =>
@@ -25,13 +26,17 @@ class App.View extends Backbone.View
 
   hide: ->
     _.tap @, =>
-      @$el.addClass 'hide'
-      @trigger 'hide'
+      if @shown
+        @shown = false
+        @$el.addClass 'hide'
+        @trigger 'hide'
 
   show: ->
     _.tap @, =>
-      @$el.removeClass 'hide'
-      @trigger 'show'
+      unless @shown
+        @shown = true
+        @$el.removeClass 'hide'
+        @trigger 'show'
 
   destroy: ->
     return if @__destroyed__
