@@ -1,5 +1,5 @@
 window.App =
-  idleTimeout: 15000
+  idleTimeout: 30000
   pollInterval: 7000
   start: ->
     log.setLevel log.levels.DEBUG
@@ -11,8 +11,12 @@ window.App =
     @idleView = new @IdleView el: ($ '#idle')
     @idleView.render()
 
-    @queueView = new @QueueView el: ($ '#queue')
-    @queueView.render()
+    @queueView = new @QueueView
+      el: ($ '#queue')
+      type: 'track'
+      heading: 'Play Queue'
+      emptyMessage: 'Play Queue is Empty!'
+    .render()
     ($ '#queue-link').on 'click', => @touched(); @show @queueView
 
     @searchView = new @SearchView el: ($ '#search')

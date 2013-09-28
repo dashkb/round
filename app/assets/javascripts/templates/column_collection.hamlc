@@ -1,6 +1,6 @@
 %ul.nav.nav-pills.nav-justified
   - _.each @collections, (collection, heading) =>
     %li.activate{'data-collection-key': heading}
-      %a= heading
+      %a= "#{heading} (#{collection.length})"
 
 .columns

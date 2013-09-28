@@ -2,10 +2,10 @@ class App.View extends Backbone.View
   bubble: (args...) -> @$el.trigger args...; @trigger args...
   templateHelpers: {}
   initialize: (args...) ->
+    super args...
     log.debug '--'
     log.debug "Initializing view: #{@constructor.name}"
     log.debug @model, @collection
-    super args...
     @shown = not @$el.hasClass 'hide'
 
   render: ->

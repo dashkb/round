@@ -1,11 +1,16 @@
 .panel.panel-default.collection
   - unless @minimal
-    .panel-heading= @heading || 'Untitled Collection'
+    .panel-heading
+      %span.text= @heading || 'Untitled Collection'
+      %span.count= "(#{(@collection?.length || 0)})"
   .list-group
-    - @collection.each (item) =>
-      - if @itemTpl
-        != @itemTpl model: item
-      - else
-        .list-group-item.item
-          %span.name!= item.get 'name'
-          %button.btn.btn-primary.browse Browse
+    - if @collection && @collection.any
+      - @collection.each (item) =>
+        - if @itemTpl
+          != @itemTpl model: item
+        - else
+          .list-group-item.item
+            %span.name!= item.get 'name'
+            %button.btn.btn-primary.browse Browse
+    - else
+      .panel-body= @emptyMessage || "No #{@heading} found"
