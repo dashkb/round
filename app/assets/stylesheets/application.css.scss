@@ -12,6 +12,10 @@
  *= require_tree .
  */
 
+html, body {
+  height: 100%;
+}
+
 body {
   padding-top: 60px;
 
@@ -31,4 +35,9 @@ body {
   .collection {
     margin-top: 10px;
   }
+}
+
+#idle {
+  width: 100%;
+  height: 100%;
 }

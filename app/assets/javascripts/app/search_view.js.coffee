@@ -17,6 +17,7 @@ class App.SearchView extends App.View
     @$searchBox.val ''
 
   queryChanged: ->
+    App.touched()
     @__queryChanged ?= _.throttle =>
       query = @$searchBox.val()
 

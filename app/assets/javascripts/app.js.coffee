@@ -1,4 +1,5 @@
 window.App =
+  idleTimeout: 15000
   pollInterval: 7000
   start: ->
     log.setLevel log.levels.DEBUG
@@ -6,7 +7,6 @@ window.App =
     @csrf_token = ($ 'meta[name="csrf-token"]').attr('content')
     @$spinner   = ($ '#app-spinner')
     @setupAjax()
-
 
     @idleView = new @IdleView el: ($ '#idle')
     @idleView.render()
@@ -28,6 +28,27 @@ window.App =
           queue: new Backbone.Collection response.queue
         @trigger 'player status update'
     , @pollInterval
+
+    @lastTouchAt = Date.now()
+    setTimeout =>
+      setInterval =>
+        @checkLastTouch()
+      , 2000
+    , 300
+
+  touched: ->
+    @lastTouchAt = Date.now()
+
+    if @idleView.shown
+      @idleView.hide()
+      @searchView.show()
+
+  checkLastTouch: ->
+    sinceLastTouch = Date.now() - @lastTouchAt
+    if sinceLastTouch > @idleTimeout
+      @searchView.hide()
+      @queueView.hide()
+      @idleView.show()
 
   setupAjax: ->
     spinnerTimeout = null
