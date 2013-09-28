@@ -1,5 +1,5 @@
 window.App =
-  pollInterval: 5000
+  pollInterval: 7000
   start: ->
     log.setLevel log.levels.DEBUG
     Deferred.installInto(Zepto)
@@ -22,23 +22,6 @@ window.App =
           queue: new Backbone.Collection response.queue
         @trigger 'player status update'
     , @pollInterval
-
-  resetSearch: ->
-    _.each [@trackView, @artistView, @albumView], (view) ->
-      view?.destroy()
-
-  gotSearchResult: (data) ->
-    resultView = new @ColumnCollectionView
-      collections:
-        'Tracks': new Backbone.Collection data.tracks
-        'Artists': new Backbone.Collection data.artists
-        'Albums': new Backbone.Collection data.albums
-      default: 'Tracks' # TODO remember
-    .render()
-
-    @resultView?.destroy()
-    @resultView = resultView.appendTo @$page
-
 
   setupAjax: ->
     spinnerTimeout = null

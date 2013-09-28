@@ -1,4 +1,5 @@
 class App.SearchView extends App.View
+  searchThrottle: 3000
   minSearchLength: 4
   template: JST['search']
   events:
@@ -22,12 +23,29 @@ class App.SearchView extends App.View
       if query.length >= @minSearchLength
         @$tooShortNotice.addClass 'hide'
         $.get("/search?term=#{query}").then (data) =>
-          App.gotSearchResult data
+          @gotResult data
         .then null, (args...) =>
           log.error "Error searching tracks"
           log.error args...
       else
-        App.resetSearch()
+        @reset()
         @$tooShortNotice.removeClass 'hide'
-    , 3000
+    , @searchThrottle
     @__queryChanged()
+
+  reset: ->
+    @resultView?.destroy()
+
+  gotResult: (data) ->
+    resultView = new App.ColumnCollectionView
+      collections:
+        'Genres': new Backbone.Collection data.genres
+        'Tracks': new Backbone.Collection data.tracks
+        'Artists': new Backbone.Collection data.artists
+        'Albums': new Backbone.Collection data.albums
+      default: 'Tracks' # TODO remember
+    .render()
+
+    @resultView?.destroy()
+    @resultView = resultView.appendTo @$el
+
