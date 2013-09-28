@@ -1,5 +1,7 @@
 Round::Application.routes.draw do
-  resources :artists, only: [:index, :show]
+  %w{genres artists tracks albums}.each do |thing|
+    get "/browse/#{thing}/:id", to: "#{thing}#browse"
+  end
 
   get '/player/status', to: 'player#status'
   post '/player/queue', to: 'player#queue'

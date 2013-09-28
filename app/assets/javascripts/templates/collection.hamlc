@@ -9,8 +9,8 @@
         - if @itemTpl
           != @itemTpl model: item
         - else
-          .list-group-item.item
+          .list-group-item.item{data-type: @type, data-id: item.id}
             %span.name!= item.get 'name'
-            %button.btn.btn-primary.browse Browse
+            %button.btn.btn-primary.browse-button Browse
     - else
       .panel-body= @emptyMessage || "No #{@heading} found"

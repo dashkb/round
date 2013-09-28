@@ -10,9 +10,10 @@ class App.View extends Backbone.View
 
   render: ->
     _.tap @, =>
-      @$el.html @template _.merge @templateHelpers,
-        model: @model,
-        collection: @collection
+      if @template
+        @$el.html @template _.merge @templateHelpers,
+          model: @model,
+          collection: @collection
 
   appendTo: (el) ->
     _.tap @, =>

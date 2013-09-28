@@ -12,6 +12,7 @@ class App.CollectionView extends App.View
 
   events:
     'click .track .queue-button': 'queueTrack'
+    'click .browse-button': 'browse'
 
   queueTrack: (event) ->
     event.stopPropagation()
@@ -22,3 +23,7 @@ class App.CollectionView extends App.View
       App.trigger 'queue track', track_id
     .then null, (args...) =>
       log.error "Error queueing track", args...
+
+  browse: (event) ->
+    _.tap ($ event.target).parent(), (clicked) ->
+      App.browse clicked.data('type'), clicked.data('id')

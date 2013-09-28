@@ -11,6 +11,9 @@ window.App =
     @idleView = new @IdleView el: ($ '#idle')
     @idleView.render()
 
+    @browseView = new @BrowseView el: ($ '#browse')
+    @browseView.render()
+
     @queueView = new @QueueView
       el: ($ '#queue')
       type: 'track'
@@ -44,8 +47,11 @@ window.App =
     , 300
 
   show: (viewToShow) ->
-    _.each [@searchView, @queueView, @idleView], (view) ->
+    _.each [@searchView, @queueView, @browseView, @idleView], (view) ->
       if view == viewToShow then view.show() else view.hide()
+
+  browse: (type, id) ->
+    @show @browseView.reset type, id
 
   touched: ->
     @lastTouchAt = Date.now()

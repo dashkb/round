@@ -79,6 +79,8 @@ class Track < ActiveRecord::Base
       genre.update_attributes display_name: track_attrs['Genre'] if genre
     end if track_attrs['Genre'].present?
 
+    artist.genres << genre; artist.save unless artist.genres.contains?(genre)
+
     attributes = {
       itunes_id: track_attrs['Track ID'],
       name: track_attrs['Name'].try(:downcase),

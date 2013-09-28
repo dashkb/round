@@ -12,4 +12,14 @@ class ArtistsController < ApplicationController
   def search
     respond_with (Artist.where "name ~* ?", ".*#{params[:term]}.*")
   end
+
+  def browse
+    artist = Artist.includes(:albums, :tracks).find params[:id]
+
+    respond_with({
+      artist: artist,
+      albums: artist.albums,
+      tracks: artist.tracks
+    })
+  end
 end

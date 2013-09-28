@@ -2,6 +2,7 @@ class App.ColumnCollectionView extends App.View
   template: JST['column_collection']
   initialize: (opts = {}) ->
     {@collections, @default} = opts
+    @default ?= _.first _.keys @collections
     super _.omit opts, 'collections', 'default'
     @templateHelpers = collections: @collections
 

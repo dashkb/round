@@ -1,6 +1,4 @@
 class SearchController < ApplicationController
-  respond_to :json
-
   def search
     regex = ".*#{params[:term]}.*"
     respond_with({
