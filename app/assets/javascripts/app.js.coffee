@@ -1,4 +1,5 @@
 window.App =
+  pollInterval: 5000
   start: ->
     log.setLevel log.levels.DEBUG
     Deferred.installInto(Zepto)
@@ -20,7 +21,7 @@ window.App =
           nowPlaying: nowPlaying
           queue: new Backbone.Collection response.queue
         @trigger 'player status update'
-    , 2000
+    , @pollInterval
 
   resetSearch: ->
     _.each [@trackView, @artistView, @albumView], (view) ->

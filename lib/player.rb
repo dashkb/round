@@ -82,8 +82,16 @@ class Player
       # Won't return until the audio has played
       # TODO watch possible pause/stop lag?
       puts "#{@nowPlaying[:track]} - #{@nowPlaying[:audiofile].position_str} / #{@nowPlaying[:track].length_str}"
-      @buffer << buf
+
+      unless @nowPlaying[:audiofile].fake
+        @buffer << buf
+      else
+        sleep 1
+      end
     else
+      # clear old track
+      @nowPlaying = nil
+
       # Sleeps the player thread until a new
       # track is enqueued
       if track = QueueService.next
