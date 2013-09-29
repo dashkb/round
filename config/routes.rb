@@ -8,4 +8,5 @@ Round::Application.routes.draw do
   get '/search', to: 'search#search'
 
   root to: 'search#search'
+  get '/*path', to: 'application#render_frontend'
 end

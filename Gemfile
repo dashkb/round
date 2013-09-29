@@ -22,6 +22,7 @@ group :assets, :development do
 end
 
 group :development, :test do
+  gem 'quiet_assets'
   gem 'pry-rails'
   gem 'pry-awesome_print'
   gem 'pry-coolline'

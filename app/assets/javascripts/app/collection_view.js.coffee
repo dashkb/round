@@ -26,4 +26,4 @@ class App.CollectionView extends App.View
 
   browse: (event) ->
     _.tap ($ event.target).parent(), (clicked) ->
-      App.browse clicked.data('type'), clicked.data('id')
+      page "/browse/#{clicked.data 'type'}/#{clicked.data 'id'}"

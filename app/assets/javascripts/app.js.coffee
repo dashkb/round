@@ -20,15 +20,17 @@ window.App =
       heading: 'Play Queue'
       emptyMessage: 'Play Queue is Empty!'
     .render()
-    ($ '#queue-link').on 'click', => @touched(); @show @queueView
+    ($ '#queue-link').on 'click', => page '/queue'
 
     @searchView = new @SearchView el: ($ '#search')
     @searchView.render()
-    @show @searchView
-    ($ '#search-link').on 'click', => @touched(); @show @searchView
+    ($ '#search-link').on 'click', => page '/search'
 
     @nowPlayingView = new @NowPlayingView el: ($ '#now-playing')
     @nowPlayingView.render()
+
+    @timView = new @TimView el: ($ '#tim')
+    @timView.render()
 
     setInterval =>
       $.get "/player/status?now=#{Date.now()}", (response) =>
@@ -46,8 +48,11 @@ window.App =
       , 2000
     , 300
 
+    page()
+
   show: (viewToShow) ->
-    _.each [@searchView, @queueView, @browseView, @idleView], (view) ->
+    log.info "App.show #{viewToShow.constructor.name}"
+    _.each [@searchView, @queueView, @browseView, @timView, @idleView], (view) ->
       if view == viewToShow then view.show() else view.hide()
 
   browse: (type, id) ->

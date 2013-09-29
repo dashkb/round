@@ -16,6 +16,7 @@
 #= require deferred
 #= require backbone
 #= require logger
+#= require page
 #= require_tree ./templates
 #= require app
 #= require_tree ./app
