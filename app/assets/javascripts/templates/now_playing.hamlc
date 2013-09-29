@@ -1,5 +1,6 @@
 - if @model
-  %span.artist= @model.get('artist').name
-  %span.name= @model.get 'name'
+  %span.artist= @model.get('artist').display_name
+  %span.separator &nbsp;-&nbsp;
+  %span.name= @model.get 'display_name'
 - else
   %span.idle Player is idle

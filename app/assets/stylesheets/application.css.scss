@@ -29,7 +29,7 @@ body {
   width: 16px;
 }
 
-#page {
+#search {
   padding: 0 20px;
 
   .collection {
@@ -37,7 +37,15 @@ body {
   }
 }
 
+.column-collection {
+  margin-top: 10px;
+}
+
 #idle {
   width: 100%;
   height: 100%;
+}
+
+#now-playing {
+  cursor: default;
 }

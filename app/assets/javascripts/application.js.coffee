@@ -12,8 +12,8 @@
 #
 #= require lodash
 #= require json2
-#= require zepto
-#= require deferred
+#= require jquery
+#= require bootstrap
 #= require backbone
 #= require logger
 #= require page

@@ -1,4 +1,5 @@
 class App.ColumnCollectionView extends App.View
+  className: 'column-collection'
   template: JST['column_collection']
   initialize: (opts = {}) ->
     {@collections, @default} = opts
@@ -18,6 +19,7 @@ class App.ColumnCollectionView extends App.View
     'click li.activate': 'activateColumn'
 
   activateColumn: (event) ->
+    App.touched()
     event.stopPropagation()
     (@$ 'li').removeClass 'active'
     $clicked = ($ event.currentTarget)
@@ -27,6 +29,7 @@ class App.ColumnCollectionView extends App.View
         view.show()
       else
         view.hide()
+    @$el.scrollTop = 0
 
 
   render: ->

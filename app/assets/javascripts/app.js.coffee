@@ -1,9 +1,8 @@
 window.App =
-  idleTimeout: 30000
+  idleTimeout: 60000
   pollInterval: 7000
   start: ->
     log.setLevel log.levels.DEBUG
-    Deferred.installInto(Zepto)
     @csrf_token = ($ 'meta[name="csrf-token"]').attr('content')
     @$spinner   = ($ '#app-spinner')
     @setupAjax()
@@ -51,7 +50,6 @@ window.App =
     page()
 
   show: (viewToShow) ->
-    log.info "App.show #{viewToShow.constructor.name}"
     _.each [@searchView, @queueView, @browseView, @timView, @idleView], (view) ->
       if view == viewToShow then view.show() else view.hide()
 

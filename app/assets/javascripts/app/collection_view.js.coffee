@@ -15,6 +15,7 @@ class App.CollectionView extends App.View
     'click .browse-button': 'browse'
 
   queueTrack: (event) ->
+    App.touched()
     event.stopPropagation()
     track_id = ($ event.currentTarget).parent().data('track-id')
     $.post "/player/queue.json?track_id=#{track_id}",

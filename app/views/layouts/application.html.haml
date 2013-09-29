@@ -11,24 +11,24 @@
     %meta{:charset => "utf-8"}
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
   %body
-    %nav#top-nav.navbar.navbar-fixed-top.navbar-default
+    %nav#top-nav.navbar.navbar-fixed-top.navbar-default{role: 'navigation'}
       .navbar-header
         %a.navbar-brand{:href => "#"}
           %i#app-spinner.icon-usd
           Round
-        %button.navbar-toggle.pull-right{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+        %button.navbar-toggle.pull-right{"data-target" => ".topnav-main", "data-toggle" => "collapse", :type => "button"}
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
 
       .collapse.navbar-collapse.topnav-main
-        .navbar-text.hidden-xs#now-playing
         %ul.nav.navbar-nav
+          %li
+            %a#now-playing
           %li#search-link
             %a Search for Music
           %li#queue-link
             %a See the Queue
-        %a.navbar-btn
     #queue.hide
     #idle.hide
     #search.hide

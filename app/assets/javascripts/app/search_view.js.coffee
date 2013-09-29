@@ -43,9 +43,9 @@ class App.SearchView extends App.View
     resultView = new App.ColumnCollectionView
       collections:
         'Genres': new Backbone.Collection data.genres
-        'Tracks': new Backbone.Collection data.tracks
         'Artists': new Backbone.Collection data.artists
         'Albums': new Backbone.Collection data.albums
+        'Tracks': new Backbone.Collection data.tracks
       default: 'Tracks' # TODO remember
     .render()
 
