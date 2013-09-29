@@ -1,0 +1,17 @@
+- unless TryMeSuckaz.userIsTim
+  .panel.panel-danger
+    .panel-heading Tims Only
+    .panel-body
+      %form.form{action: '/timify'}
+        .form-group
+          %input.form-control.tim{type: 'password', name: 'password', placeholder: 'secret'}
+        .form-group
+          %button.btn.btn-primary Timify
+- else
+  .panel.panel-primary
+    .panel-heading Tim Stuff
+    .list-group
+      - _.each @model.attributes, (value, key) =>
+        .list-group-item.mode
+          %span.key= "#{key}: "
+          %span.value= value
