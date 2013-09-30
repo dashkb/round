@@ -1,3 +1,9 @@
+redirect = (ctx, path) ->
+  log.info "Router: redirect #{ctx.canonicalPath} -> #{path}"
+  ctx.canonicalPath = path
+  ctx.save()
+  page path
+
 route = (path, args...) ->
   page path, (ctx, next)->
     log.info "Routing #{path}"
@@ -5,23 +11,26 @@ route = (path, args...) ->
     next()
   , args...
 
-route '/', ->
-  App.show App.searchView
-
-route '/admin', ->
-  App.show App.adminView
+route '/', (ctx) ->
+  redirect ctx, '/search'
 
 route '/search', ->
-  App.show App.searchView
+  App.show 'search'
 
 route '/queue', ->
-  App.show App.queueView
+  App.show 'queue'
 
 route '/idle', ->
-  App.show App.idleView
+  App.show 'idle'
 
 route '/browse/:genre/:id', (ctx) ->
   App.browse ctx.params.genre, ctx.params.id
 
 route '/tim', ->
-  App.show App.timView
+  App.show 'tim'
+
+route '/playlists', ->
+  App.show 'playlists'
+
+route '*', (ctx) ->
+  redirect ctx, '/'
