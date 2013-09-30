@@ -11,7 +11,9 @@
   .panel.panel-primary
     .panel-heading Tim Stuff
     .list-group
+      .list-group-item.playlists
+        %a.btn.btn-primary.playlists Manage Playlists
       - _.each @model.attributes, (value, key) =>
-        .list-group-item.mode
+        .list-group-item{class: key}
           %span.key= "#{key}: "
           %span.value= value
