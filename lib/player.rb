@@ -81,7 +81,8 @@ class Player
       # Sweet we got some audio, play that shit
       # Won't return until the audio has played
       # TODO watch possible pause/stop lag?
-      puts "#{@nowPlaying[:track]} - #{@nowPlaying[:audiofile].position_str} / #{@nowPlaying[:track].length_str}"
+      trackPosition = @nowPlaying[:audiofile].position
+      puts "#{@nowPlaying[:track]} - #{@nowPlaying[:audiofile].position_str} / #{@nowPlaying[:track].length_str}" if trackPosition % 10 == 0
 
       unless @nowPlaying[:audiofile].fake
         @buffer << buf

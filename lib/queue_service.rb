@@ -5,10 +5,13 @@ module QueueService
   # responsible for returning a track to play
   def self.next
     if next_id = REDIS.lpop(QUEUE)
-      REDIS.hset SETTINGS, 'queue mode', 'queue'
+      REDIS.hmset(SETTINGS,
+        'queue mode', 'queue',
+        'queue length', REDIS.llen(QUEUE)
+      )
+
       Track.find next_id
     else
-      REDIS.hset SETTINGS, 'queue mode', 'auto'
       auto_select
     end
   end
@@ -24,7 +27,11 @@ module QueueService
   end
 
   def self.auto_select
-    REDIS.hset SETTINGS, 'queue length', 0
+    REDIS.hmset(SETTINGS,
+      'queue mode', 'auto',
+      'queue length', 0
+    )
+
     Track.offset(rand(Track.count)).first
   end
 end
