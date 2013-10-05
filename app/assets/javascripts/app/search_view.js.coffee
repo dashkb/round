@@ -1,8 +1,9 @@
 class App.SearchView extends App.View
   searchThrottle: 3000
-  minSearchLength: 4
+  minSearchLength: 3
   template: JST['search']
   events:
+    'keydown form': 'stopSubmit'
     'input input': 'queryChanged'
     'click .clear-button': 'clearQuery'
     'show': -> ($ '#search-link').addClass('active')
@@ -52,3 +53,5 @@ class App.SearchView extends App.View
     @resultView?.destroy()
     @resultView = resultView.appendTo @$el
 
+  stopSubmit: (event) ->
+    event.preventDefault() if event.keyCode == 13
