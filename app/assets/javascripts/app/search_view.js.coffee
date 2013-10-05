@@ -54,4 +54,7 @@ class App.SearchView extends App.View
     @resultView = resultView.appendTo @$el
 
   stopSubmit: (event) ->
-    event.preventDefault() if event.keyCode == 13
+    if event.keyCode == 13
+      event.preventDefault()
+      @$searchBox.blur()
+

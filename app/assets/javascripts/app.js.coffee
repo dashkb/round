@@ -9,6 +9,7 @@ window.App =
 
     ($ '#queue-link').on 'click', => page '/queue'
     ($ '#search-link').on 'click', => page '/search'
+    ($ document).on 'touch', => @touched()
 
     @nowPlayingView = new @NowPlayingView el: ($ '#now-playing')
     @nowPlayingView.render()
