@@ -14,6 +14,9 @@ route = (path, args...) ->
 route '/', (ctx) ->
   redirect ctx, '/search'
 
+route '/browse', ->
+  App.show 'browse'
+
 route '/search', ->
   App.show 'search'
 

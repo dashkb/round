@@ -33,4 +33,6 @@ class App.CollectionView extends App.View
   browse: (event) ->
     App.touched()
     _.tap ($ event.target).parent(), (clicked) ->
-      page "/browse/#{clicked.data 'type'}/#{clicked.data 'id'}"
+      url = "/browse/#{clicked.data 'type'}/#{clicked.data 'id'}"
+      page url
+      App.breadcrumbView.push clicked.find('.name').html(), url

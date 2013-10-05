@@ -9,10 +9,13 @@ window.App =
 
     ($ '#queue-link').on 'click', => page '/queue'
     ($ '#search-link').on 'click', => page '/search'
+    ($ '#browse-link').on 'click', => page '/browse'
     ($ document).on 'touch', => @touched()
 
     @nowPlayingView = new @NowPlayingView el: ($ '#now-playing')
     @nowPlayingView.render()
+
+    @breadcrumbView = new @BreadcrumbView el: ($ '#breadcrumb')
 
     @subViews =
       idle: new @IdleView el: ($ '#idle')

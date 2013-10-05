@@ -1,9 +1,9 @@
 class App.BrowseView extends App.View
-  reset: (type, id) ->
+  reset: (@type, @modelId) ->
     _.tap @, =>
-      $.get("/browse/#{type}s/#{id}").then (data) =>
-        @model = new Backbone.Model data[type]
-        @collections = _.omit data, type
+      $.get("/browse/#{@type}s/#{@modelId}").then (data) =>
+        @model = new Backbone.Model data[@type]
+        @collections = _.omit data, @type
         @render()
       .then null, (err) =>
         log.error "ERROR FETCHING FOR BROWSE"

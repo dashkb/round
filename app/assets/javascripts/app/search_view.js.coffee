@@ -41,17 +41,15 @@ class App.SearchView extends App.View
     @resultView?.destroy()
 
   gotResult: (data) ->
-    resultView = new App.ColumnCollectionView
+    @reset()
+    @resultView = new App.ColumnCollectionView
       collections:
         'Genres': new Backbone.Collection data.genres
         'Artists': new Backbone.Collection data.artists
         'Albums': new Backbone.Collection data.albums
         'Tracks': new Backbone.Collection data.tracks
       default: 'Tracks' # TODO remember
-    .render()
-
-    @resultView?.destroy()
-    @resultView = resultView.appendTo @$el
+    .render().appendTo @$el
 
   stopSubmit: (event) ->
     if event.keyCode == 13
