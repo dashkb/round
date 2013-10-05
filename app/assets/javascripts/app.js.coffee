@@ -50,14 +50,15 @@ window.App =
       if key == viewToShow then view.show() else view.hide()
 
   browse: (type, id) ->
-    @show @subViews.browse.reset type, id
+    @subViews.browse.reset type, id
+    @show 'browse'
 
   touched: ->
     @lastTouchAt = Date.now()
-    @show @subViews.search if @subViews.idle.shown
+    @show 'search' if @subViews.idle.shown
 
   checkLastTouch: ->
-    @show @idleView if Date.now() - @lastTouchAt > @idleTimeout
+    @show 'idle' if Date.now() - @lastTouchAt > @idleTimeout
 
   setupAjax: ->
     spinnerTimeout = null
