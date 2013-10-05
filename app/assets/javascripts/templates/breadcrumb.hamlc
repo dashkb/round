@@ -1,0 +1,3 @@
+- _.each @crumbs, ([text, link]) ->
+  %li
+    %a{data-link: link}= text

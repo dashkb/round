@@ -5,6 +5,9 @@ class App.BrowseView extends App.View
         @model = new Backbone.Model data[@type]
         @collections = _.omit data, @type
         @render()
+
+        if App.breadcrumbView.isEmpty()
+          App.breadcrumbView.push @model.get('name'), "/browse/#{@type}/#{@modelId}"
       .then null, (err) =>
         log.error "ERROR FETCHING FOR BROWSE"
 
@@ -19,3 +22,7 @@ class App.BrowseView extends App.View
 
       @resultView?.destroy()
       @resultView = resultView.appendTo @$el
+
+  initialize: ->
+    @on 'show', -> App.breadcrumbView.show()
+    @on 'hide', -> App.breadcrumbView.hide()
