@@ -14,6 +14,7 @@ gem 'taglib-ruby'
 gem 'rails_12factor'
 gem 'unicorn'
 gem 'redis'
+gem 'paperclip'
 
 group :assets, :development do
   gem 'haml'
