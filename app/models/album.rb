@@ -4,7 +4,7 @@ class Album < ActiveRecord::Base
   belongs_to :artist
   has_many :tracks
 
-  has_attached_file :art, :styles => { :medium => "300x300>", :thumb => "100x100>", :tiny => "50x50>" }, :default_url => "/images/:style/missing.png"
+  has_attached_file :art, :styles => { :full => ["100%", :png], :medium => ["300x300>", :png], :thumb => ["100x100>", :png], :tiny => ["50x50>", :png] }, :default_url => "/images/:style/missing.png"
 
   validates :name, :artist, presence: true
 
@@ -30,7 +30,10 @@ class Album < ActiveRecord::Base
 
       if (ext == '.m4a')
         TagLib::MP4::File.open(track.local_path) do |mp4_file|
-          mp4art = mp4_file.tag.item_list_map['covr'].to_cover_art_list.first
+          mp4art = nil
+          if (!mp4_file.nil? && !mp4_file.tag.nil? && !mp4_file.tag.item_list_map['covr'].nil?)
+            mp4art = mp4_file.tag.item_list_map['covr'].to_cover_art_list.first
+          end
           unless mp4art.nil?
             f = StringIO.new(mp4art.data)
             f.class.class_eval { attr_accessor :original_filename }
@@ -55,18 +58,27 @@ class Album < ActiveRecord::Base
 
               f = StringIO.new(cover.picture)
               f.class.class_eval { attr_accessor :original_filename }
+              ext = 'nil'
               puts 'Got mime type: ' + cover.mime_type
-              mime_type = cover.mime_type
-              mime_type = 'image/jpeg' if mime_type == 'image/jpg'
-              ext = MIME::Types[mime_type].first.extensions.first
+              begin
+                mime_type = cover.mime_type
+                mime_type = 'image/jpeg' if mime_type.downcase == 'image/jpg'
+                ext = MIME::Types[mime_type].first.extensions.first
+              rescue
+              end
               f.original_filename = 'album' + ext
-              self.art = f
+              begin
+                self.art = f
+              rescue
+                self.art = nil
+                self.save
+              end
               self.art_checked = true
               if valid?
                 save
                 return true
               else
-                raise errors
+                raise "#{errors}"
               end
             end
           end
