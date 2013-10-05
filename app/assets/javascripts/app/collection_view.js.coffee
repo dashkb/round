@@ -11,8 +11,13 @@ class App.CollectionView extends App.View
         minimal: @minimal
 
   events:
-    'click .track .queue-button': 'queueTrack'
-    'click .browse-button': 'browse'
+    'click .btn-primary': 'itemPrimaryAction'
+
+  itemPrimaryAction: (event) ->
+    if @type == 'track'
+      @queueTrack event
+    else
+      @browse event
 
   queueTrack: (event) ->
     App.touched()
@@ -26,5 +31,6 @@ class App.CollectionView extends App.View
       log.error "Error queueing track", args...
 
   browse: (event) ->
+    App.touched()
     _.tap ($ event.target).parent(), (clicked) ->
       page "/browse/#{clicked.data 'type'}/#{clicked.data 'id'}"
