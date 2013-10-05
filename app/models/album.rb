@@ -1,6 +1,10 @@
+require 'taglib'
+
 class Album < ActiveRecord::Base
   belongs_to :artist
   has_many :tracks
+
+  has_attached_file :art, :styles => { :medium => "300x300>", :thumb => "100x100>", :tiny => "50x50>" }, :default_url => "/images/:style/missing.png"
 
   validates :name, :artist, presence: true
 
@@ -8,5 +12,70 @@ class Album < ActiveRecord::Base
     super opts.reverse_merge({
       include: [:artist]
     })
+  end
+
+  def self.missing_art_album
+    Album.where(:art_checked => false).first
+  end
+
+  def try_get_art
+    if self.art.exists?
+      self.art_checked = true
+      save
+      return
+    end
+
+    tracks.each do |track|
+      ext = Pathname.new(track.file).extname
+
+      if (ext == '.m4a')
+        TagLib::MP4::File.open(track.local_path) do |mp4_file|
+          mp4art = mp4_file.tag.item_list_map['covr'].to_cover_art_list.first
+          unless mp4art.nil?
+            f = StringIO.new(mp4art.data)
+            f.class.class_eval { attr_accessor :original_filename }
+            ext = (mp4art.format == TagLib::MP4::CoverArt::PNG) ? '.png' : '.jpg'
+            f.original_filename = 'album' + ext
+            self.art = f
+            self.art_checked = true
+            if valid?
+              save
+              return true
+            else
+              raise errors
+            end
+          end
+        end
+      elsif (ext == '.mp3')
+        TagLib::MPEG::File.open(track.local_path) do |mp3_file|
+          tag = mp3_file.id3v2_tag
+          unless tag.nil?
+            cover = tag.frame_list('APIC').first
+            unless cover.nil?
+
+              f = StringIO.new(cover.picture)
+              f.class.class_eval { attr_accessor :original_filename }
+              puts 'Got mime type: ' + cover.mime_type
+              mime_type = cover.mime_type
+              mime_type = 'image/jpeg' if mime_type == 'image/jpg'
+              ext = MIME::Types[mime_type].first.extensions.first
+              f.original_filename = 'album' + ext
+              self.art = f
+              self.art_checked = true
+              if valid?
+                save
+                return true
+              else
+                raise errors
+              end
+            end
+          end
+        end
+      end
+    end
+
+    self.art_checked = true
+    save
+    false
   end
 end

@@ -38,6 +38,14 @@ namespace :import do
     Ox.sax_parse handler, file
   end
 
+  task :art => [:environment] do
+    album = Album.missing_art_album
+    while not album.nil?
+      album.try_get_art
+      album = Album.missing_art_album
+    end
+  end
+
   task :filesystem => [:environment] do
     source = Source.find_or_initialize_by_name_and_root_path ENV['SOURCE_NAME'], ENV['ROOT_PATH']
     raise "#{source.errors.to_a}" unless source.valid?
