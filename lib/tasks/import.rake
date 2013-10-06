@@ -46,6 +46,22 @@ namespace :import do
     end
   end
 
+  task :check => [:environment] do
+    total = Track.count
+    count = 0
+    bad_count = 0
+    Track.find_each do |t|
+      unless File.exist? t.local_path
+        puts "Track(#{t.id}) has broken path: '#{t.local_path}'"
+        bad_count += 1
+      end
+      count += 1
+      puts "#{count} tracks checked" if (count % 1000 == 0)
+    end
+
+    puts "#{bad_count} broken paths out of #{count} tracks"
+  end
+
   task :filesystem => [:environment] do
     source = Source.find_or_initialize_by_name_and_root_path ENV['SOURCE_NAME'], ENV['ROOT_PATH']
     raise "#{source.errors.to_a}" unless source.valid?
