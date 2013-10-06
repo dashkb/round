@@ -78,7 +78,9 @@ class Album < ActiveRecord::Base
                 save
                 return true
               else
-                raise "#{errors}"
+                self.reload!
+                self.art_checked = true
+                self.save
               end
             end
           end
