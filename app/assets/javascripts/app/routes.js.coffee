@@ -12,13 +12,10 @@ route = (path, args...) ->
   , args...
 
 route '/', (ctx) ->
-  redirect ctx, '/search'
+  redirect ctx, '/idle'
 
 route '/browse', ->
   App.show 'browse'
-
-route '/search', ->
-  App.show 'search'
 
 route '/queue', ->
   App.show 'queue'

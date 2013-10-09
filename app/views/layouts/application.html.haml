@@ -13,27 +13,14 @@
     %meta{name: 'apple-mobile-web-app-capable', content: 'yes'}
     %meta{name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'}
   %body
-    %nav#top-nav.navbar.navbar-fixed-top.navbar-default{role: 'navigation'}
-      .navbar-header
-        %a.navbar-brand{:href => "#"}
-          %i#app-spinner.icon-usd
-          Round
-        %button.navbar-toggle.pull-right{"data-target" => ".topnav-main", "data-toggle" => "collapse", :type => "button"}
-          %span.icon-bar
-          %span.icon-bar
-          %span.icon-bar
-      .collapse.navbar-collapse.topnav-main
-        %ul.nav.navbar-nav
-          %li
-            %a#now-playing
-          %li#search-link
-            %a Search
-          %li#queue-link
-            %a See Queue
-    %ol#breadcrumb.breadcrumb.hide
-    #queue.hide
-    #idle.hide
-    #search.hide
-    #browse.hide
-    #tim.hide
-    #playlists.hide
+    .full
+      #idle.hide
+      #browse.hide
+      #tim.hide
+      #playlists.hide
+      #queue.hide
+
+    - cache('artists-and-genres-bootstrap') do
+      :coffeescript
+        window.artists = #{Artist.includes(:artist_genres).load.to_json}
+        window.genres  = #{Genre.all.to_json}

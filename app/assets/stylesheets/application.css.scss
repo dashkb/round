@@ -13,39 +13,45 @@
  */
 
 html, body {
-  height: 100%;
+  height: 100vh;
+  overflow:hidden;
 }
 
 body {
-  padding-top: 60px;
-
   a {
     cursor: pointer;
   }
 }
 
-#app-spinner {
-  display: inline-block;
-  width: 16px;
+.full {
+  width: 97.8%;
+  margin: 0 auto;
 }
 
-#search {
-  padding: 0 20px;
+#browse {
+  .genres, .artists {
+    float: left;
+    width: 50%;
+    margin-bottom: 0px;
 
-  .collection {
-    margin-top: 10px;
+    .panel {
+      margin-bottom: 0px;
+    }
+
+    .panel-body {
+      height: 40vh;
+      padding: 0px;
+      margin: 0px;
+      overflow: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
   }
-}
 
-.column-collection {
-  margin-top: 10px;
-}
-
-#idle {
-  width: 100%;
-  height: 100%;
-}
-
-#now-playing {
-  cursor: default;
+  .tracks {
+    .panel-body {
+      height: 50vh;
+      overflow: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
 }

@@ -6,4 +6,12 @@ class AlbumsController < ApplicationController
       tracks: album.tracks
     })
   end
+
+  def index
+    raise 'wtf' unless params[:artist_id].present?
+
+    respond_with(
+      Album.includes(:tracks).where(artist_id: params[:artist_id]).load
+    )
+  end
 end

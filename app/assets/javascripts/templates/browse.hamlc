@@ -1,0 +1,13 @@
+.row
+  .form
+    .input-group.filter
+      %span.input-group-addon
+        %i.icon-search
+      %input.form-control.filter{type: 'text', placeholder: 'Filter All The Things'}
+
+.row
+  .genres
+  .artists
+
+.row
+  .tracks

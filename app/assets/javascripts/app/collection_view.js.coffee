@@ -9,30 +9,26 @@ class App.CollectionView extends App.View
         type: @type
         heading: @heading
         minimal: @minimal
+        emptyMessage: @emptyMessage
 
   events:
-    'click .btn-primary': 'itemPrimaryAction'
+    'click .item': 'itemClicked'
+    'click .track': 'trackClicked'
 
-  itemPrimaryAction: (event) ->
-    if @type == 'track'
-      @queueTrack event
+  itemClicked: (e) ->
+    App.touched()
+    $clicked = $ e.currentTarget
+    @$active?.removeClass 'active'
+
+    if $clicked[0] == @$active?[0]
+      @$active = undefined
+      @bubble 'deactivate', $clicked.data 'type'
     else
-      @browse event
+      @$active = $ e.currentTarget
+      @$active.toggleClass 'active'
+      @bubble 'activate',
+        type: @$active.data 'type'
+        id: @$active.data 'id'
 
-  queueTrack: (event) ->
-    App.touched()
-    event.stopPropagation()
-    track_id = ($ event.currentTarget).parent().data('track-id')
-    $.post "/player/queue.json?track_id=#{track_id}",
-      dataType: 'json'
-    .then (response) =>
-      App.trigger 'queue track', track_id
-    .then null, (args...) =>
-      log.error "Error queueing track", args...
-
-  browse: (event) ->
-    App.touched()
-    _.tap ($ event.target).parent(), (clicked) ->
-      url = "/browse/#{clicked.data 'type'}/#{clicked.data 'id'}"
-      page url
-      App.breadcrumbView.push clicked.find('.name').html(), url
+  trackClicked: (e) ->
+    console.error 'NYI', e

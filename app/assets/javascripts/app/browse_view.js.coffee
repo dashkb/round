@@ -1,28 +1,72 @@
 class App.BrowseView extends App.View
-  reset: (@type, @modelId) ->
-    _.tap @, =>
-      $.get("/browse/#{@type}s/#{@modelId}").then (data) =>
-        @model = new Backbone.Model data[@type]
-        @collections = _.omit data, @type
-        @render()
-
-        if App.breadcrumbView.isEmpty()
-          App.breadcrumbView.push @model.get('name'), "/browse/#{@type}/#{@modelId}"
-      .then null, (err) =>
-        log.error "ERROR FETCHING FOR BROWSE"
+  template: JST['browse']
+  initialize: ->
+    @genres  = App.genres
+    @artists = App.artists
 
   render: ->
     _.tap super(), =>
-      resultView = new App.ColumnCollectionView
-        collections: _.reduce @collections, (out, collection, key) ->
-          out[key] = new Backbone.Collection collection
-          out
-        , {}
+      @genreView?.destroy()
+      @artistView?.destroy()
+
+      @genreView = new App.CollectionView
+        el: (@$ '.genres')
+        collection: @genres
+        type: 'genre'
+        heading: 'Genres'
       .render()
 
-      @resultView?.destroy()
-      @resultView = resultView.appendTo @$el
+      @artistView = new App.CollectionView
+        el: (@$ '.artists')
+        collection: @artists
+        type: 'artist'
+        heading: 'Artists'
+      .render()
 
-  initialize: ->
-    @on 'show', -> App.breadcrumbView.show()
-    @on 'hide', -> App.breadcrumbView.hide()
+      @trackView = new App.TrackView
+        el: (@$ '.tracks')
+      .render()
+
+  events:
+    'activate': 'activate'
+    'deactivate': 'deactivate'
+
+  deactivate: (e, type) ->
+    e.stopPropagation()
+    if thing.type == 'artist'
+      @artist = undefined
+      @filterTracks()
+    else if thing.type == 'genre'
+      @genre = undefined
+      @filterArtists()
+
+  activate: (e, thing) ->
+    e.stopPropagation()
+    if thing.type == 'artist'
+      @artist = App.artists.findWhere id: thing.id
+      @filterTracks()
+    else if thing.type == 'genre'
+      @genre = App.genres.findWhere id: thing.id
+      @filterArtists()
+
+  filterArtists: ->
+    if @query
+      @artists = App.artists.filter (artist) =>
+        artist.get('name').indexOf(@query) != -1
+    else if @genre
+      @artists = App.artists.filter (artist) =>
+        artist.get('genre_ids').indexOf(@genre.id) != -1
+    else
+      @artists = App.artists
+
+    @artists = new Backbone.Collection @artists
+    @artistView.collection = @artists
+    @artistView.render()
+
+
+  filterTracks: ->
+    @ajax?.abort()
+    @ajax = $.get "/browse/artists/#{@artist.get 'id'}.json"
+    @ajax.success (data) =>
+      @trackView.data = data
+      @trackView.render()

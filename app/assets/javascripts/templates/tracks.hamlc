@@ -1,0 +1,14 @@
+.panel.panel-default
+  .panel-body
+    - if @data
+      .albums
+        - _.each @data.albums, (album) =>
+          .album{data-album-id: album.id}
+            .title!= album.name
+
+            %ul.tracks.list-group
+              - _.each @tracksForAlbum(album), (track) =>
+                %li.track.list-group-item
+                  .title!= track.name
+    - else
+      .empty No tracks here, do a search or something

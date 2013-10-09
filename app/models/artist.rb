@@ -6,7 +6,19 @@ class Artist < ActiveRecord::Base
 
   validates :name, presence: true
 
+  after_save { ApplicationController.new.expire_fragment 'artists-and-genres-bootstrap'}
+
   def to_s
     display_name
+  end
+
+  def sort_name
+    read_attribute(:sort_name) || name
+  end
+
+  def as_json(opts = {})
+    super(opts).merge({
+      genre_ids: genre_ids
+    })
   end
 end

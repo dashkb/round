@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_frontend
-    render text: 'hello', layout: true
+    render text: 'ROUND loading...', layout: true
   end
 
   def tim?

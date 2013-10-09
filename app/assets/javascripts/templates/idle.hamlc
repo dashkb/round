@@ -1,1 +1,6 @@
-this is the idle view
+.panel.panel-default
+  .panel-heading Circle Camp Music
+  .panel-body
+    .now-playing
+    .btn.btn-primary.btn-pick Pick Songs
+    .btn.btn-success.btn-queue See the Queue

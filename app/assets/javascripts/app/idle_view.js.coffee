@@ -1,8 +1,11 @@
 class App.IdleView extends App.View
   template: JST['idle']
   events:
-    'click': 'touched'
-    'touch': 'touched'
+    'click .btn-pick': 'browseClicked'
+    'click .btn-queue': 'queueClicked'
 
-  touched: ->
-    App.touched()
+  browseClicked: (e) ->
+    page '/browse'
+
+  queueClicked: (e) ->
+    page '/queue'

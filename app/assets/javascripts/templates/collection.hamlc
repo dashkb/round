@@ -3,14 +3,14 @@
     .panel-heading
       %span.text= @heading || 'Untitled Collection'
       %span.count= "(#{(@collection?.length || 0)})"
-  .list-group
-    - if @collection && @collection.any
-      - @collection.each (item) =>
-        - if @itemTpl
-          != @itemTpl model: item
-        - else
-          .list-group-item.item{data-type: @type, data-id: item.id}
-            %span.name!= item.get 'name'
-            %button.btn.btn-primary.browse-button Browse
+  .panel-body
+    - if @collection && @collection.any()
+      .list-group
+        - @collection.each (item) =>
+          - if @itemTpl
+            != @itemTpl model: item
+          - else
+            .list-group-item.item{data-type: @type, data-id: item.id}
+              %span.name!= item.get 'display_name'
     - else
-      .panel-body= @emptyMessage || "No #{@heading} found"
+      = @emptyMessage || "No #{@heading} found"

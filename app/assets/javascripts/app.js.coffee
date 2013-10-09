@@ -10,12 +10,15 @@ window.App =
     ($ '#queue-link').on 'click', => page '/queue'
     ($ '#search-link').on 'click', => page '/search'
     ($ '#browse-link').on 'click', => page '/browse'
-    ($ document).on 'touch', => @touched()
+    ($ document).on 'click', => @touched()
 
-    @nowPlayingView = new @NowPlayingView el: ($ '#now-playing')
-    @nowPlayingView.render()
+    @artists = new Backbone.Collection
+    @artists.comparator = 'sort_name'
+    @artists.add window.artists
 
-    @breadcrumbView = new @BreadcrumbView el: ($ '#breadcrumb')
+    @genres = new Backbone.Collection
+    @genres.comparator = 'name'
+    @genres.add window.genres
 
     @subViews =
       idle: new @IdleView el: ($ '#idle')
@@ -25,9 +28,7 @@ window.App =
         type: 'track'
         heading: 'Play Queue'
         emptyMessage: 'Play Queue is Empty!'
-      search: new @SearchView el: ($ '#search')
       tim: new @TimView el: ($ '#tim')
-      playlists: new @PlaylistsView el: ($ '#playlists')
 
     _.each @subViews, (view) -> view.render()
 
@@ -50,6 +51,7 @@ window.App =
     page()
 
   show: (viewToShow) ->
+    @touched()
     _.each @subViews, (view, key) ->
       if key == viewToShow then view.show() else view.hide()
 
@@ -59,10 +61,11 @@ window.App =
 
   touched: ->
     @lastTouchAt = Date.now()
-    @show 'search' if @subViews.idle.shown
 
   checkLastTouch: ->
-    @show 'idle' if Date.now() - @lastTouchAt > @idleTimeout
+    return if @subViews.idle.shown
+    if Date.now() - @lastTouchAt > @idleTimeout
+      page '/idle'
 
   setupAjax: ->
     spinnerTimeout = null
