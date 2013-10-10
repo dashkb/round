@@ -1,15 +1,13 @@
 window.App =
   idleTimeout: 60000
   pollInterval: 7000
+  queueMax: 3
   start: ->
     log.setLevel log.levels.DEBUG
     @csrf_token = ($ 'meta[name="csrf-token"]').attr('content')
     @$spinner   = ($ '#app-spinner')
     @setupAjax()
 
-    ($ '#queue-link').on 'click', => page '/queue'
-    ($ '#search-link').on 'click', => page '/search'
-    ($ '#browse-link').on 'click', => page '/browse'
     ($ document).on 'click', => @touched()
 
     @artists = new Backbone.Collection
@@ -29,6 +27,7 @@ window.App =
         heading: 'Play Queue'
         emptyMessage: 'Play Queue is Empty!'
       tim: new @TimView el: ($ '#tim')
+      justQueued: new @JustQueuedView el: ($ '#justQueued')
 
     _.each @subViews, (view) -> view.render()
 
@@ -47,6 +46,12 @@ window.App =
         @checkLastTouch()
       , 2000
     , 300
+
+    @subViews.browse.on 'show', =>
+      @browseSession ?= []
+
+    @subViews.idle.on 'show', =>
+      @browseSession = undefined
 
     page()
 

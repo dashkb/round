@@ -1,0 +1,20 @@
+.panel.panel-default
+  .panel-heading Current Session
+  .panel-body
+    %ul.tracks
+      - _.each App.browseSession, (track) ->
+        .artist= track.get('artist').name
+        .track= track.get 'name'
+
+    .name
+      %span Who are you?
+      %input{type: 'text'}
+      -#.selections.hide
+        -#%ul.names
+          -#- _.each App.userNames, (name) ->
+            -#%li.name= name
+
+    .actions
+      %button.btn.btn-success Queue Those Motherfuckers
+      - if App.browseSession?.length < App.queueMax
+        %button.btn.btn-primary Keep Searching

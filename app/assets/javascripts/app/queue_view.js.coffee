@@ -1,14 +1,11 @@
 class App.QueueView extends App.CollectionView
-  hide: ->
-    _.tap super(), =>
-      ($ '#queue-link').removeClass('active')
-      @stopListening App, 'player status update'
-
-  show: ->
-    _.tap super(), =>
-      ($ '#queue-link').addClass('active')
+  initialize: ->
+    @on 'show', =>
       @listenTo App, 'player status update', => @render()
       @render()
+
+    @on 'hide', =>
+      @stopListening App, 'player status update'
 
   render: ->
     _.merge @templateHelpers, emptyMessage: @emptyMessage

@@ -32,5 +32,8 @@ route '/tim', ->
 route '/playlists', ->
   App.show 'playlists'
 
+route '/justQueued', ->
+  App.show 'justQueued'
+
 route '*', (ctx) ->
   redirect ctx, '/'
