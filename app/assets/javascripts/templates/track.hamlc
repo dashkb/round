@@ -2,4 +2,5 @@
   %span.artist!= @model.get('artist').name
   %span.divider &nbsp;-&nbsp;
   %span.name!= @model.get 'name'
-  %button.btn.btn-primary.queue-button Queue
+  - if @model.queueable()
+    %button.btn.btn-primary.queue-button Queue

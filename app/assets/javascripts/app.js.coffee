@@ -1,6 +1,7 @@
 window.App =
   idleTimeout: 60000
   pollInterval: 7000
+  resetTimeout: 5000
   queueMax: 3
   start: ->
     log.setLevel log.levels.DEBUG
@@ -31,13 +32,9 @@ window.App =
 
     _.each @subViews, (view) -> view.render()
 
+    @getPlayerStatus()
     setInterval =>
-      $.get "/player/status?now=#{Date.now()}", (response) =>
-        nowPlaying = if response.now_playing? then new Backbone.Model(response.now_playing) else null
-        @playerStatus =
-          nowPlaying: nowPlaying
-          queue: new Backbone.Collection response.queue
-        @trigger 'player status update'
+      @getPlayerStatus()
     , @pollInterval
 
     @lastTouchAt = Date.now()
@@ -52,6 +49,8 @@ window.App =
 
     @subViews.idle.on 'show', =>
       @browseSession = undefined
+
+    ($ '#back-button').click -> page '/idle'
 
     page()
 
@@ -71,6 +70,15 @@ window.App =
     return if @subViews.idle.shown
     if Date.now() - @lastTouchAt > @idleTimeout
       page '/idle'
+
+  getPlayerStatus: ->
+    $.get "/player/status?now=#{Date.now()}", (response) =>
+      nowPlaying = if response.now_playing? then new Backbone.Model(response.now_playing) else null
+      @playerStatus =
+        nowPlaying: nowPlaying
+        queue: new Backbone.Collection response.queue,
+          model: @Track
+      @trigger 'player status update'
 
   setupAjax: ->
     spinnerTimeout = null

@@ -10,6 +10,7 @@
               - _.each @tracksForAlbum(album), (track) =>
                 %li.track.list-group-item{data-track-id: track.id}
                   %span.title!= track.name
-                  %button.btn.btn-primary Queue
+                  - if App.Track::queueableById(track.id)
+                    %button.btn.btn-primary Queue
     - else
       .empty No tracks here, do a search or something

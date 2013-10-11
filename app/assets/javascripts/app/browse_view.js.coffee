@@ -4,6 +4,8 @@ class App.BrowseView extends App.View
     @genres  = App.genres
     @artists = App.artists
 
+    @on 'show', => @trackView.render()
+
   render: ->
     _.tap super(), =>
       @genreView?.destroy()

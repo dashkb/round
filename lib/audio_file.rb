@@ -1,6 +1,6 @@
 class AudioFile
   @@fake = !!ENV['FAKE_PLAYER']
-  @@fake_length = 45
+  @@fake_length = 160
   attr_reader :position
 
   def initialize(path)

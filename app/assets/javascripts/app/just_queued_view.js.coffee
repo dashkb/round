@@ -6,5 +6,11 @@ class App.JustQueuedView extends App.View
     'click .btn-success': 'doneBrowsing'
 
   doneBrowsing: ->
-    log.error "Would actually queue stuff"
-    page '/idle'
+    $.post '/player/queue',
+      track_ids: _.map App.browseSession, (track) -> track.id
+    .then =>
+      (@$ '.current').addClass 'hide'
+      (@$ '.done').removeClass 'hide'
+      setTimeout ->
+        page '/idle'
+      , App.resetTimeout

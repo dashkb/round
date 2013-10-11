@@ -1,4 +1,4 @@
-.panel.panel-default
+.panel.panel-default.current
   .panel-heading Current Session
   .panel-body
     %ul.tracks
@@ -18,3 +18,9 @@
       %button.btn.btn-success Queue Those Motherfuckers
       - if App.browseSession?.length < App.queueMax
         %button.btn.btn-primary Keep Searching
+
+.panel.panel-default.done.hide
+  .panel-heading Thanks!
+  .panel-body
+    You're done, thanks for your help keeping the music awesome.
+    This thing will reset in a couple of seconds.

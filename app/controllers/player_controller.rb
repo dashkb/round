@@ -4,14 +4,23 @@ class PlayerController < ApplicationController
   respond_to :json
 
   def queue
-    track = Track.find params[:track_id]
+    if params[:track_id].present?
+      queue_track params[:track_id]
+    elsif params[:track_ids].present?
+      params[:track_ids].each do |track_id|
+        queue_track track_id
+      end
+    end
 
-    reply = PlayerService.queue track
-
-    render nothing: true, status: 200
+    render json: {status: 200}, status: 200
   end
 
   def status
     respond_with PlayerService.status
+  end
+
+  private
+  def queue_track(track_id)
+    PlayerService.queue Track.find(track_id)
   end
 end
