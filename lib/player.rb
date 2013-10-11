@@ -84,7 +84,7 @@ class Player
       trackPosition = @nowPlaying[:audiofile].position
       puts "#{@nowPlaying[:track]} - #{@nowPlaying[:audiofile].position_str} / #{@nowPlaying[:track].length_str}" if trackPosition % 10 == 0
 
-      unless @nowPlaying[:audiofile].fake
+      unless @nowPlaying[:audiofile].fake?
         @buffer << buf
       else
         sleep 1

@@ -1,6 +1,7 @@
 class AudioFile
+  @@fake = !!ENV['FAKE_PLAYER']
   @@fake_length = 45
-  attr_reader :position, :fake
+  attr_reader :position
 
   def initialize(path)
     begin
@@ -12,9 +13,8 @@ class AudioFile
       puts "Error opening audio file: "
       puts e.to_s
 
-      if ENV['FAKE_PLAYER'] && Rails.env.development?
+      if @@fake && Rails.env.development?
         @ok = true
-        @fake = true
         puts "But that's fine coz it's fake mode, we are #{@@fake_length} seconds long"
       else
         @ok = false
@@ -31,10 +31,14 @@ class AudioFile
     "%d:%02d" % [m, s]
   end
 
+  def fake?
+    !!@@fake
+  end
+
   def read(frames)
     @position ||= 0
 
-    unless @fake
+    unless @@fake
       @position += frames / @cafile.rate
       @cafile.read frames
     else
