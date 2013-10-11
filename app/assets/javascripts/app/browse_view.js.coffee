@@ -16,6 +16,7 @@ class App.BrowseView extends App.View
         collection: @genres
         type: 'genre'
         heading: 'Genres'
+        showAllLine: true
       .render()
 
       @artistView = new App.CollectionView
@@ -23,6 +24,7 @@ class App.BrowseView extends App.View
         collection: @artists
         type: 'artist'
         heading: 'Artists'
+        showAllLine: true
       .render()
 
       @trackView = new App.TrackView
@@ -45,30 +47,47 @@ class App.BrowseView extends App.View
   activate: (e, thing) ->
     e.stopPropagation()
     if thing.type == 'artist'
-      @artist = App.artists.findWhere id: thing.id
+      if thing.id == 'all'
+        @artist = undefined
+      else
+        @artist = App.artists.findWhere id: thing.id
+
       @filterTracks()
     else if thing.type == 'genre'
-      @genre = App.genres.findWhere id: thing.id
+      if thing.id == 'all'
+        @genre = undefined
+      else
+        @genre = App.genres.findWhere id: thing.id
+
+      @artist = undefined
       @filterArtists()
 
   filterArtists: ->
     if @query
-      @artists = App.artists.filter (artist) =>
-        artist.get('name').indexOf(@query) != -1
+      @artists = new Backbone.Collection (
+        App.artists.filter (artist) =>
+          artist.get('name').indexOf(@query) != -1
+      )
     else if @genre
-      @artists = App.artists.filter (artist) =>
-        artist.get('genre_ids').indexOf(@genre.id) != -1
+      @artists = new Backbone.Collection (
+        App.artists.filter (artist) =>
+          artist.get('genre_ids').indexOf(@genre.id) != -1
+      )
     else
       @artists = App.artists
 
-    @artists = new Backbone.Collection @artists
     @artistView.collection = @artists
     @artistView.render()
+    @filterTracks()
 
 
   filterTracks: ->
     @ajax?.abort()
-    @ajax = $.get "/browse/artists/#{@artist.get 'id'}.json"
-    @ajax.success (data) =>
-      @trackView.data = data
+    if @artist
+      @ajax = $.get "/browse/artists/#{@artist.get 'id'}.json"
+      @ajax.success (data) =>
+        @trackView.data = data
+        @trackView.render()
+    else
+      @trackView.data = undefined
       @trackView.render()

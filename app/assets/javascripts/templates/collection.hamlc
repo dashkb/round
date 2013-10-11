@@ -6,6 +6,8 @@
   .panel-body
     - if @collection && @collection.any()
       .list-group
+        - if @showAllLine
+          .list-group-item.item.active{data-type: @type, data-id: 'all'} All
         - @collection.each (item) =>
           - if @itemTpl
             != @itemTpl model: item
