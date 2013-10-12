@@ -4,7 +4,7 @@ window.App =
   resetTimeout: 5000
   queueMax: 3
   start: ->
-    log.setLevel log.levels.DEBUG
+    log.setLevel log.levels.INFO
     @csrf_token = ($ 'meta[name="csrf-token"]').attr('content')
     @$spinner   = ($ '#app-spinner')
     @setupAjax()

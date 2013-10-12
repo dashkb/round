@@ -34,6 +34,7 @@ class App.BrowseView extends App.View
   events:
     'activate': 'activate'
     'deactivate': 'deactivate'
+    'input input.filter': 'queryChanged'
 
   deactivate: (e, type) ->
     e.stopPropagation()
@@ -86,8 +87,31 @@ class App.BrowseView extends App.View
     if @artist
       @ajax = $.get "/browse/artists/#{@artist.get 'id'}.json"
       @ajax.success (data) =>
-        @trackView.data = data
+        @trackView.applyData data
         @trackView.render()
     else
-      @trackView.data = undefined
+      @trackView.applyData undefined
       @trackView.render()
+
+  queryChanged: _.throttle (e) ->
+    @ajax?.abort()
+
+    val = ($ e.target).val()
+    @query = if val.length >= 3 then val else undefined
+
+    @genreView.applyFilter @query unless @genre
+    @artistView.applyFilter @query unless @artist
+
+    if @artist
+      @trackView.applyFilter @query
+    else
+      if @query
+        @ajax = $.get "/search?term=#{@query}"
+        @ajax.success (data) =>
+          @trackView.applyData data
+          @trackView.render()
+      else
+        @trackView.applyData undefined
+        @trackView.render()
+
+  , 2000, leading: false

@@ -1,16 +1,21 @@
 .panel.panel-default
   .panel-body
     - if @data
-      .albums
-        - _.each @data.albums, (album) =>
-          .album{data-album-id: album.id}
-            .title!= album.name
+      .artists
+        - _.each @data.artists, (artist) =>
+          .artist{data-artist-id: artist.id}
+            .name!= artist.name
 
-            %ul.tracks.list-group
-              - _.each @tracksForAlbum(album), (track) =>
-                %li.track.list-group-item{data-track-id: track.id}
-                  %span.title!= track.name
-                  - if App.Track::queueableById(track.id)
-                    %button.btn.btn-primary Queue
+            - _.each @albumsForArtist(artist), (album) =>
+              .album{data-album-id: album.id}
+                .title!= album.name
+
+                %ul.tracks.list-group
+                  - _.each @tracksForAlbum(album), (track) =>
+                    %li.track.list-group-item{data-track-id: track.id}
+                      %span.title!= track.name
+                      - if App.Track::queueableById(track.id)
+                        %button.btn.btn-primary Queue
+
     - else
       .empty No tracks here, do a search or something

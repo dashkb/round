@@ -32,5 +32,13 @@ class App.CollectionView extends App.View
         type: @$active.data 'type'
         id: @$active.data 'id'
 
-  trackClicked: (e) ->
-    console.error 'NYI', e
+  applyFilter: (@filter) ->
+    if @filter?
+      @origCollection = @collection
+      @collection = new Backbone.Collection @origCollection.filter (item) =>
+        item.get('name').match @filter
+    else
+      @collection = @origCollection
+      @origCollection = undefined
+
+    @render()
