@@ -12,5 +12,6 @@ class App.JustQueuedView extends App.View
       (@$ '.current').addClass 'hide'
       (@$ '.done').removeClass 'hide'
       setTimeout ->
+        App.subViews.browse.resetEverything()
         page '/idle'
       , App.resetTimeout
