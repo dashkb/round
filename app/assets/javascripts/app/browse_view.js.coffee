@@ -1,5 +1,11 @@
 class App.BrowseView extends App.View
   template: JST['browse']
+  events:
+    'activate': 'activate'
+    'deactivate': 'deactivate'
+    'input input.filter': 'queryChanged'
+    'click span.reset': 'resetEverything'
+
   initialize: ->
     @genres  = App.genres
     @artists = App.artists
@@ -30,11 +36,6 @@ class App.BrowseView extends App.View
       @trackView = new App.TrackView
         el: (@$ '.tracks')
       .render()
-
-  events:
-    'activate': 'activate'
-    'deactivate': 'deactivate'
-    'input input.filter': 'queryChanged'
 
   deactivate: (e, type) ->
     e.stopPropagation()
@@ -83,15 +84,18 @@ class App.BrowseView extends App.View
 
 
   filterTracks: ->
-    @ajax?.abort()
-    if @artist
-      @ajax = $.get "/browse/artists/#{@artist.get 'id'}.json"
-      @ajax.success (data) =>
-        @trackView.applyData data
+    _.tap new $.Deferred, (p) =>
+      @ajax?.abort()
+      if @artist
+        @ajax = $.get "/browse/artists/#{@artist.get 'id'}.json"
+        @ajax.success (data) =>
+          @trackView.applyData data
+          @trackView.render()
+          p.resolve()
+      else
+        @trackView.applyData undefined
         @trackView.render()
-    else
-      @trackView.applyData undefined
-      @trackView.render()
+        p.resolve()
 
   queryChanged: _.throttle (e) ->
     @ajax?.abort()
@@ -104,7 +108,8 @@ class App.BrowseView extends App.View
       @artistView.applyFilter @query unless @artist
 
       if @artist
-        @trackView.applyFilter @query
+        @filterTracks().then =>
+          @trackView.applyFilter @query
       else
         @ajax = $.get "/search?term=#{@query}"
         @ajax.success (data) =>
@@ -114,3 +119,10 @@ class App.BrowseView extends App.View
         view.applyFilter undefined
 
   , 2000, leading: false
+
+  resetEverything: ->
+    @query = undefined
+    @ajax?.abort()
+    @artist = undefined
+    @genre = undefined
+    @render()
