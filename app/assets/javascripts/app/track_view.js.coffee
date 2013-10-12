@@ -40,6 +40,7 @@ class App.TrackView extends App.View
 
   applyData: (@data) ->
     @templateHelpers.data = @data
+    @render()
 
   applyFilter: (filter) ->
     @filter = filter || undefined

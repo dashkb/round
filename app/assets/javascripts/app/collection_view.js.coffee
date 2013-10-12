@@ -24,13 +24,16 @@ class App.CollectionView extends App.View
     App.touched()
     $clicked = $ e.currentTarget
     @$active?.removeClass 'active'
+    @activeId = undefined
 
     unless $clicked.hasClass 'active'
       @$active = $ e.currentTarget
       @$active.toggleClass 'active'
+      @$active[0].scrollIntoViewIfNeeded()
+      @activeId = @$active.data 'id'
       @bubble 'activate',
         type: @$active.data 'type'
-        id: @$active.data 'id'
+        id: @activeId
 
   applyFilter: (@filter) ->
     if @filter?
@@ -42,3 +45,7 @@ class App.CollectionView extends App.View
       @origCollection = undefined
 
     @render()
+    if @activeId
+      (@$ ".list-group-item[data-id='#{@activeId}']").click()
+
+

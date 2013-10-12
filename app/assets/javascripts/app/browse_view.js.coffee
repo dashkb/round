@@ -99,19 +99,18 @@ class App.BrowseView extends App.View
     val = ($ e.target).val()
     @query = if val.length >= 3 then val else undefined
 
-    @genreView.applyFilter @query unless @genre
-    @artistView.applyFilter @query unless @artist
+    if @query
+      @genreView.applyFilter @query unless @genre || @artist
+      @artistView.applyFilter @query unless @artist
 
-    if @artist
-      @trackView.applyFilter @query
-    else
-      if @query
+      if @artist
+        @trackView.applyFilter @query
+      else
         @ajax = $.get "/search?term=#{@query}"
         @ajax.success (data) =>
           @trackView.applyData data
-          @trackView.render()
-      else
-        @trackView.applyData undefined
-        @trackView.render()
+    else
+      _.each [@trackView, @artistView, @genreView], (view) ->
+        view.applyFilter undefined
 
   , 2000, leading: false
