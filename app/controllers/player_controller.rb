@@ -15,7 +15,7 @@ class PlayerController < ApplicationController
     render json: {status: 200}, status: 200
   end
 
-  %w{status play pause next}.each do |api_method|
+  %w{status play pause skip}.each do |api_method|
     define_method api_method do
       response = PlayerService.send(api_method)
 

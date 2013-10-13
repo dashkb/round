@@ -7,7 +7,7 @@
       - else
         %button.btn.btn-success.play{data-action: 'play'}
           %i.icon-play
-      %button.btn.btn-primary.next{data-action: 'next'}
+      %button.btn.btn-primary.skip{data-action: 'skip'}
         %i.icon-fast-forward
   .now-playing
     - if App.playerStatus.state == 'playing'

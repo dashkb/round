@@ -6,14 +6,13 @@ module PlayerService
     socket.recv
   end
 
-  def self.pause
-    socket.send "pause"
-    socket.recv
-  end
-
-  def self.play
-    socket.send "play"
-    socket.recv
+  class << self
+    %w{pause play skip}.each do |action|
+      define_method action do
+        socket.send action
+        socket.recv
+      end
+    end
   end
 
   def self.status
