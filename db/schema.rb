@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131008025847) do
+ActiveRecord::Schema.define(version: 20131013000806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,13 @@ ActiveRecord::Schema.define(version: 20131008025847) do
   end
 
   add_index "genres", ["name"], name: "index_genres_on_name", using: :btree
+
+  create_table "selections", force: true do |t|
+    t.integer  "track_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "sources", force: true do |t|
     t.string "name"

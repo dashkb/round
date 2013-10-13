@@ -21,6 +21,8 @@ class PlayerController < ApplicationController
 
   private
   def queue_track(track_id)
-    PlayerService.queue Track.find(track_id)
+    track = Track.find track_id
+    PlayerService.queue track
+    Selection.create track: track, name: params[:name]
   end
 end

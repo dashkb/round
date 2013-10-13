@@ -6,9 +6,18 @@ class App.JustQueuedView extends App.View
     'click .btn-success': 'doneBrowsing'
 
   doneBrowsing: ->
+    name = (@$ '.name input').val()
+
     $.post '/player/queue',
       track_ids: _.map App.browseSession, (track) -> track.id
+      name: name
     .then =>
+      $heading = (@$ '.done .panel-heading')
+      if name? && name != ''
+        $heading.text "Thanks, #{name}!"
+      else
+        $heading.text "Thanks, nameless person!"
+
       (@$ '.current').addClass 'hide'
       (@$ '.done').removeClass 'hide'
       setTimeout ->
