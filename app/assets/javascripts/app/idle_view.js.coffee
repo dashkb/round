@@ -9,3 +9,11 @@ class App.IdleView extends App.View
 
   queueClicked: (e) ->
     page '/queue'
+
+  show: ->
+    _.tap super(), =>
+      @listenTo App, 'player status update', => @render()
+
+  hide: ->
+    _.tap super(), =>
+      @stopListening()
