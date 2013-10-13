@@ -9,8 +9,15 @@ class Album < ActiveRecord::Base
   validates :name, :artist, presence: true
 
   def as_json(opts = {})
-    super opts.reverse_merge({
+    result = super opts.reverse_merge({
       include: [:artist]
+    })
+
+    result.merge({
+      'art_full' => art.url(:full),
+      'art_medium' => art.url(:medium),
+      'art_thumb' => art.url(:thumb),
+      'art_tiny' => art.url(:tiny)
     })
   end
 
