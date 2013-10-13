@@ -19,6 +19,9 @@ window.App =
     @genres.comparator = 'name'
     @genres.add window.genres
 
+    if TryMeSuckaz.userIsTim
+      ($ 'body').addClass 'tim'
+
     @subViews =
       idle: new @IdleView el: ($ '#idle')
       browse: new @BrowseView el: ($ '#browse')
