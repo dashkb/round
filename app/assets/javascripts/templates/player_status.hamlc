@@ -1,0 +1,25 @@
+- if App.playerStatus?
+  - if TryMeSuckaz.userIsTim
+    .btn-group.player
+      - if App.playerStatus.state == 'playing'
+        %button.btn.btn-warning.pause{data-action: 'pause'}
+          %i.icon-pause
+      - else
+        %button.btn.btn-success.play{data-action: 'play'}
+          %i.icon-play
+      %button.btn.btn-primary.next{data-action: 'next'}
+        %i.icon-fast-forward
+  .now-playing
+    - if App.playerStatus.state == 'playing'
+      .heading Now Playing
+    - else
+      .heading PAUSED
+    .artist= App.playerStatus.nowPlaying.get('artist').display_name
+    .track= App.playerStatus.nowPlaying.get('display_name')
+
+  - if track = App.playerStatus.queue.first()
+    .next
+      .heading Next Up
+      .artist= track.get('artist').display_name
+      .track= track.get('display_name')
+

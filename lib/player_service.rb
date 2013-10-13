@@ -3,8 +3,17 @@ require Rails.root.join 'lib', 'player'
 module PlayerService
   def self.queue(track)
     socket.send "queue #{track.id}"
-    reply = socket.recv
-    reply
+    socket.recv
+  end
+
+  def self.pause
+    socket.send "pause"
+    socket.recv
+  end
+
+  def self.play
+    socket.send "play"
+    socket.recv
   end
 
   def self.status
@@ -12,7 +21,8 @@ module PlayerService
     reply = JSON.parse(socket.recv)
     return {
       now_playing: (Track.find(reply['now_playing']) rescue nil),
-      queue: reply['queue'].map { |id| Track.find id }
+      queue: reply['queue'].map { |id| Track.find id },
+      state: reply['state']
     }
   end
 

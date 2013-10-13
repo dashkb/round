@@ -8,6 +8,11 @@ Round::Application.routes.draw do
   get '/tim/things', to: 'tim#things'
 
   get '/player/status', to: 'player#status'
+
+  %w{play pause next}.each do |action|
+    post "/player/#{action}", to: "player##{action}"
+  end
+
   post '/player/queue', to: 'player#queue'
   get '/search', to: 'search#search'
 

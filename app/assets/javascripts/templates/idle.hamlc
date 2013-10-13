@@ -1,17 +1,6 @@
 .panel.panel-default
   .panel-heading Circle Camp Music
   .panel-body
-    - if App.playerStatus?
-      .now-playing
-        .heading Now Playing
-        .artist= App.playerStatus.nowPlaying.get('artist').display_name
-        .track= App.playerStatus.nowPlaying.get('display_name')
-
-      - if track = App.playerStatus.queue.first()
-        .next
-          .heading Next Up
-          .artist= track.get('artist').display_name
-          .track= track.get('display_name')
-
+    != JST['player_status']()
     .btn.btn-primary.btn-pick Pick Songs
     .btn.btn-success.btn-queue See the Queue

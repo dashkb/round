@@ -54,6 +54,10 @@ window.App =
       @browseSession = undefined
 
     ($ '#back-button').click -> page '/idle'
+    ($ 'body').on 'click', '.btn-group.player button', (e) =>
+      action = ($ e.currentTarget).data 'action'
+      $.post "/player/#{action}"
+      ($ 'body .btn-group.player').hide()
 
     page()
 
@@ -81,6 +85,7 @@ window.App =
         nowPlaying: nowPlaying
         queue: new Backbone.Collection response.queue,
           model: @Track
+        state: response.state
       @trigger 'player status update'
 
   setupAjax: ->

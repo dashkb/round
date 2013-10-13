@@ -10,10 +10,10 @@
 - else
   .panel.panel-primary
     .panel-heading Tim Stuff
-    .list-group
-      .list-group-item.playlists
-        %a.btn.btn-primary.playlists Manage Playlists
-      - _.each @model.attributes, (value, key) =>
-        .list-group-item{class: key}
-          %span.key= "#{key}: "
-          %span.value= value
+    .panel-body
+      != JST['player_status']()
+      .list-group
+        - _.each @model.attributes, (value, key) =>
+          .list-group-item{class: key}
+            %span.key= "#{key}: "
+            %span.value= value

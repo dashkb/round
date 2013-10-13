@@ -15,8 +15,16 @@ class PlayerController < ApplicationController
     render json: {status: 200}, status: 200
   end
 
-  def status
-    respond_with PlayerService.status
+  %w{status play pause next}.each do |api_method|
+    define_method api_method do
+      response = PlayerService.send(api_method)
+
+      if response.is_a?(Hash)
+        respond_with response
+      else
+        render json: {status: 200}, status: 200
+      end
+    end
   end
 
   private

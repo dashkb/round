@@ -9,9 +9,6 @@ class App.TimView extends App.View
           @refresh()
         , 5000
 
-  events: ->
-    'click a.playlists': -> page '/playlists'
-
   hide: ->
     _.tap super(), =>
       clearInterval @refreshInterval

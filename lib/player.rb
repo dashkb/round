@@ -77,7 +77,10 @@ class Player
     @nowPlaying = nil if @skip
     @skip = false
 
-    if @nowPlaying && buf = @nowPlaying[:audiofile].read(@buffer_size)
+    if @pause
+      puts "Player is paused"
+      sleep 1
+    elsif @nowPlaying && buf = @nowPlaying[:audiofile].read(@buffer_size)
       # Sweet we got some audio, play that shit
       # Won't return until the audio has played
       # TODO watch possible pause/stop lag?
@@ -122,12 +125,26 @@ class Player
   def api_status
     return {
       now_playing: (@nowPlaying[:track].id rescue nil),
-      queue: QueueService.all
+      queue: QueueService.all,
+      state: (@pause || @stop) ? 'stopped' : 'playing'
     }.to_json
   end
 
   def api_skip
     @skip = true
+
+    'OK'
+  end
+
+  def api_pause
+    @pause = true
+
+    'OK'
+  end
+
+  def api_play
+    @pause = false
+    @stop = false
 
     'OK'
   end
