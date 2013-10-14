@@ -3,6 +3,7 @@
     .input-group.filter
       %span.input-group-addon
         %i.icon-search
+        %i.icon-spinner.icon-spin.hide
       %input.form-control.filter{type: 'text', placeholder: 'Filter All The Things'}
       %span.input-group-addon.reset.text-danger
         %i.icon-remove

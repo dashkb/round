@@ -111,14 +111,28 @@ class App.BrowseView extends App.View
         @filterTracks().then =>
           @trackView.applyFilter @query
       else
+        @spin()
         @ajax = $.get "/search?term=#{@query}"
         @ajax.success (data) =>
+          @unspin()
           @trackView.applyData data
     else
-      _.each [@trackView, @artistView, @genreView], (view) ->
+      @spin()
+      _.each [@trackView, @artistView, @genreView], (view) =>
         view.applyFilter undefined
+      @unspin()
+      @render()
 
-  , 2000, leading: false
+  , 1000, leading: false
+
+  spin: ->
+    log.info 'spinning'
+    ($ '.icon-search').addClass 'hide'
+    ($ '.icon-spinner').removeClass 'hide'
+
+  unspin: ->
+    ($ '.icon-spinner').addClass 'hide'
+    ($ '.icon-search').removeClass 'hide'
 
   resetEverything: ->
     @query = undefined
