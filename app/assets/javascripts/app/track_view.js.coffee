@@ -35,7 +35,7 @@ class App.TrackView extends App.View
   queueTrack: (event) ->
     id    = $(event.target).parent().parent().data('track-id')
     track = _.find @data.tracks, (track) -> track.id == id
-    App.browseSession.push new Backbone.Model(track)
+    App.browseSession.push new App.Track(track)
     page '/justQueued'
 
   applyData: (@data) ->

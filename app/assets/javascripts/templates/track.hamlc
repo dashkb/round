@@ -5,7 +5,7 @@
   .btn-group.actions
     - if @model.queueable()
       %button.btn.btn-primary.queue-button Queue
-    - if TryMeSuckaz.userIsTim && !@model.queueable()
+    - if TryMeSuckaz.userIsTim && !@model.queueable() && @showTimControls
       %button.btn.btn-default.unqueue
         %i.icon-remove
       %button.btn.btn-default.move-up
