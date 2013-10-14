@@ -10,7 +10,11 @@ module QueueService
         'queue length', REDIS.llen(QUEUE)
       )
 
-      Track.find next_id
+      begin
+        Track.find next_id
+      rescue
+        self.next
+      end
     else
       auto_select
     end
@@ -34,6 +38,24 @@ module QueueService
 
     Track.offset(rand(Track.count)).first
   end
+
+  def self.swap(opts)
+    REDIS.watch QUEUE
+
+    queue = REDIS.lrange QUEUE, 0, -1
+    index = queue.index opts[:track_id]
+    queue.delete opts[:track_id]
+    queue.insert (opts[:direction] == 'up' ? index - 1 : index + 1), opts[:track_id]
+
+    REDIS.multi do
+      REDIS.del QUEUE
+      queue.each do |track_id|
+        REDIS.rpush QUEUE, track_id unless track_id == nil
+      end
+    end
+  end
+
+
   def self.unqueue(track_id)
     REDIS.lrem QUEUE, 0, track_id
   end

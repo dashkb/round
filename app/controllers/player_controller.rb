@@ -40,6 +40,8 @@ class PlayerController < ApplicationController
   def swap
     render text: "Must be Tim...", status: 401 unless tim?
     QueueService.swap params
+
+    render json: {status: 200}, status: 200
   end
 
   private

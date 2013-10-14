@@ -22,9 +22,16 @@ class App.QueueView extends App.CollectionView
     'click button.move-down': 'swapDown'
     'click button.unqueue': 'unqueue'
     'click button.play-now': 'playNow'
+    'click button': 'spinButton'
+
+  spinButton: (e) ->
+    ($ e.currentTarget).html ($ "<icon class='icon-spinner icon-spin'>")
+    setTimeout ->
+      App.getPlayerStatus()
+    , 200
 
   trackIdForButtonClick: (e) ->
-    ($ e.target).parent().parent().parent().data 'track-id'
+    ($ e.currentTarget).parent().parent().data 'track-id'
 
   unqueue: (e) ->
     if TryMeSuckaz.userIsTim

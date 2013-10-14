@@ -20,7 +20,7 @@ module PlayerService
     reply = JSON.parse(socket.recv)
     return {
       now_playing: (Track.find(reply['now_playing']) rescue nil),
-      queue: reply['queue'].map { |id| Track.find id },
+      queue: reply['queue'].map { |id| Track.find(id) rescue nil }.compact,
       state: reply['state']
     }
   end
