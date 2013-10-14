@@ -13,6 +13,8 @@
     .panel-body
       != JST['player_status']()
       .list-group
+        .list-group-item
+          %a{href: "/tim/missing_albums"}= "Fix album art"
         - _.each @model.attributes, (value, key) =>
           .list-group-item{class: key}
             %span.key= "#{key}: "
