@@ -53,6 +53,7 @@ window.App =
 
     @subViews.idle.on 'show', =>
       @browseSession = undefined
+      App.subViews.browse.resetEverything()
 
     ($ '#back-button').click -> page '/idle'
     ($ 'body').on 'click', '.btn-group.player button', (e) =>
