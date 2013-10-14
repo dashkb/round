@@ -29,6 +29,9 @@ route '/browse/:genre/:id', (ctx) ->
 route '/tim', ->
   App.show 'tim'
 
+route '/tim/missing_albums', ->
+  App.show 'missing_albums'
+
 route '/playlists', ->
   App.show 'playlists'
 
