@@ -8,8 +8,9 @@
 
             - _.each @albumsForArtist(artist), (album) =>
               .album{data-album-id: album.id}
-                .title!= album.name
-                %img{src: album.art_medium}
+                .meta
+                  .title!= album.name
+                  %img{src: album.art_medium}
 
                 %ul.tracks.list-group
                   - _.each @tracksForAlbum(album), (track) =>

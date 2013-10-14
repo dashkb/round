@@ -67,7 +67,7 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
   .page-body { padding-top: 0; }
 
   .choose-search {
-    padding: 10px; margin-top: 10px; border-top: 1px solid #555; border-bottom: 1px solid #555;
+    padding: 10px; margin-top: 10px;
     .form {
       .input-group-addon { 
         background: #444; color: #fff; border: 0; 
@@ -96,7 +96,7 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
         }
       }
     }
-    .genres, .artists { float: left; width: 611px; padding: 10px 0; }
+    .genres, .artists { float: left; width: 625px; padding: 10px 0; }
     .genres { 
       padding-right: 10px; border-radius: 0;
       .panel-heading { border-radius: 0; }
@@ -109,9 +109,27 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
     padding: 5px 15px; background: #000;
     .panel { border-radius: 0; }
     .panel-body {
-      border-radius: 0; overflow: scroll; -webkit-overflow-scrolling: touch; height: 45vh;
+      border-radius: 0; overflow: scroll; -webkit-overflow-scrolling: touch; height: 43vh;
       .artist {
-        color: #000;
+        color: #000; overflow: hidden; position: relative; padding-left: 175px;
+        .name { position: absolute; left: 0; top: 0; width: 175px; padding: 15px 25px 0 0; text-align: right; font: 26px/32px "Whitney HTF"; font-weight: bold; }
+        .album { 
+          float: left; width: 990px; padding: 15px 15px 15px 25px; background: #ddd; font: 26px/32px "Whitney HTF"; 
+          .meta { float: left; width: 300px;
+            .title { margin-bottom: 15px; }
+          }
+          .tracks { 
+            float: left; width: 650px; padding-left: 25px; font: 14px $helvetican; 
+            .track {
+              position: relative; padding: 15px;
+              .track-name { font: 14px $helvetican; text-transform: capitalize;  }
+              .btn-group {
+                position: absolute; right: 7px; top: 7px;
+                .btn-primary { }
+              }
+            }
+          }
+        }
       }
       
       .empty { font: 36px/420px "Whitney HTF"; font-style: italic; text-transform: lowercase; color: #999; text-align: center; }
