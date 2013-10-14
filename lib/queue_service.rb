@@ -34,4 +34,13 @@ module QueueService
 
     Track.offset(rand(Track.count)).first
   end
+  def self.unqueue(track_id)
+    REDIS.lrem QUEUE, 0, track_id
+  end
+
+  def self.play_now(track_id)
+    unqueue track_id
+    REDIS.lpush QUEUE, track_id
+    PlayerService.skip
+  end
 end

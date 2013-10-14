@@ -17,6 +17,7 @@ class PlayerController < ApplicationController
 
   %w{status play pause skip}.each do |api_method|
     define_method api_method do
+      render text: "Must be Tim...", status: 401 unless tim? || api_method == 'status'
       response = PlayerService.send(api_method)
 
       if response.is_a?(Hash)
@@ -25,6 +26,20 @@ class PlayerController < ApplicationController
         render json: {status: 200}, status: 200
       end
     end
+  end
+
+  %w{play_now unqueue}.each do |api_method|
+    define_method api_method do
+      render text: "Must be Tim...", status: 401 unless tim?
+
+      QueueService.send(api_method, params[:track_id])
+      render json: {status: 200}, status: 200
+    end
+  end
+
+  def swap
+    render text: "Must be Tim...", status: 401 unless tim?
+    QueueService.swap params
   end
 
   private

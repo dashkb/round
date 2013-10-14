@@ -11,7 +11,7 @@ Round::Application.routes.draw do
 
   get '/player/status', to: 'player#status'
 
-  %w{play pause skip}.each do |action|
+  %w{play pause skip unqueue play_now swap}.each do |action|
     post "/player/#{action}", to: "player##{action}"
   end
 
