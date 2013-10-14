@@ -37,7 +37,7 @@ class App.CollectionView extends App.View
 
   applyFilter: (@filter) ->
     if @filter?
-      @origCollection = @collection
+      @origCollection ||= @collection
       @collection = new Backbone.Collection @origCollection.filter (item) =>
         item.get('name').match @filter
     else
