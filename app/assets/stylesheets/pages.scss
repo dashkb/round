@@ -18,28 +18,41 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
     .panel-heading,
     .panel-body { float: left; width: 625px; height: 100vh; }
     .panel-heading {
-      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg-alt.png') 50% 15% no-repeat;
+      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg-alt.png') 50% 90px no-repeat;
     }  
 
   .panel-body {
-    background: #f00; position: relative; padding-bottom: 250px;
+    background: #222; position: relative; padding-bottom: 250px; box-shadow: 5px 0 15px rgba(0,0,0,0.2) inset;
     .player {
       .btn-group { 
-        position: absolute; top: 0; right: 0;      
+        position: absolute; top: 0; right: 0;   
+        .btn { 
+          background: #000; color: #fff; margin: 0; border-radius: 0;
+          i { position: relative; top: -5px; left: 3px; }
+          &:hover i, &:focus i { opacity: 1; }
+          &:active { top: 0; box-shadow: none; background: #ffff00; color: #000; }
+          }  
         }
       .now-playing {
-        position: absolute; top: 85px; left: 60px; width: 500px; height: 500px;
-        .heading { font: 28px "Whitney HTF"; font-style: italic; position: absolute; top: -55px; } 
-        .artist, .album { position: absolute; top: 15px; left: 15px; z-index: 10; font-family: "Whitney HTF"; }
-        .album { top: 30px; }
+        position: absolute; top: 95px; left: 60px; width: 500px; height: 500px;
+        .heading { font: 20px "Whitney HTF"; font-weight: 600; text-transform: uppercase; position: absolute; top: -40px; color: #eee; } 
+        .album { display: none; }
+        .artist, .track { position: absolute; bottom: 0; left: 0; padding-left: 25px; z-index: 10; font-family: "Whitney HTF"; background: rgba(0,0,0,0.85); width: 500px; font: 18px/25px "Whitney HTF"; text-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+        .track { padding-bottom: 15px; font-style: italic; }
+        .artist { bottom: 40px; padding-top: 15px; font-size: 28px; line-height: 40px; font-weight: 600; border-top: 1px solid rgba(255,255,255,0.2); }
         
         .album_art img { position: absolute; top: 0; left: 0; width: 500px; height: 500px; z-index: 1; }     
         }
       }
     
     .buttons {
-      position: absolute; bottom: 0; left: -625px; width: 625px; height: 250px; text-align: center;
-      .btn { margin-right: 15px; }  
+      position: absolute; bottom: 40px; left: -625px; width: 625px; height: 250px; text-align: center;
+      .btn { 
+        margin-right: 15px; 
+        &.btn-primary { 
+          margin-bottom: 25px; 
+          }        
+        }  
       }
     }
   }

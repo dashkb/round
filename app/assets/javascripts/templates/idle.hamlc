@@ -4,7 +4,7 @@
     .player
       != JST['player_status']()
     .buttons
-      .btn.btn-primary.btn-pick.big.green 
+      .btn.btn-primary.btn-pick.xbig.green 
         %i.icon-music 
         Pick Songs
       .btn.btn-success.btn-queue.big.gray 

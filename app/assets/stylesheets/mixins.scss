@@ -40,7 +40,7 @@ $openbi: OpenSans-Semibold-Italic,Helvetica,Arial,"Lucida Grande",Verdana, sans-
    Mixins
    ========================================================================== */
 
-@mixin transition($e:all,$t:50ms,$f:linear) { -moz-transition: $e $t $f; -webkit-transition: $e $t $f; transition: $e $t $f; }
+@mixin transition($e:all,$t:150ms,$f:linear) { -moz-transition: $e $t $f; -webkit-transition: $e $t $f; transition: $e $t $f; }
 @mixin transition_remove() { -moz-transition: none; -webkit-transition: none; transition: none; }
 @mixin hover() { background: $hoverbg; color: $hovertxt; text-shadow: $hoverts; }
 @mixin active() { background: $activebg; color: $activetxt; text-shadow: $activets; }
@@ -48,8 +48,8 @@ $openbi: OpenSans-Semibold-Italic,Helvetica,Arial,"Lucida Grande",Verdana, sans-
 @mixin gradient($c0,$c1,$c2,$d:repeat-x) { background-color: $c0; background-image: -moz-linear-gradient(top, $c1, $c2); background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c1), to($c2)); background-image: -webkit-linear-gradient(top, $c1, $c2); background-image: -o-linear-gradient(top, $c1, $c2); background-image: linear-gradient(to bottom, $c1, $c2); background-repeat: $d; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$c1', endColorstr='$c2', GradientType=0); }
 @mixin plain { margin: 0; padding: 0; list-style: none; }
 @mixin sprite($w,$h,$l,$t) { display: block; background-position: $l $t; background-repeat: no-repeat; text-indent: -9999em; width: $w; height: $h; }
-@mixin buttonize($h:32px) { display: inline-block; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 1px  rgba(0,0,0,0.3)/*, inset 0 -10px 10px rgba(0,0,0,0.1)*/; border: 1px solid rgba(0,0,0,0.2); text-shadow: 0 1px 0 rgba(0,0,0,.65); height: $h;
-	line-height: $h; &:active{ box-shadow: 0 1px 0 rgba(255,255,255,0.2), inset 0 1px 0 rgba(0,0,0,0.2), inset 0 10px 10px rgba(0,0,0,0.2); text-shadow: 0 -1px 0 rgba(0,0,0,.5); } }
+@mixin buttonize($h:32px) { display: inline-block; box-shadow: 0 0 1px rgba(0,0,0,0.3); border: 1px solid rgba(0,0,0,0.2); text-shadow: 0 1px 0 rgba(255,255,255,.65); height: $h;
+	line-height: $h; &:active{ box-shadow: 0 1px 0 rgba(255,255,255,0.25), inset 0 10px 10px rgba(0,0,0,0.2); } }
 @mixin buttonize_white($h:35px) { display: inline-block; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 1px 2px  rgba(0,0,0,0.5), inset 0 -10px 10px rgba(0,0,0,0.1); text-shadow: 0 1px 0 rgba(255,255,255,.65); height: $h; line-height: $h; &:hover { box-shadow: 0 1px 2px rgba(0,0,0,0.5) } &:active{ box-shadow: 0 1px 0 rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 10px 10px rgba(0,0,0,0.3); text-shadow: 0 -1px 0 rgba(255,255,255,.5); } }	
 @mixin boxize($b:1px,$s:5px) { background: $formbg; border-color: #dbdbdb; border-style: solid; border-width: $b; box-shadow: inset 0 1px 0 rgba(255,255,255,0.5) }
 
