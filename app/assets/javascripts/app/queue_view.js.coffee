@@ -22,6 +22,7 @@ class App.QueueView extends App.CollectionView
     'click button.move-down': 'swapDown'
     'click button.unqueue': 'unqueue'
     'click button.play-now': 'playNow'
+    'click button.rocket': 'rocket'
     'click button': 'spinButton'
 
   spinButton: (e) ->
@@ -62,3 +63,10 @@ class App.QueueView extends App.CollectionView
       $.post '/player/swap',
         track_id: id
         direction: 'down'
+
+  rocket: (e) ->
+    if TryMeSuckaz.userIsTim
+      id = @trackIdForButtonClick e
+
+      $.post '/player/rocket',
+        track_id: id

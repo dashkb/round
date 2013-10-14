@@ -49,12 +49,27 @@ module QueueService
 
     REDIS.multi do
       REDIS.del QUEUE
-      queue.each do |track_id|
-        REDIS.rpush QUEUE, track_id unless track_id == nil
+      queue.compact.each do |track_id|
+        REDIS.rpush QUEUE, track_id
       end
     end
   end
 
+  def self.rocket(track_id)
+    REDIS.watch QUEUE
+
+    queue = REDIS.lrange QUEUE, 0, -1
+    index = queue.index track_id
+    new_queue = queue.drop index
+    new_queue += (queue - new_queue)
+
+    REDIS.multi do
+      REDIS.del QUEUE
+      new_queue.compact.each do |track_id|
+        REDIS.rpush QUEUE, track_id
+      end
+    end
+  end
 
   def self.unqueue(track_id)
     REDIS.lrem QUEUE, 0, track_id

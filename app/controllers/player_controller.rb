@@ -28,7 +28,7 @@ class PlayerController < ApplicationController
     end
   end
 
-  %w{play_now unqueue}.each do |api_method|
+  %w{play_now unqueue rocket}.each do |api_method|
     define_method api_method do
       render text: "Must be Tim...", status: 401 unless tim?
 
