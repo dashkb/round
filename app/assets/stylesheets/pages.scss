@@ -16,49 +16,32 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
   .panel {
     border: 0; margin: 0; padding: 0; 
     .panel-heading,
-    .panel-body { float: left; width: 50%; height: 100vh; }
+    .panel-body { float: left; width: 625px; height: 100vh; }
     .panel-heading {
-      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg-alt.png') 15% 15% no-repeat;
+      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg-alt.png') 50% 15% no-repeat;
     }  
 
   .panel-body {
-    position: relative; padding-bottom: 250px;
+    background: #f00; position: relative; padding-bottom: 250px;
     .player {
       .btn-group { 
         position: absolute; top: 0; right: 0;      
         }
       .now-playing {
-        position: absolute; top: 85px; left: 0; width: 500px; height: 500px;
-        .heading { font: 34px italic "Whitney HTF"; position: absolute; top: -55px; } 
+        position: absolute; top: 85px; left: 60px; width: 500px; height: 500px;
+        .heading { font: 28px "Whitney HTF"; font-style: italic; position: absolute; top: -55px; } 
+        .artist, .album { position: absolute; top: 15px; left: 15px; z-index: 10; font-family: "Whitney HTF"; }
+        .album { top: 30px; }
+        
         .album_art img { position: absolute; top: 0; left: 0; width: 500px; height: 500px; z-index: 1; }     
         }
       }
     
     .buttons {
-      position: absolute; bottom: 0; right: 0; height: 250px; text-align: center;
+      position: absolute; bottom: 0; left: -625px; width: 625px; height: 250px; text-align: center;
       .btn { margin-right: 15px; }  
       }
     }
   }
   
 }
-
-<div class="player">
-      <div class="btn-group player">
-  <button class="btn btn-warning pause" data-action="pause">
-    <i class="icon-pause"></i>
-  </button>
-  <button class="btn btn-primary skip" data-action="skip">
-    <i class="icon-fast-forward"></i>
-  </button>
-</div>
-<div class="now-playing">
-  <div class="heading">Now Playing</div>
-  <div class="artist">Cretin</div>
-  <div class="album">Freakery</div>
-  <div class="album_art">
-    <img src="http://placekitten.com/500/500">
-  </div>
-  <div class="track">Creepy Crawlies</div>
-</div>
-    </div>
