@@ -24,8 +24,14 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
   .panel-body {
     position: relative; padding-bottom: 250px;
     .player {
-      background: #fff;
-      
+      .btn-group { 
+        position: absolute; top: 0; right: 0;      
+        }
+      .now-playing {
+        position: absolute; top: 85px; left: 0; width: 500px; height: 500px;
+        .heading { font: 34px italic "Whitney HTF"; position: absolute; top: -55px; } 
+        .album_art img { position: absolute; top: 0; left: 0; width: 500px; height: 500px; z-index: 1; }     
+        }
       }
     
     .buttons {
@@ -36,3 +42,23 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
   }
   
 }
+
+<div class="player">
+      <div class="btn-group player">
+  <button class="btn btn-warning pause" data-action="pause">
+    <i class="icon-pause"></i>
+  </button>
+  <button class="btn btn-primary skip" data-action="skip">
+    <i class="icon-fast-forward"></i>
+  </button>
+</div>
+<div class="now-playing">
+  <div class="heading">Now Playing</div>
+  <div class="artist">Cretin</div>
+  <div class="album">Freakery</div>
+  <div class="album_art">
+    <img src="http://placekitten.com/500/500">
+  </div>
+  <div class="track">Creepy Crawlies</div>
+</div>
+    </div>
