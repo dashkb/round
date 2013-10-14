@@ -24,5 +24,6 @@
     .next
       .heading Next Up
       .artist= track.get('artist').display_name
+      .album= track.get('album').display_name
       .track= track.get('display_name')
 
