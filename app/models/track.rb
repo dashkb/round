@@ -20,8 +20,14 @@ class Track < ActiveRecord::Base
   end
 
   def as_json(opts = {})
-    super opts.reverse_merge({
+    result = super opts.reverse_merge({
       include: [:artist, :album, :genre]
+    })
+    result.merge({
+      'art_full' => album.art.url(:full),
+      'art_medium' => album.art.url(:medium),
+      'art_thumb' => album.art.url(:thumb),
+      'art_tiny' => album.art.url(:tiny)
     })
   end
 

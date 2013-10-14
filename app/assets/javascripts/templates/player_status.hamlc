@@ -15,6 +15,9 @@
     - else
       .heading PAUSED
     .artist= App.playerStatus.nowPlaying.get('artist').display_name
+    .album= App.playerStatus.nowPlaying.get('album').display_name
+    .album_art 
+      %img{src: App.playerStatus.nowPlaying.get('art_full')}
     .track= App.playerStatus.nowPlaying.get('display_name')
 
   - if track = App.playerStatus.queue.first()
