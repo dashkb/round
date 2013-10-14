@@ -4,7 +4,14 @@ class Album < ActiveRecord::Base
   belongs_to :artist
   has_many :tracks
 
-  has_attached_file :art, :styles => { :full => ["100%", :png], :medium => ["300x300>", :png], :thumb => ["100x100>", :png], :tiny => ["50x50>", :png] }, :default_url => "/images/:style/missing.png"
+  has_attached_file :art, :styles => { :full => ["100%", :png], :medium => ["300x300>", :png], :thumb => ["100x100>", :png], :tiny => ["50x50>", :png] }, :default_url => "http://placekitten.com/:style_size"
+
+  Paperclip.interpolates :style_size do |attachment, style|
+    return "50/50" if style == :tiny
+    return "100/100" if style == :thumb
+    return "300/300" if style == :medium
+    "500/500"
+  end
 
   validates :name, :artist, presence: true
 
