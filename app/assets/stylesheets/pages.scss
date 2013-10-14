@@ -18,7 +18,7 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
     .panel-heading,
     .panel-body { float: left; width: 625px; height: 100vh; }
     .panel-heading {
-      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg-alt.png') 50% 90px no-repeat;
+      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg.png') 50% 90px no-repeat;
     }  
 
   .panel-body {
@@ -55,6 +55,66 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
         }  
       }
     }
+  } 
+}
+
+/* ==========================================================================
+   Browse Screen
+   ========================================================================== */
+   
+#browse {
+  h1 { width: 280px; height: 37px; background: url('text/headers-choose.png') left top no-repeat; text-indent: -999em; }
+  .page-body { padding-top: 0; }
+
+  .choose-search {
+    padding: 10px; margin-top: 10px; border-top: 1px solid #555; border-bottom: 1px solid #555;
+    .form {
+      .input-group-addon { 
+        background: #444; color: #fff; border: 0; 
+        i.icon-search { font-size: 20px; }  
+      }
+    }
+  }
+
+  .choose-filters {
+    padding: 0 15px 5px; background: #000;
+    .panel {
+      background: #000; border: 0; padding-bottom: 0; margin: 0; border-radius: 0 !important;
+      .panel-heading { 
+        background: #000; color: #fff; border: 0; font-family: "Whitney HTF"; font-weight: 700; font-size: 18px; border: 0 !important; padding-left: 0;
+        .count { font-size: 14px; font-weight: normal; }
+      }
+      .panel-body {
+        height: 35vh; border: 0; border-radius: 0; padding: 0; margin: 0; overflow: scroll; -webkit-overflow-scrolling: touch;
+        .list-group {
+          margin: 0;
+          .list-group-item { 
+            font-family: $helvetican; color: #000; border-radius: 0; border-color: rgba(0,0,0,0.15); border-top: 1px solid rgba(0,0,0,0.15);
+            &:hover, &:focus { @include cursor; }
+            &.active { background: #ff0; font-weight: bold; }
+          }
+        }
+      }
+    }
+    .genres, .artists { float: left; width: 611px; padding: 10px 0; }
+    .genres { 
+      padding-right: 10px; border-radius: 0;
+      .panel-heading { border-radius: 0; }
+      .list-group-item.active { background: #0ff !important; }
+      }
+    .artists { padding-left: 10px; }
   }
   
+  .choose-songs {
+    padding: 5px 15px; background: #000;
+    .panel { border-radius: 0; }
+    .panel-body {
+      border-radius: 0; overflow: scroll; -webkit-overflow-scrolling: touch; height: 45vh;
+      .artist {
+        color: #000;
+      }
+      
+      .empty { font: 36px/420px "Whitney HTF"; font-style: italic; text-transform: lowercase; color: #999; text-align: center; }
+    }
+  }
 }

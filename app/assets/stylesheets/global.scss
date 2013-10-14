@@ -11,12 +11,24 @@
 .btn {
   @include transition;
 	@include buttonize(38px);
-  border: 0; color: rgba(0,0,0,0.8); font-family: "Whitney HTF"; font-weight: 600; text-shadow: 0 1px 0 rgba(255,255,255,.3); box-shadow: none;
-  i { opacity: .3; margin-right: 8px; }
+  border: 0; color: #000; font-family: "Whitney HTF"; font-weight: 600; text-shadow: 0 1px 0 rgba(255,255,255,.3); box-shadow: none;
+  i { opacity: .25; margin-right: 8px; }
   &.big { @include buttonize(80px); font-size: 36px; line-height: 80px; padding: 0 25px; border-radius: 45px; text-shadow: none; }
   &.xbig { @include buttonize(110px); width: 380px; font-size: 50px; line-height: 110px; padding: 0 25px; border-radius: 55px; text-shadow: none; }
   &.green { @include gradient(#56df12,#89ff4f,#4ce800); }
   &.gray { @include gradient(#d9d9d9,#ffffff,#cccccc); }
   &:hover,&:focus { background-image: none; background-color: #00ffff; color: #000; }
-  &:active { position: relative; top: 2px; background-color: #1e9a9a; }
+  &:active { position: relative; top: 1px; background-color: #1e9a9a; }
+}
+
+.page-heading {
+  padding: 7px 0; border-radius: 0; text-align: center; background: #000;
+  h1 { font: 20px "Whitney HTF"; margin: 0; padding: 15px 0; display: inline-block; font-weight: 800; text-transform: uppercase; color: #000; }
+  &.cyan { background: #00ffff; }
+  &.yellow { background: #ffff00; }
+  &.magenta { background: #ff00ff; }
+  &.white { background: #fff; }
+}
+.page-body {
+  padding: 10px 15px; background: #444;
 }

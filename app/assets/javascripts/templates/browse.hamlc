@@ -1,17 +1,21 @@
-.row
-  .form
-    .input-group.filter
-      %span.input-group-addon
-        %i.icon-search
-        %i.icon-spinner.icon-spin.hide
-      %input.form-control.filter{type: 'text', placeholder: 'Filter All The Things'}
-      %span.input-group-addon.reset.text-danger
-        %i.icon-remove
-        Reset Everything
+.page-heading
+  %h1.choose Choose the Music
 
-.row
-  .genres
-  .artists
-
-.row
-  .tracks
+.page-body
+  .row.choose-search
+    .form
+      .input-group.filter
+        %span.input-group-addon
+          %i.icon-search
+          %i.icon-spinner.icon-spin.hide
+        %input.form-control.filter{type: 'text', placeholder: 'Filter All The Things'}
+        %span.input-group-addon.reset.text-danger
+          %i.icon-remove
+          Reset Everything
+  
+  .row.choose-filters
+    .genres
+    .artists
+  
+  .row.choose-songs
+    .tracks
