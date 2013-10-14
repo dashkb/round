@@ -13,10 +13,6 @@
 
                 %ul.tracks.list-group
                   - _.each @tracksForAlbum(album), (track) =>
-                    %li.track.list-group-item{data-track-id: track.id}
-                      %span.title!= track.name
-                      - if App.Track::queueableById(track.id)
-                        %button.btn.btn-primary Queue
-
+                    != JST['track'] model: (new App.Track track)
     - else
       .empty No tracks here, do a search or something
