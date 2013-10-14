@@ -5,8 +5,8 @@
   .btn-group.actions
     - if @model.queueable()
       %button.btn.btn-primary.queue-button Queue
-    - if TryMeSuckaz.userIsTim
-      %button.btn.btn-default.unqueue-button
+    - if TryMeSuckaz.userIsTim && !@model.queueable()
+      %button.btn.btn-default.unqueue
         %i.icon-remove
       %button.btn.btn-default.move-up
         %i.icon-arrow-up
@@ -14,3 +14,5 @@
         %i.icon-arrow-down
       %button.btn.btn-default.play-now
         %i.icon-play
+      %button.btn.btn-default.rocket
+        %i.icon-rocket
