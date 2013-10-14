@@ -2,7 +2,7 @@ window.App =
   idleTimeout: 60000
   pollInterval: 7000
   resetTimeout: 5000
-  queueMax: 3
+  queueMax: 10
   start: ->
     log.setLevel log.levels.INFO
     @csrf_token = ($ 'meta[name="csrf-token"]').attr('content')
