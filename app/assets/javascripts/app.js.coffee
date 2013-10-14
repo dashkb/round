@@ -31,6 +31,7 @@ window.App =
         heading: 'Play Queue'
         emptyMessage: 'Play Queue is Empty!'
       tim: new @TimView el: ($ '#tim')
+      missing_albums: new @MissingAlbumsView el: ($ '#missingAlbums')
       justQueued: new @JustQueuedView el: ($ '#justQueued')
 
     _.each @subViews, (view) -> view.render()

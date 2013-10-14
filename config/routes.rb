@@ -6,6 +6,8 @@ Round::Application.routes.draw do
   get '/timify', to: 'tim#timify'
   get '/untimify', to: 'tim#untimify'
   get '/tim/things', to: 'tim#things'
+  get '/tim/missing_albums_data', to: 'tim#missing_albums_data'
+  post '/tim/art_upload/:id', to: 'tim#art_upload'
 
   get '/player/status', to: 'player#status'
 

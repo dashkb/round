@@ -1,0 +1,12 @@
+.panel.panel-danger
+  .panel-heading Album Art Fixer Doodad
+  %div{id: "fixAlbumArtContainer", style: "height: 800px; overflow: scroll"}
+    %ul
+      - _.each @model.attributes.albums, (album, key) =>
+        %li
+          %div{style: "margin: 5px; border: 1px solid gray; padding: 10px"}
+            %span= "#{album.artist.name} - #{album.name}"
+            %form.form-inline{action: "/tim/art_upload/#{album.id}", method: "post", enctype: "multipart/form-data", style: "display: inline"}
+              = @form_token
+              %input{id: "album_art", name: "album[art]", type: "file", style: "display: inline"}
+              %input{type: "submit"}
