@@ -7,3 +7,11 @@
 */
 
 @import "mixins.scss";
+
+.btn {
+  border: 0; color: #000; font-family: "Whitney HTF"; font-weight: 600; text-shadow: 0 1px 0 rgba(255,255,255,.3); box-shadow: none;
+  i { opacity: .4; margin-right: 8px; }
+  &.big { font-size: 42px; line-height: 80px; padding: 0 25px; border-radius: 45px; }
+  &.green { @include gradient(#56df12,#89ff4f,#3aaa03); }
+  &.gray { @include gradient(#d1d1d1,#f6f6f6,#cccccc); }
+}

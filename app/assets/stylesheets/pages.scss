@@ -11,3 +11,28 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
 /* ==========================================================================
    Idle Screen
    ========================================================================== */
+   
+#idle {
+  .panel {
+    border: 0; margin: 0; padding: 0; 
+    .panel-heading,
+    .panel-body { float: left; width: 50%; height: 100vh; }
+    .panel-heading {
+      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg-alt.png') 15% 15% no-repeat;
+    }  
+
+  .panel-body {
+    position: relative; padding-bottom: 250px;
+    .player {
+      background: #fff;
+      
+      }
+    
+    .buttons {
+      position: absolute; bottom: 0; right: 0; height: 250px; text-align: center;
+      .btn { margin-right: 15px; }  
+      }
+    }
+  }
+  
+}

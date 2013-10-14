@@ -8,9 +8,9 @@
 
 @import "mixins.scss";
 
-html, body {
-  height: 100vh;
-  overflow:hidden;
+html, body { 
+  height: 100vh; overflow: hidden; background: #000; -webkit-font-smoothing: antialiased;
+  a { cursor: hand; cursor: pointer; }
 }
 
 body {

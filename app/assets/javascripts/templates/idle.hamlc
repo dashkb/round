@@ -1,6 +1,12 @@
 .panel.panel-default
   .panel-heading Circle Camp Music
   .panel-body
-    != JST['player_status']()
-    .btn.btn-primary.btn-pick Pick Songs
-    .btn.btn-success.btn-queue See the Queue
+    .player
+      != JST['player_status']()
+    .buttons
+      .btn.btn-primary.btn-pick.big.green 
+        %i.icon-music 
+        Pick Songs
+      .btn.btn-success.btn-queue.big.gray 
+        %i.icon-list-ol 
+        See the Queue
