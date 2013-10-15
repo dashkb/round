@@ -11,6 +11,8 @@
         %i.icon-fast-forward
     %button.btn.btn-primary.go-to-tim{data-action: 'none'}
       %i.icon-wrench
+    %button.btn.btn-primary.hard-refresh{data-action: 'none', onclick: 'window.location.href = "/";'}
+      %i.icon-refresh
   .now-playing
     - if App.playerStatus.state == 'playing'
       .heading Now Playing
