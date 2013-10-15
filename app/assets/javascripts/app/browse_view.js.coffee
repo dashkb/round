@@ -48,6 +48,7 @@ class App.BrowseView extends App.View
 
   activate: (e, thing) ->
     e.stopPropagation()
+    ($ 'span.reset').fadeIn()
     if thing.type == 'artist'
       if thing.id == 'all'
         @artist = undefined
@@ -86,6 +87,7 @@ class App.BrowseView extends App.View
   filterTracks: ->
     _.tap new $.Deferred, (p) =>
       @ajax?.abort()
+      @unspin()
       if @artist
         @ajax = $.get "/browse/artists/#{@artist.get 'id'}.json"
         @ajax.success (data) =>
@@ -98,7 +100,9 @@ class App.BrowseView extends App.View
         p.resolve()
 
   queryChanged: _.throttle (e) ->
+    ($ 'span.reset').fadeIn()
     @ajax?.abort()
+    @unspin()
 
     val = ($ e.target).val()
     @query = if val.length >= 3 then val else undefined
@@ -118,10 +122,11 @@ class App.BrowseView extends App.View
           @trackView.applyData data
     else
       @spin()
+      @trackView.applyData undefined
       _.each [@trackView, @artistView, @genreView], (view) =>
         view.applyFilter undefined
+
       @unspin()
-      @render()
 
   , 1000, leading: false
 
@@ -137,6 +142,8 @@ class App.BrowseView extends App.View
   resetEverything: ->
     @query = undefined
     @ajax?.abort()
+    @unspin()
     @artist = undefined
     @genre = undefined
+    ($ 'span.reset').fadeOut()
     @render()

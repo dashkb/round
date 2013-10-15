@@ -9,7 +9,7 @@
           %i.icon-search
           %i.icon-spinner.icon-spin.hide
         %input.form-control.filter{type: 'text', placeholder: 'Filter All The Things'}
-        %span.input-group-addon.reset.text-danger
+        %span.input-group-addon.reset.text-danger{style: 'display:none'}
           %i.icon-remove
           Reset Everything
   
