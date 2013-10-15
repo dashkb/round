@@ -9,8 +9,20 @@ class App.BrowseView extends App.View
   initialize: ->
     @genres  = App.genres
     @artists = App.artists
+    window.carousel = @$carousel
 
-    @on 'show', => @trackView.render()
+    @on 'show', =>
+      @trackView.render()
+      @$carousel ||= (@$ '.carousel')
+      if !@caurouselStarted
+        log.info "Starting carousel"
+        @carouselStarted = true
+        @$carousel.carousel(interval: 10000, wrap: true)
+      @$carousel.carousel 'cycle'
+
+    @on 'hide', =>
+      @$carousel.carousel 'pause'
+
 
   render: ->
     _.tap super(), =>

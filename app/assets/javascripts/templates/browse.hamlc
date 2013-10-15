@@ -1,5 +1,15 @@
 .page-heading
-  %h1.choose Choose the Music
+  .carousel.slide
+    .carousel-inner
+      .item.active
+        %h1.choose
+      .item
+        %h1 It's All One Circle
+      .item
+        %h1 Be nice to me -- I lag sometimes
+      .item
+        %h1 Look out! Behind you!
+
 
 .page-body
   .row.choose-search
@@ -12,10 +22,10 @@
         %span.input-group-addon.reset.text-danger{style: 'display:none'}
           %i.icon-remove
           Reset Everything
-  
+
   .row.choose-filters
     .genres
     .artists
-  
+
   .row.choose-songs
     .tracks

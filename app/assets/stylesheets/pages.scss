@@ -63,7 +63,9 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
    ========================================================================== */
    
 #browse {
-  h1 { width: 280px; height: 37px; background: url('text/headers-choose.png') left top no-repeat; text-indent: -999em; }
+  .page-heading { margin: 0 auto;}
+  h1 { width: 280px; height: 37px; margin: 0 auto; color: white }
+  h1.choose { background: url('text/headers-choose.png') left top no-repeat; }
   .page-body { padding-top: 0; }
 
   .choose-search {
