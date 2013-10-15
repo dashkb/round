@@ -6,8 +6,9 @@ class App.JustQueuedView extends App.View
     'click .btn-success': 'doneBrowsing'
 
   render: ->
-    @templateHelpers =
-      queueMax: App.playerStatus?.queueMaxLock || App.queueMax
+    _.tap super(), =>
+      @templateHelpers =
+        queueMax: App.playerStatus?.queueMaxLock || App.queueMax
 
   doneBrowsing: ->
     name = (@$ '.name input').val()

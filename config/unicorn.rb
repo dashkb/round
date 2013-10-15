@@ -1,3 +1,3 @@
-worker_processes 1
+worker_processes 2
 listen ENV['PORT']
-preload_app false
+preload_app true
