@@ -66,15 +66,15 @@ class App.BrowseView extends App.View
       @filterArtists()
 
   filterArtists: ->
-    if @query
-      @artists = new Backbone.Collection (
-        App.artists.filter (artist) =>
-          artist.get('name').indexOf(@query) != -1
-      )
-    else if @genre
+    if @genre
       @artists = new Backbone.Collection (
         App.artists.filter (artist) =>
           artist.get('genre_ids').indexOf(@genre.id) != -1
+      )
+    else if @query
+      @artists = new Backbone.Collection (
+        App.artists.filter (artist) =>
+          artist.get('name').indexOf(@query) != -1
       )
     else
       @artists = App.artists
