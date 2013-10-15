@@ -33,7 +33,8 @@ class App.TrackView extends App.View
     'click button.btn-primary': 'queueTrack'
 
   queueTrack: (event) ->
-    id    = $(event.target).parent().parent().data('track-id')
+    event.stopPropagation()
+    id    = $(event.currentTarget).parent().parent().data('track-id')
     track = _.find @data.tracks, (track) -> track.id == id
     App.browseSession.push new App.Track(track)
     page '/justQueued'
