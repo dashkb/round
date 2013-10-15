@@ -21,7 +21,7 @@
         %img{src: App.playerStatus.nowPlaying.get('art_full')}
     .track= App.playerStatus.nowPlaying.get('display_name')
 
-  - if track = App.playerStatus.queue.first()
+  - if track = App.playerStatus.queue.first() && false
     .next
       .heading Next Up
       .artist= track.get('artist').display_name
