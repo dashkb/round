@@ -21,7 +21,8 @@ module PlayerService
     return {
       now_playing: (Track.find(reply['now_playing']) rescue nil),
       queue: reply['queue'].map { |id| Track.find(id) rescue nil }.compact,
-      state: reply['state']
+      state: reply['state'],
+      whitelist: QueueService.read_whitelist
     }
   end
 

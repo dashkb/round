@@ -11,7 +11,7 @@
   .panel.panel-primary
     .panel-heading Tim Stuff
     .panel-body
-      != JST['player_status']()
+      != JST['player_status'](art: false)
       .list-group
         .list-group-item
           %a{href: "/tim/missing_albums"}= "Fix album art"
@@ -19,3 +19,14 @@
           .list-group-item{class: key}
             %span.key= "#{key}: "
             %span.value= value
+
+      %h4 Whitelist
+      %button.btn.btn-danger.whitelist-clear Clear
+      .list-group
+        - _.each App.playerStatus?.whitelist, (value, key) =>
+          .list-group-item
+            = "#{key}s"
+            .list-group.indent
+              - _.each value, (thing) =>
+                .list-group-item
+                  != thing.name

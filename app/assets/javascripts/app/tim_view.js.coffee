@@ -23,3 +23,10 @@ class App.TimView extends App.View
       @render()
     .then null, (err) =>
       log.error "ERROR FETCHING DATA" # TODO
+
+  events: ->
+    'click .whitelist-clear': 'clearWhitelist'
+
+  clearWhitelist: ->
+    $.post '/tim/whitelist',
+      clear: true

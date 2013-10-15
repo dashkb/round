@@ -22,6 +22,27 @@ class TimController < ApplicationController
     end
   end
 
+  def whitelist
+    list = nil
+
+    if params[:clear].present?
+      list = {}
+    elsif params[:remove].present?
+      list = QueueService.read_whitelist
+      list[params[:key]] ||= []
+      list[params[:key]].reject! { |hash|
+        hash['id'] == params[:id] }
+    else
+      list = QueueService.read_whitelist
+      list[params[:key]] ||= []
+      list[params[:key]] << params.slice(:name, :id)
+    end
+
+    QueueService.write_whitelist list
+
+    render json: list.to_json
+  end
+
   def missing_albums_data
     if session[:tim]
       albums = Album.joins(:artist).where('art_file_name IS NULL').order('artists.name, name').limit(100).all

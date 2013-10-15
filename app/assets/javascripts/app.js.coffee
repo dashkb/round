@@ -88,6 +88,7 @@ window.App =
         queue: new Backbone.Collection response.queue,
           model: @Track
         state: response.state
+        whitelist: response.whitelist
       @trigger 'player status update'
 
   setupAjax: ->
@@ -111,5 +112,9 @@ window.App =
         @$spinner.removeClass('icon-spin icon-spinner').addClass('icon-usd')
       , 500
 
+
+  isWhitelisted: (type, item) ->
+    _.any @playerStatus?.whitelist?[type], (thing) ->
+      return parseInt(thing.id) == item.id
 
 _.extend App, Backbone.Events

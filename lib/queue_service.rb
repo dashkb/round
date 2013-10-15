@@ -1,6 +1,7 @@
 module QueueService
   QUEUE = 'queue:main'
   SETTINGS = 'app-settings'
+  WHITELIST = 'whitelist'
 
   # responsible for returning a track to play
   def self.next
@@ -30,13 +31,30 @@ module QueueService
     REDIS.lrange(QUEUE, 0, -1)
   end
 
+  def self.read_whitelist
+    JSON.parse(REDIS.get(WHITELIST) || '{}')
+  end
+
+  def self.write_whitelist(hash)
+    REDIS.set WHITELIST, hash.to_json
+  end
+
   def self.auto_select
     REDIS.hmset(SETTINGS,
       'queue mode', 'auto',
       'queue length', 0
     )
 
-    Track.offset(rand(Track.count)).first
+    sql = read_whitelist.reduce("") do |sql, pair|
+      ids = pair.last.map { |item| item['id'] }.join ','
+      unless ids.empty?
+        sql += ' or ' if sql != ''
+        sql += "#{pair.first}_id IN (#{ids})"
+      end
+    end
+
+    tracks = Track.where(sql)
+    tracks.offset(rand(tracks.count)).first
   end
 
   def self.swap(opts)

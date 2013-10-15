@@ -15,6 +15,8 @@ class App.CollectionView extends App.View
   events:
     'click .item': 'itemClicked'
     'click .track': 'trackClicked'
+    'click .whitelist': 'whitelist'
+    'click .blacklist': 'blacklist'
 
   render: ->
     _.tap super(), =>
@@ -48,4 +50,20 @@ class App.CollectionView extends App.View
     if @activeId
       (@$ ".list-group-item[data-id='#{@activeId}']").click()
 
+  whitelist: (e) ->
+    e.stopPropagation()
+    $item = ($ e.currentTarget).parent()
+    $.post '/tim/whitelist',
+      key: $item.data 'type'
+      id: $item.data 'id'
+      name: $item.data 'name'
+
+  blacklist: (e) ->
+    e.stopPropagation()
+    $item = ($ e.currentTarget).parent()
+    $.post '/tim/whitelist',
+      remove: true
+      key: $item.data 'type'
+      id: $item.data 'id'
+      name: $item.data 'name'
 
