@@ -77,13 +77,11 @@ window.App =
     @lastTouchAt = Date.now()
 
   checkLastTouch: ->
-    if TryMeSuckaz.userIsTim
-      window.location.href = "/untimify"
-
-    return if @subViews.idle.shown
-
     if Date.now() - @lastTouchAt > @idleTimeout
-      page '/idle'
+      if TryMeSuckaz.userIsTim
+        window.location.href = "/untimify"
+      else
+        page '/idle' unless @subViews.idle.shown
 
   getPlayerStatus: ->
     $.get "/player/status?now=#{Date.now()}", (response) =>
