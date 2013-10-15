@@ -58,6 +58,7 @@ window.App =
     ($ '#back-button').click -> page '/idle'
     ($ 'body').on 'click', '.btn-group.player button', (e) =>
       action = ($ e.currentTarget).data 'action'
+      return if action == 'none'
       $.post "/player/#{action}"
       ($ 'body .btn-group.player').hide()
 
@@ -83,12 +84,17 @@ window.App =
   getPlayerStatus: ->
     $.get "/player/status?now=#{Date.now()}", (response) =>
       nowPlaying = if response.now_playing? then new Backbone.Model(response.now_playing) else null
+      queueMaxLock = parseInt(response.queue_max_lock)
+      if isNaN(queueMaxLock)
+        queueMaxLock = undefined
+
       @playerStatus =
         nowPlaying: nowPlaying
         queue: new Backbone.Collection response.queue,
           model: @Track
         state: response.state
         whitelist: response.whitelist
+        queueMaxLock: queueMaxLock
       @trigger 'player status update'
 
   setupAjax: ->

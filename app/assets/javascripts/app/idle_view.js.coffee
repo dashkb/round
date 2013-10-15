@@ -3,6 +3,7 @@ class App.IdleView extends App.View
   events:
     'click .btn-pick': 'browseClicked'
     'click .btn-queue': 'queueClicked'
+    'click .go-to-tim': -> page '/tim'
 
   browseClicked: (e) ->
     page '/browse'

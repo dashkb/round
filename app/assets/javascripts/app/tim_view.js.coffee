@@ -26,7 +26,16 @@ class App.TimView extends App.View
 
   events: ->
     'click .whitelist-clear': 'clearWhitelist'
+    'click button.lock': 'lockQueueMax'
+    'click .untimify': (e) ->
+      e.stopPropagation()
+      e.preventDefault()
+      window.location.href = '/untimify'
 
   clearWhitelist: ->
     $.post '/tim/whitelist',
       clear: true
+
+  lockQueueMax: ->
+    $.post '/tim/lock_queue_max',
+      new_max: $('input.queue-max-lock').val()

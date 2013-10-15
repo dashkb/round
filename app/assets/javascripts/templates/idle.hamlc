@@ -4,9 +4,10 @@
     .player
       != JST['player_status']()
     .buttons
-      .btn.btn-primary.btn-pick.xbig.green 
-        %i.icon-music 
-        Pick Songs
-      .btn.btn-success.btn-queue.big.gray 
-        %i.icon-list-ol 
+      - if App.playerStatus?.queueMaxLock != 0 || TryMeSuckaz.userIsTim
+        .btn.btn-primary.btn-pick.xbig.green
+          %i.icon-music
+          Pick Songs
+      .btn.btn-success.btn-queue.big.gray
+        %i.icon-list-ol
         See the Queue

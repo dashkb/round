@@ -98,4 +98,20 @@ module QueueService
     REDIS.lpush QUEUE, track_id
     PlayerService.skip
   end
+
+  def self.lock_max(new_max)
+    if new_max.present?
+      REDIS.hset(SETTINGS, 'queue-max-lock', new_max)
+    else
+      unlock_max
+    end
+  end
+
+  def self.unlock_max
+    REDIS.hdel(SETTINGS, 'queue-max-lock')
+  end
+
+  def self.max_lock
+    REDIS.hget(SETTINGS, 'queue-max-lock')
+  end
 end

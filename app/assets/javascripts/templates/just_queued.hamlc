@@ -16,7 +16,7 @@
 
     .actions
       %button.btn.btn-success Queue Those Motherfuckers
-      - if App.browseSession?.length < App.queueMax
+      - if App.browseSession?.length < @queueMax || TryMeSuckaz.userIsTim
         %button.btn.btn-primary Keep Searching
 
 .panel.panel-default.done.hide

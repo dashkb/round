@@ -62,4 +62,10 @@ class TimController < ApplicationController
     end
     redirect_to '/tim/missing_albums'
   end
+
+  def lock_queue_max
+    QueueService.lock_max params[:new_max]
+
+    render json: {status: 'ok'}
+  end
 end

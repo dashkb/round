@@ -9,6 +9,7 @@ Round::Application.routes.draw do
   get '/tim/missing_albums_data', to: 'tim#missing_albums_data'
   post '/tim/art_upload/:id', to: 'tim#art_upload'
   post '/tim/whitelist', to: 'tim#whitelist'
+  post '/tim/lock_queue_max', to: 'tim#lock_queue_max'
 
   get '/player/status', to: 'player#status'
 

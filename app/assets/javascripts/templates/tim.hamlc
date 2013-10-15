@@ -14,6 +14,14 @@
       != JST['player_status'](art: false)
       .list-group
         .list-group-item
+          %button.btn.btn-primary.untimify Untimify
+        .list-group-item
+          = "Max Set Length: #{App.queueMax}"
+          %br
+          - placeholder = if App.playerStatus?.queueMaxLock? then App.playerStatus.queueMaxLock else "Auto"
+          %input.queue-max-lock{placeholder: placeholder, size: 4}
+          %button.btn.btn-primary.lock= if App.playerStatus?.queueMaxLock? then "Unlock" else "Lock"
+        .list-group-item
           %a{href: "/tim/missing_albums"}= "Fix album art"
         - _.each @model.attributes, (value, key) =>
           .list-group-item{class: key}

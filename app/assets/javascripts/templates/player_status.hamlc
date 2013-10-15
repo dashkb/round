@@ -1,6 +1,6 @@
 - if App.playerStatus?
-  - if TryMeSuckaz.userIsTim
-    .btn-group.player
+  .btn-group.player
+    - if TryMeSuckaz.userIsTim
       - if App.playerStatus.state == 'playing'
         %button.btn.btn-warning.pause{data-action: 'pause'}
           %i.icon-pause
@@ -9,6 +9,8 @@
           %i.icon-play
       %button.btn.btn-primary.skip{data-action: 'skip'}
         %i.icon-fast-forward
+    %button.btn.btn-primary.go-to-tim{data-action: 'none'}
+      %i.icon-wrench
   .now-playing
     - if App.playerStatus.state == 'playing'
       .heading Now Playing
