@@ -77,7 +77,11 @@ window.App =
     @lastTouchAt = Date.now()
 
   checkLastTouch: ->
+    if TryMeSuckaz.userIsTim
+      window.location.href = "/untimify"
+
     return if @subViews.idle.shown
+
     if Date.now() - @lastTouchAt > @idleTimeout
       page '/idle'
 
