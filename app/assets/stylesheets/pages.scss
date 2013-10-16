@@ -16,9 +16,9 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
   .panel {
     border: 0; margin: 0; padding: 0; 
     .panel-heading,
-    .panel-body { float: left; width: 625px; height: 100vh; }
+    .panel-body { float: left; width: 512px; height: 100vh; }
     .panel-heading {
-      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg.png') 50% 90px no-repeat;
+      background: none; border: 0; text-indent: -9999em; background: url('text/cymk-lg.png') 50% 40px no-repeat;
     }  
 
   .panel-body {
@@ -34,19 +34,19 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
           }  
         }
       .now-playing {
-        position: absolute; top: 95px; left: 60px; width: 500px; height: 500px;
+        position: absolute; top: 120px; left: 25px; width: 470px; height: 470px;
         .heading { font: 20px "Whitney HTF"; font-weight: 600; text-transform: uppercase; position: absolute; top: -40px; color: #eee; } 
         .album { display: none; }
-        .artist, .track { position: absolute; bottom: 0; left: 0; padding-left: 25px; z-index: 10; font-family: "Whitney HTF"; background: rgba(0,0,0,0.85); width: 500px; font: 18px/25px "Whitney HTF"; text-shadow: 0 1px 0 rgba(0,0,0,0.2); }
+        .artist, .track { position: absolute; bottom: 0; left: 0; padding-left: 25px; z-index: 10; font-family: "Whitney HTF"; background: rgba(0,0,0,0.85); width: 470px; font: 18px/25px "Whitney HTF"; text-shadow: 0 1px 0 rgba(0,0,0,0.2); }
         .track { padding-bottom: 15px; font-style: italic; }
         .artist { bottom: 40px; padding-top: 15px; font-size: 28px; line-height: 40px; font-weight: 600; border-top: 1px solid rgba(255,255,255,0.2); }
         
-        .album_art img { position: absolute; top: 0; left: 0; width: 500px; height: 500px; z-index: 1; }     
+        .album_art img { position: absolute; top: 0; left: 0; width: 470px; height: 470px; z-index: 1; }     
         }
       }
     
     .buttons {
-      position: absolute; bottom: 40px; left: -625px; width: 625px; height: 250px; text-align: center;
+      position: absolute; bottom: 25px; left: -567px; width: 567px; height: auto; text-align: center;
       .btn { 
         margin-right: 15px; 
         &.btn-primary { 
@@ -69,7 +69,7 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
   .page-body { padding-top: 0; }
 
   .choose-search {
-    padding: 10px; margin-top: 10px;
+    padding: 10px; margin-top: 0;
     .form {
       .input-group-addon { 
         background: #444; color: #fff; border: 0; 
@@ -99,31 +99,30 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
         }
       }
     }
-    .genres, .artists { float: left; width: 625px; padding: 10px 0; }
+    .genres, .artists { float: left; width: 495px; padding: 10px 0; }
     .genres { 
       padding-right: 10px; border-radius: 0;
       .panel-heading { border-radius: 0; }
       .list-group-item.active { background: #0ff !important; }
       }
     .artists { padding-left: 10px; }
-
   }
   
   .choose-songs {
     padding: 5px 15px; background: #000;
     .panel { border-radius: 0; }
     .panel-body {
-      border-radius: 0; overflow: scroll; -webkit-overflow-scrolling: touch; height: 43vh;
+      border-radius: 0; overflow: scroll; -webkit-overflow-scrolling: touch; height: 44vh;
       .artist {
-        color: #000; overflow: hidden; position: relative; padding-left: 175px;
-        .name { position: absolute; left: 0; top: 0; width: 175px; padding: 15px 25px 0 0; text-align: right; font: 26px/32px "Whitney HTF"; font-weight: bold; }
+        color: #000; overflow: hidden; position: relative; padding-left: 195px;
+        .name { position: absolute; left: 0; top: 0; width: 195px; padding: 15px 25px 0 0; text-align: right; font: 24px/30px "Whitney HTF"; font-weight: bold; }
         .album { 
-          float: left; width: 990px; padding: 15px 15px 15px 25px; background: #ddd; font: 26px/32px "Whitney HTF"; 
+          float: left; width: 750px; padding: 15px 15px 15px 25px; background: #ddd; font: 24px/30px "Whitney HTF"; 
           .meta { float: left; width: 300px;
             .title { margin-bottom: 15px; }
           }
           .tracks { 
-            float: left; width: 650px; padding-left: 25px; font: 14px $helvetican; 
+            float: left; width: 400px; padding-left: 25px; font: 14px $helvetican; 
             .track {
               position: relative; padding: 15px;
               .track-name { font: 14px $helvetican; text-transform: capitalize;  }
@@ -136,7 +135,41 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
         }
       }
       
-      .empty { font: 36px/420px "Whitney HTF"; font-style: italic; text-transform: lowercase; color: #999; text-align: center; }
+      .empty { font: 36px/260px "Whitney HTF"; font-style: italic; text-transform: lowercase; color: #999; text-align: center; }
+    }
+  }
+}
+
+/* ==========================================================================
+   Just Queued
+   ========================================================================== */
+
+#justQueued {
+  .page-heading { margin: 0 auto;}
+  h1 { width: 151px; height: 37px; margin: 0 auto; color: white }
+  h1.cymk { background: url('text/headers-cymk.png') left top no-repeat; }
+  .panel {
+    margin: 0 280px; background: none; border: 0; border-radius: none;
+    .panel-heading { padding: 40px 0 10px 0; font: 24px "Whitney HTF"; font-weight: 600; color: #fff; border: none; background: none;  }   
+    .panel-body {
+      background: #333;
+      .tracks { 
+        padding: 0; box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        li { 
+          margin: 0; padding: 10px; list-style: none; font: 16px "Whitney HTF"; border-bottom: 1px solid rgba(0,0,0,0.2); text-transform: capitalize; background: #eee;
+          }
+        .artist, .track { display: inline; }
+        .artist:after { content: ' - '; }
+        .artist { font-weight: 600; }
+        .track { font-style: italic; }
+        }
+      .name {
+        padding: 15px 0;
+        span { display: block; padding: 0 0 3px 0; color: #eee; font-size: 14px; small { color: #999; font-size: 12px; } }     
+        input { font-size: 16px; padding: 5px; border-radius: 3px; box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset; border: 0; } 
+        }
+      .actions { float: left; padding: 20px 0 0; clear: both; .btn-success { margin-right: 10px; } }      
+      &.text { color: #fff; padding: 20px 25px; font: 18px/24px "Whitney HTF"; }
     }
   }
 }

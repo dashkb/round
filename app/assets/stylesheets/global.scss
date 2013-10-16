@@ -13,8 +13,9 @@
 	@include buttonize(38px);
   border: 0; color: #000; font-family: "Whitney HTF"; font-weight: 600; text-shadow: 0 1px 0 rgba(255,255,255,.3); box-shadow: none;
   i { opacity: .25; margin-right: 8px; }
-  &.big { @include buttonize(80px); font-size: 36px; line-height: 80px; padding: 0 25px; border-radius: 45px; text-shadow: none; }
-  &.xbig { @include buttonize(110px); width: 380px; font-size: 50px; line-height: 110px; padding: 0 25px; border-radius: 55px; text-shadow: none; }
+  &.med { @include buttonize(50px); font-size: 20px; line-height: 50px; padding: 0 15px; border-radius: 30px; text-shadow: none; i { margin-right: 4px; } }
+  &.big { @include buttonize(70px); font-size: 32px; line-height: 70px; padding: 0 25px; border-radius: 45px; text-shadow: none; }
+  &.xbig { @include buttonize(90px); width: 340px; font-size: 44px; line-height: 90px; padding: 0 15px; border-radius: 55px; text-shadow: none; }
   &.green { @include gradient(#56df12,#89ff4f,#4ce800); }
   &.gray { @include gradient(#d9d9d9,#ffffff,#cccccc); }
   &.square { font-size: 20px; padding: 0 8px; line-height: 36px; height: 32px; border-radius: 0; i { margin: 0; opacity: 1; } }

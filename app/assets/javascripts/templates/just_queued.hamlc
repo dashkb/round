@@ -1,13 +1,20 @@
+.page-heading
+  %h1.cymk
+
 .panel.panel-default.current
   .panel-heading Current Session
   .panel-body
     %ul.tracks
       - _.each App.browseSession, (track) ->
-        .artist= track.get('artist').name
-        .track= track.get 'name'
+        %li
+          .artist= track.get('artist').name
+          .track= track.get 'name'
 
     .name
-      %span Who are you?
+      %span 
+        Who are you?
+        %small
+          (optional)
       %input{type: 'text'}
       -#.selections.hide
         -#%ul.names
@@ -15,12 +22,16 @@
             -#%li.name= name
 
     .actions
-      %button.btn.btn-success Queue Those Motherfuckers
+      %button.btn.btn-success.green.med 
+        %i.icon-ok
+        Queue That Shit
       - if App.browseSession?.length < @queueMax || TryMeSuckaz.userIsTim
-        %button.btn.btn-primary Keep Searching
+        %button.btn.btn-primary.gray.med 
+          %i.icon-search
+          Keep Searching
 
 .panel.panel-default.done.hide
   .panel-heading Thanks!
-  .panel-body
+  .panel-body.text
     You're done, thanks for your help keeping the music awesome.
     This thing will reset in a couple of seconds.
