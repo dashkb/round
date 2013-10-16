@@ -22,13 +22,13 @@
             -#%li.name= name
 
     .actions
-      %button.btn.btn-success.green.med 
-        %i.icon-ok
-        Queue That Shit
       - if App.browseSession?.length < @queueMax || TryMeSuckaz.userIsTim
         %button.btn.btn-primary.gray.med 
           %i.icon-search
           Keep Searching
+      %button.btn.btn-success.green.med 
+        %i.icon-ok
+        Queue That Shit
 
 .panel.panel-default.done.hide
   .panel-heading Thanks!

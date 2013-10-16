@@ -71,11 +71,15 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
   .choose-search {
     padding: 10px; margin-top: 0;
     .form {
+      position: relative;
       .input-group-addon { 
-        background: #444; color: #fff; border: 0; 
+        background-color: #444; color: #fff; border: 0; 
         i.icon-search { font-size: 20px; }  
         cursor: pointer;
+        &.reset { position: absolute; top: 0; right: 0; width: auto; line-height: 24px; height: 34px; border-radius: 0; }
       }
+      input { border-radius: 3px; box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset; border: 0; }
+      /*reset text-danger*/
     }
   }
 
@@ -148,6 +152,7 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
   .page-heading { margin: 0 auto;}
   h1 { width: 151px; height: 37px; margin: 0 auto; color: white }
   h1.cymk { background: url('text/headers-cymk.png') left top no-repeat; }
+  
   .panel {
     margin: 0 280px; background: none; border: 0; border-radius: none;
     .panel-heading { padding: 40px 0 10px 0; font: 24px "Whitney HTF"; font-weight: 600; color: #fff; border: none; background: none;  }   
@@ -162,14 +167,42 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
         .artist:after { content: ' - '; }
         .artist { font-weight: 600; }
         .track { font-style: italic; }
-        }
+      }
       .name {
         padding: 15px 0;
         span { display: block; padding: 0 0 3px 0; color: #eee; font-size: 14px; small { color: #999; font-size: 12px; } }     
         input { font-size: 16px; padding: 5px; border-radius: 3px; box-shadow: 0 2px 3px rgba(0,0,0,0.2) inset; border: 0; } 
-        }
-      .actions { float: left; padding: 20px 0 0; clear: both; .btn-success { margin-right: 10px; } }      
-      &.text { color: #fff; padding: 20px 25px; font: 18px/24px "Whitney HTF"; }
+      }
+      .actions { 
+        float: left; padding: 20px 0 0; clear: both; width: 100%;
+        .btn-success { margin-right: 10px; } 
+        .btn.gray { float: right; } 
+      }      
+    }
+    &.done {
+      text-align: center;
+      .text { color: #fff; padding: 20px 25px; font: 18px/24px "Whitney HTF"; }
+    }
+  }
+}
+
+/* ==========================================================================
+   Queue
+   ========================================================================== */
+
+#queue {
+   background: url('text/headers-cymk.png') 50% 15px no-repeat;
+    }
+
+  .panel {
+    padding-top: 35px; margin: 0 280px; background: none; border: 0; border-radius: none;
+    .panel-heading { padding: 40px 0 10px 0; font: 24px "Whitney HTF"; font-weight: 600; color: #fff; border: none; background: none; .count { font-size: 16px; color: #ddd; font-weight: normal; }  }   
+    .panel-body {
+      background: #333; padding-bottom: 0;
+      .list-group { 
+        .list-group-item { border-radius: 0; }
+        .track-name { text-transform: capitalize; }
+      }    
     }
   }
 }
@@ -177,3 +210,14 @@ _/        _/    _/    _/_/_/  _/_/_/_/  _/_/_/
 #tim {
   color: black;
 }
+
+/* ==========================================================================
+   Retina Images
+   ========================================================================== */
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  #idle .panel .panel-heading { background-image: url('text/cymk-lg@2x.png'); background-size: 372px 364px; }
+  #browse h1.choose { background-image: url('text/headers-choose@2x.png'); background-size: 280px 37px; }
+  #justQueued h1.cymk { background-image: url('text/headers-cymk@2x.png'); background-size: 151px 37px; }
+  #queue { background-image: url('text/headers-cymk@2x.png'); background-size: 151px 37px; }
+  }

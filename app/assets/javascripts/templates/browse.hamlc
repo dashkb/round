@@ -18,10 +18,10 @@
         %span.input-group-addon
           %i.icon-search
           %i.icon-spinner.icon-spin.hide
-        %input.form-control.filter{type: 'text', placeholder: 'Filter All The Things'}
-        %span.input-group-addon.reset.text-danger{style: 'display:none'}
+        %input.form-control.filter{type: 'text', placeholder: 'Do a Search'}
+        %span.input-group-addon.reset.red.btn.text-danger{style: 'display:none'}
           %i.icon-remove
-          Reset Everything
+          Reset Filters
 
   .row.choose-filters
     .genres

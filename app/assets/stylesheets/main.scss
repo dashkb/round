@@ -9,19 +9,14 @@
 @import "mixins.scss";
 
 html, body { 
-  height: 100vh; overflow: hidden; color: #f7f7f7; background: #030303; -webkit-font-smoothing: antialiased;
+  height: 100vh; overflow: hidden; color: #f7f7f7; background: #030303; -webkit-font-smoothing: antialiased; text-align: center;
   a { cursor: hand; cursor: pointer; }
-}
-
-body {
-  a {
-    cursor: pointer;
-  }
 }
 
 .full {
   /*width: 97.8%;*/
   margin: 0 auto;
+  .panel { text-align: left; }
 }
 
 
