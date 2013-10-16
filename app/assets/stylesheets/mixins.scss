@@ -22,6 +22,55 @@ $tdodd: #fff;
 $tdeven: #e9e9e9;
 
 /* ==========================================================================
+   Fonts
+   ========================================================================== */
+
+@font-face {
+    font-family: 'WhitneyBook';
+    src: font-url('whitneybook.eot');
+    src: font-url('whitneybook.eot?#iefix') format('embedded-opentype'),
+         font-url('whitneybook.woff') format('woff'),
+         font-url('whitneybook.ttf') format('truetype'),
+         font-url('whitneybook.svg#WhitneyBook') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'WhitneyBookItalic';
+    src: font-url('whitneybookitalic.eot');
+    src: font-url('whitneybookitalic.eot?#iefix') format('embedded-opentype'),
+         font-url('whitneybookitalic.woff') format('woff'),
+         font-url('whitneybookitalic.ttf') format('truetype'),
+         font-url('whitneybookitalic.svg#WhitneyBookItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'WhitneySemibold';
+    src: font-url('whitneysemibold.eot');
+    src: font-url('whitneysemibold.eot?#iefix') format('embedded-opentype'),
+         font-url('whitneysemibold.woff') format('woff'),
+         font-url('whitneysemibold.ttf') format('truetype'),
+         font-url('whitneysemibold.svg#Whitneysemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'WhitneySemiboldItalic';
+    src: font-url('whitneysemibolditalic.eot');
+    src: font-url('whitneysemibolditalic.eot?#iefix') format('embedded-opentype'),
+         font-url('whitneysemibolditalic.woff') format('woff'),
+         font-url('whitneysemibolditalic.ttf') format('truetype'),
+         font-url('whitneysemibolditalic.svg#WhitneySemiboldItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* ==========================================================================
    Font Stacks
    ========================================================================== */
 

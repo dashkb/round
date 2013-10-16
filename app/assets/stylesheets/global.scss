@@ -11,7 +11,7 @@
 .btn {
   @include transition;
 	@include buttonize(38px);
-  border: 0; color: #000; font-family: "Whitney HTF"; font-weight: 600; text-shadow: 0 1px 0 rgba(255,255,255,.3); box-shadow: none;
+  border: 0; color: #000; font-family: "WhitneySemibold"; text-shadow: 0 1px 0 rgba(255,255,255,.3); box-shadow: none;
   i { opacity: .25; margin-right: 8px; }
   &.med { @include buttonize(50px); font-size: 20px; line-height: 50px; padding: 0 15px; border-radius: 30px; text-shadow: none; i { margin-right: 4px; } }
   &.big { @include buttonize(70px); font-size: 32px; line-height: 70px; padding: 0 25px; border-radius: 45px; text-shadow: none; }
@@ -21,7 +21,7 @@
   &.red { @include gradient(#f20d0d,#f00c0c,#b30404); i { opacity: .5; } &:hover, &:focus { background: #00ffff !important; color: #000 !important; } }
   &.square { font-size: 20px; padding: 0 8px; line-height: 36px; height: 32px; border-radius: 0; i { margin: 0; opacity: 1; } }
   &:hover,&:focus { background-image: none; background-color: #00ffff; color: #000; }
-  &:active { position: relative; top: 1px; background-color: #1e9a9a; }
+  /*&:active { position: relative; top: 1px; background-color: #1e9a9a; }*/
 }
 
 .page-heading {
