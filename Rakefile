@@ -19,3 +19,43 @@ task :pry do
   Round.init
   binding.pry
 end
+
+namespace :import do
+  desc 'import media from a filesystem'
+  task :filesystem do
+    root = ENV.fetch('SOURCE_ROOT') { raise 'you must specify a SOURCE_ROOT' }
+    name = ENV.fetch('SOURCE_NAME') { raise 'you must specify a SOURCE_NAME' }
+    Round.init
+
+    source   = Source.where(name: name).first
+    updating = true
+
+    if source.nil?
+      source   = Source.create(name: name, root: root)
+      updating = false
+    end
+
+    puts "#{updating ? 'Updating' : 'Creating'} source #{source.name}"
+
+    require 'find'
+    require 'lib/file_importer'
+
+    importer = FileImporter.new(source)
+    counter = 0
+    started = Time.now
+    iteration = Time.now
+
+    Find.find(source.root) do |path|
+      next unless importer.supported?(path)
+      imported = importer.import(path)
+
+      warn(imported) unless imported == true
+      if (counter += 1) % 100 == 0
+        elapsed = Time.now - started
+        iterated = Time.now - iteration
+        puts "[%-6s] Finished %d tracks (iteration took %s seconds)!" % [elapsed.round(4), counter, iterated]
+        iteration = Time.now
+      end
+    end
+  end
+end
