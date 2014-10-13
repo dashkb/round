@@ -14,3 +14,7 @@ namespace :db do
     end
   end
 end
+
+task :pry do
+  binding.pry
+end
