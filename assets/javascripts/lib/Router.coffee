@@ -1,0 +1,6 @@
+require [
+  'backbone'
+], (
+  Backbone
+) ->
+  class Router extends Backbone.Router

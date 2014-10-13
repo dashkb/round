@@ -89,7 +89,15 @@ class AssetsServer < Sinatra::Base
     status 404
   end
 end
+class ViewServer < Sinatra::Base
+  get /.*/ do
+    File.read(File.expand_path('../assets/index.html', __FILE__))
+  end
+end
 
 map '/assets' do
   run AssetsServer
+end
+map '/' do
+  run ViewServer
 end
