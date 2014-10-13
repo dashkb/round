@@ -16,5 +16,6 @@ namespace :db do
 end
 
 task :pry do
+  Round.init
   binding.pry
 end
