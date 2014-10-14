@@ -1,7 +1,7 @@
 class Paginator
   def initialize(model, options={})
     @model    = model
-    @page     = (options[:page] || 1).to_i
+    @page     = (options['page'] || 1).to_i
     @per_page = (options[:per_page] || 500).to_i
     @offset   = (@page - 1) * @per_page
     @query    = (options[:conditions] || {})

@@ -9,7 +9,7 @@ class Track < Sequel::Model
   def as_json
     {
       id:        self.id,
-      genres:    self.genres.map(&:id),
+      genre:     self.genre_id,
       artist:    self.artist_id,
       album:     self.album_id,
       name:      self.name,

@@ -9,19 +9,19 @@ class ApiServer < Sinatra::Base
   end
 
   get '/genres' do
-    pager = Paginator.new(Genre, params.slice(:page))
+    pager = Paginator.new(Genre, params.slice('page'))
     json pager.as_json
   end
   get '/artists' do
-    pager = Paginator.new(Artist, params.slice(:page))
+    pager = Paginator.new(Artist, params.slice('page'))
     json pager.as_json
   end
   get '/albums' do
-    pager = Paginator.new(Album, params.slice(:page))
+    pager = Paginator.new(Album, params.slice('page'))
     json pager.as_json
   end
   get '/tracks' do
-    pager = Paginator.new(Track, params.slice(:page))
+    pager = Paginator.new(Track, params.slice('page'))
     json pager.as_json
   end
 end

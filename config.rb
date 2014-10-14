@@ -3,8 +3,8 @@ Bundler.require
 require 'sinatra/base'
 require 'active_support/core_ext'
 
-root_path = File.expand_path('..', __FILE__)
-$LOAD_PATH.unshift(root_path) unless $LOAD_PATH.include?(root_path)
+APP_ROOT = File.expand_path('..', __FILE__)
+$LOAD_PATH.unshift(APP_ROOT) unless $LOAD_PATH.include?(APP_ROOT)
 
 module Round
   extend self

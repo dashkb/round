@@ -2,20 +2,20 @@ require 'lib/asset_builder'
 
 class AssetsServer < Sinatra::Base
   set :javascripts_paths, [
-    File.expand_path('../assets/javascripts', __FILE__),
-    File.expand_path('../vendor/javascripts', __FILE__)
+    File.join(APP_ROOT, 'assets', 'javascripts'),
+    File.join(APP_ROOT, 'vendor', 'javascripts')
   ]
   set :stylesheets_paths, [
-    File.expand_path('../assets/stylesheets', __FILE__),
-    File.expand_path('../vendor/stylesheets', __FILE__)
+    File.join(APP_ROOT, 'assets', 'stylesheets'),
+    File.join(APP_ROOT, 'vendor', 'stylesheets')
   ]
   set :image_paths, [
-    File.expand_path('../assets/images', __FILE__),
-    File.expand_path('../vendor/images', __FILE__)
+    File.join(APP_ROOT, 'assets', 'images'),
+    File.join(APP_ROOT, 'vendor', 'images')
   ]
   set :font_paths, [
-    File.expand_path('../assets/fonts', __FILE__),
-    File.expand_path('../vendor/fonts', __FILE__)
+    File.join(APP_ROOT, 'assets', 'fonts'),
+    File.join(APP_ROOT, 'vendor', 'fonts')
   ]
 
   get %r{^/(.*)?\.js} do |asset|

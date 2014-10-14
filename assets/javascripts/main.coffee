@@ -3,14 +3,20 @@ require.config
   'urlArgs' : "bust=#{+new Date()}"
 
   paths:
-    'Collection' : '/assets/lib/Collection'
-    'Model'      : '/assets/lib/Model'
-    'Router'     : '/assets/lib/Router'
-    'View'       : '/assets/lib/View'
+    'collection' : '/assets/lib/collection'
+    'model'      : '/assets/lib/model'
+    'view'       : '/assets/lib/view'
 
 require [
-  'App'
+  'app'
+  'loader'
+  'router'
 ], (
-  App
+  app
+  Loader
+  Router
 ) ->
-  alert('Hey')
+  loader = new Loader
+  router = new Router
+
+  loader.dequeue()
