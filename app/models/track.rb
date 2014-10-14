@@ -5,4 +5,15 @@ class Track < Sequel::Model
   many_to_one :album
   one_to_many :histories
   one_to_many :selections
+
+  def as_json
+    {
+      id:        self.id,
+      genres:    self.genres.map(&:id),
+      artist:    self.artist_id,
+      album:     self.album_id,
+      name:      self.name,
+      sort_name: self.sort_name
+    }
+  end
 end

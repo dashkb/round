@@ -4,6 +4,7 @@ gem 'sequel'
 gem 'sqlite3'
 
 gem 'sinatra', require: false
+gem 'sinatra-contrib'
 gem 'activesupport'
 
 gem 'foreman'

@@ -39,15 +39,17 @@ class TrackImporter
     if @meta['Sort Artist'].present? && @meta['Album Artist'].blank? && artist.sort_name.blank?
       artist.sort_name = @meta['Sort Artist']
     end
+    [artist, album, genre].compact.each(&:save)
 
-    if artist.genres.none? { |g| g.id == genre.id }
-      artist.genres << genre
+    if Artist.where(name: 'Air').count > 1
+      binding.pry
     end
 
-    [artist, album_artist, album, genre].compact.each(&:save)
+    if artist.genres.none? { |g| g.id == genre.id }
+      artist.add_genre(genre)
+    end
 
     track.artist       = artist
-    track.album_artist = album_artist unless artist.id = album_artist.id
     track.album        = album
     track.genre        = genre
     track.track_num    = @meta['Track Number']
@@ -93,11 +95,9 @@ class TrackImporter
   end
 
   def album_artist
-    @album_artist ||= if @meta['Album Artist'].present?
-                        (find_album_artist or build_album_artist)
-                      else
-                        artist
-                      end
+    if @meta['Album Artist'].present?
+      @album_artist ||= (find_album_artist or build_album_artist)
+    end
   end
   def find_album_artist
     Artist.where(
