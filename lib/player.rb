@@ -1,5 +1,6 @@
 require 'lib/controller'
 require 'lib/device/core_audio'
+require 'lib/device/fake'
 require 'lib/interface'
 
 # Manages threads that control and play audio.
@@ -16,7 +17,11 @@ module Player
   end
 
   def device
-    @device ||= Device::CoreAudio.new(interface)
+    @device ||= if ENV['FAKE_PLAYER'].present?
+                  Device::Fake.new(interface)
+                else
+                  Device::CoreAudio.new(interface)
+                end
   end
   def device=(device)
     raise RuntimeError, 'cannot change the device while player is started' if started?
