@@ -33,7 +33,10 @@ module Player
   def start
     return if started?
     trap
+    register
     @started = true
+
+    interface.info("Starting All Threads")
 
     [
       controller.start,
@@ -45,9 +48,33 @@ module Player
     return if stopped?
     @started = false
 
+    interface.info("Stopping All Threads")
+
     controller.stop
     device.stop
     interface.stop
+  end
+
+  def api_status
+    {
+      now_playing: device.now_playing.as_json(true),
+      state:       device.paused? ? 'paused' : 'playing'
+    }
+  end
+  def api_queue(track)
+    'OK'
+  end
+  def api_skip
+    device.skip
+    'OK'
+  end
+  def api_pause
+    device.pause
+    'OK'
+  end
+  def api_play
+    device.play
+    'OK'
   end
 
   protected
@@ -61,5 +88,12 @@ module Player
         stop
       end
     end
+  end
+  def register
+    controller.on(:status, method(:api_status))
+    controller.on(:queue, method(:api_queue))
+    controller.on(:skip, method(:api_skip))
+    controller.on(:pause, method(:api_pause))
+    controller.on(:play, method(:api_play))
   end
 end

@@ -6,8 +6,16 @@ class Track < Sequel::Model
   one_to_many :histories
   one_to_many :selections
 
-  def as_json
-    {
+  def to_s
+    "#{artist} - #{self.name}"
+  end
+
+  def local_path
+    File.join(source.root, self.filename)
+  end
+
+  def as_json(deep=false)
+    json = {
       id:        self.id,
       genre:     self.genre_id,
       artist:    self.artist_id,
@@ -15,5 +23,13 @@ class Track < Sequel::Model
       name:      self.name,
       sort_name: self.sort_name
     }
+
+    if deep
+      json[:genre]  = genre.as_json
+      json[:artist] = artist.as_json
+      json[:album]  = album.as_json
+    end
+
+    return json
   end
 end

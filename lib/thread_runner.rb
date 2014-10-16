@@ -3,15 +3,16 @@ module ThreadRunner
     @interface = interface
   end
 
+  def program; self.class.name; end
+
   def start
     @started = true
-    @interface.info("Starting #{self.class.name}")
+    info("Starting")
     @worker = Thread.new { run }
   end
-
   def stop
     @started = false
-    @interface.info("Stopping #{self.class.name}")
+    info("Stopping")
     @worker.kill
   end
 
@@ -25,4 +26,11 @@ module ThreadRunner
   def process
     sleep 0.1
   end
+
+  def debug(message);   @interface.debug(message, program); end
+  def info(message);    @interface.info(message, program); end
+  def warn(message);    @interface.warn(message, program); end
+  def error(message);   @interface.error(message, program); end
+  def fatal(message);   @interface.fatal(message, program); end
+  def unknown(message); @interface.unknown(message, program); end
 end

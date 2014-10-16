@@ -17,10 +17,12 @@ end
 
 task :pry do
   Round.init
+  require 'lib/player_service'
   binding.pry
 end
 
 task :player do
+  Round.init
   require 'lib/player'
   Player.start
 end

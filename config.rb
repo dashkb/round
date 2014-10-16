@@ -16,6 +16,10 @@ module Round
     ENV.fetch('DATABASE_URL', 'sqlite://db/round.db')
   end
 
+  def controller_endpoint
+    ENV.fetch('CONTROLLER_ENDPOINT', 'ipc://round-player')
+  end
+
   def init
     self.database # Go ahead and connect
 

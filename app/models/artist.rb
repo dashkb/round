@@ -4,6 +4,10 @@ class Artist < Sequel::Model
   one_to_many :artists_genres
   many_to_many :genres
 
+  def to_s
+    self.name
+  end
+
   def as_json
     {
       id:        self.id,

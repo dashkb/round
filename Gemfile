@@ -17,6 +17,7 @@ gem 'pry-coolline'
 
 gem 'coreaudio'
 gem 'taglib-ruby'
+gem 'zmq'
 
 gem 'coffee-script'
 gem 'haml'

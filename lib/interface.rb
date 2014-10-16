@@ -13,10 +13,8 @@ class Interface
   UNKNOWN = 5
 
   def initialize(device=STDOUT)
-    @interface = self # For ThreadRunner
-
     @device  = device
-    @level   = INFO
+    @level   = DEBUG
     @queue   = Queue.new
   end
 
@@ -31,18 +29,19 @@ class Interface
   def level=(level); @level = level; end
   def visible?(level); @level <= level; end
 
-  def debug(message);   add(DEBUG, message); end
-  def info(message);    add(INFO, message); end
-  def warn(message);    add(WARN, message); end
-  def error(message);   add(ERROR, message); end
-  def fatal(message);   add(FATAL, message); end
-  def unknown(message); add(UNKNOWN, message); end
+  def debug(message, program=nil);   add(DEBUG, message, program); end
+  def info(message, program=nil);    add(INFO, message, program); end
+  def warn(message, program=nil);    add(WARN, message, program); end
+  def error(message, program=nil);   add(ERROR, message, program); end
+  def fatal(message, program=nil);   add(FATAL, message, program); end
+  def unknown(message, program=nil); add(UNKNOWN, message, program); end
 
-  def add(level, message)
+  def add(level, message, program=nil)
     @queue.enq({
       level:   level,
       time:    Time.now,
-      message: message
+      message: message,
+      program: program
     })
   end
 
@@ -67,11 +66,17 @@ class Interface
   end
 
   def format(entry)
+    message = entry[:message]
+
+    if entry[:program].present?
+      message = "#{entry[:program]}: #{message}"
+    end
+
     "[%s#%d] %5s -- %s" % [
       format_time(entry[:time]),
       $$,
       format_level(entry[:level]),
-      entry[:message]
+      message
     ]
   end
   def format_time(time)
