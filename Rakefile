@@ -38,9 +38,9 @@ namespace :import do
     puts "#{updating ? 'Updating' : 'Creating'} source #{source.name}"
 
     require 'find'
-    require 'lib/file_importer'
+    require 'lib/importer/file'
 
-    importer = FileImporter.new(source)
+    importer = Importer::File.new(source)
     counter = 0
     started = Time.now
     iteration = Time.now
