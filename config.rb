@@ -9,19 +9,28 @@ $LOAD_PATH.unshift(APP_ROOT) unless $LOAD_PATH.include?(APP_ROOT)
 module Round
   extend self
 
-  def database
-    @database ||= Sequel.connect(self.database_url)
-  end
-  def database_url
-    ENV.fetch('DATABASE_URL', 'sqlite://db/round.db')
-  end
-
   def controller_endpoint
     ENV.fetch('CONTROLLER_ENDPOINT', 'ipc://round-player')
   end
 
+  def database
+    @database ||= Sequel.connect(self.database_url)
+  end
+  def database_url
+    @database_url ||= ENV.fetch('DATABASE_URL', 'sqlite://db/round.db')
+  end
+
+  def redis
+    @redis ||= Redis.new(host: redis_url.host, port: redis_url.port, password: redis_url.password)
+  end
+  def redis_url
+    @redis_url ||= URI.parse(ENV.fetch('REDIS_URL', 'redis://localhost:5100'))
+  end
+
   def init
-    self.database # Go ahead and connect
+    # Setup connections early (so we fail fast)
+    self.database
+    self.redis
 
     require 'app/models/source'
     require 'app/models/genre'

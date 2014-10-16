@@ -14,6 +14,7 @@ gem 'therubyracer'
 gem 'pry'
 gem 'pry-awesome_print'
 gem 'pry-coolline'
+gem 'redis'
 
 gem 'coreaudio'
 gem 'taglib-ruby'
