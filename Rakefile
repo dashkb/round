@@ -20,6 +20,11 @@ task :pry do
   binding.pry
 end
 
+task :player do
+  require 'lib/player'
+  Player.start
+end
+
 namespace :import do
   desc 'import media from a filesystem'
   task :filesystem do
