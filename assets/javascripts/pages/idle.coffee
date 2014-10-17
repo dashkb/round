@@ -31,5 +31,5 @@ define [
       @status.remove()
 
     browse:  -> Backbone.history.navigate('/browse', trigger: true)
-    queue:   -> Backbone.history.navigate('/browse', trigger: true)
-    history: -> Backbone.history.navigate('/browse', trigger: true)
+    queue:   -> Backbone.history.navigate('/queue', trigger: true)
+    history: -> Backbone.history.navigate('/history', trigger: true)

@@ -6,5 +6,6 @@ define [
   Genre
 ) ->
   class Genres extends Collection
-    'model' : Genre
-    'url'   : '/api/genres'
+    'comparator' : 'name'
+    'model'      : Genre
+    'url'        : '/api/genres'

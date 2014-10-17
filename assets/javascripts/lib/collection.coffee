@@ -13,7 +13,7 @@ define [
       url = _.result(this, 'url')
 
       success = (data) =>
-        @set(data.results)
+        @set(data.results, remove: false)
         if data.page == data.pages
           @trigger('sync', this, data, {})
         else

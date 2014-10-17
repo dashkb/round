@@ -1,3 +1,6 @@
+body {
+  margin-bottom: 50px;
+}
 .status-view {
   .progress {
     width: 100%;
@@ -12,9 +15,9 @@
   }
 }
 #status {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  right: 0;
+  left: 0;
 
   .status-view {
     background: #eee;
@@ -45,5 +48,40 @@
     .progress {
       height: 2px;
     }
+  }
+}
+#browse-page {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 2px 4px;
+      background-color: #eee;
+
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+  }
+
+  .genres {
+    float: left;
+    background: #eee;
+    width: 49%;
+  }
+  .artists {
+    float: right;
+    background: #eee;
+    width: 49%;
+  }
+  .tracks {
+    padding-top: 0.5em;
+    clear: both;
+  }
+  .genres, .artists {
+    height: 12.5em;
+    overflow: scroll;
   }
 }

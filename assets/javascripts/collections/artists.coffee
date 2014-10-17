@@ -6,5 +6,6 @@ define [
   Artist
 ) ->
   class Artists extends Collection
-    'model' : Artist
-    'url'   : '/api/artists'
+    'comparator' : 'name'
+    'model'      : Artist
+    'url'        : '/api/artists'

@@ -6,5 +6,6 @@ define [
   Album
 ) ->
   class Albums extends Collection
-    'model' : Album
-    'url'   : '/api/albums'
+    'comparator' : 'name'
+    'model'      : Album
+    'url'        : '/api/albums'

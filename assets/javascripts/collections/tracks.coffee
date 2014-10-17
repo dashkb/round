@@ -6,5 +6,6 @@ define [
   Track
 ) ->
   class Tracks extends Collection
-    'model' : Track
-    'url'   : '/api/tracks'
+    'comparator' : 'name'
+    'model'      : Track
+    'url'        : '/api/tracks'
