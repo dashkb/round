@@ -17,7 +17,9 @@ end
 
 task :pry do
   Round.init
+  require 'lib/access_list_service'
   require 'lib/player_service'
+  require 'lib/queue_service'
   binding.pry
 end
 

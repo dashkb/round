@@ -1,3 +1,5 @@
+require 'lib/access_list_service'
+
 module QueueService
   QUEUE_NAME  = 'queue:main'
 
@@ -32,6 +34,24 @@ module QueueService
   end
 
   def pick_random
-    Track.offset(1 + (rand * (Track.count - 1)).round).limit(1).first
+    access_lists = AccessListService.to_hash
+
+    query = Track
+    unless access_lists[:allow_genres].empty?
+      query = query.where(genre_id: access_lists[:allow_genres])
+    end
+    unless access_lists[:block_genres].empty?
+      query = query.exclude(genre_id: access_lists[:block_genres])
+    end
+
+    unless access_lists[:allow_artists].empty?
+      query = query.where(artist_id: access_lists[:allow_artists])
+    end
+    unless access_lists[:block_artists].empty?
+      query = query.exclude(artist_id: access_lists[:block_artists])
+    end
+
+    offset = 1 + (rand * (query.count) - 1).round
+    query.offset(offset).limit(1).first
   end
 end
