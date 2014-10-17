@@ -21,7 +21,8 @@ class Track < Sequel::Model
       artist:    self.artist_id,
       album:     self.album_id,
       name:      self.name,
-      sort_name: self.sort_name
+      sort_name: self.sort_name,
+      runtime:   self.runtime
     }
 
     if deep

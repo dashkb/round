@@ -1,5 +1,5 @@
 define [
-  'collection'
+  'lib/collection'
   'models/artist'
 ], (
   Collection

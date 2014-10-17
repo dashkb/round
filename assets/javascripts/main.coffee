@@ -2,28 +2,28 @@ require.config
   'baseUrl' : '/assets'
   'urlArgs' : "bust=#{+new Date()}"
 
-  paths:
-    'collection' : '/assets/lib/collection'
-    'model'      : '/assets/lib/model'
-    'view'       : '/assets/lib/view'
-
 require [
-  'jquery'
   'backbone'
   'app'
   'loader'
   'router'
+  'pages/layout'
 ], (
-  $
   Backbone
   app
   Loader
   Router
+  LayoutPage
 ) ->
+  layout = new LayoutPage
   loader = new Loader
-  router = new Router
+  router = new Router(layout: layout)
 
-  $('body').append(loader.render().el)
+  $body = document.querySelector('body')
+
+  $body.appendChild(loader.render().el)
   loader.dequeue ->
     loader.remove()
+    $body.appendChild(layout.render().el)
+    app.start()
     Backbone.history.start(pushState: true)

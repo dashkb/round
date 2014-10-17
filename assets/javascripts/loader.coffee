@@ -1,6 +1,6 @@
 define [
   'app'
-  'view'
+  'lib/view'
 ], (
   app
   View

@@ -1,5 +1,5 @@
 define [
-  'model'
+  'lib/model'
 ], (
   Model
 ) ->
