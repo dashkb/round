@@ -10,7 +10,7 @@ class ZmqClient
     end
   end
 
-  def initialize(endpoint, retries = 3, timeout = 0.1)
+  def initialize(endpoint, retries = 3, timeout = 0.5)
     @endpoint = endpoint
     @retries  = retries
     @timeout  = timeout

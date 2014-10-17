@@ -25,12 +25,14 @@ module Device
       @buffer.stop
     end
 
+    # If you pause this will get way out of wack... fuck it. Don't pause!
     def position
-      @audio_file.position
+      Time.now.to_i - (@started_at || Time.now.to_i)
     end
 
     def playing?
       if (buffer = read_buffer)
+        @started_at ||= Time.now.to_i
         @buffer << buffer
         return true
       else
@@ -48,7 +50,8 @@ module Device
 
     def play_track(track)
       super
-      @audio_file  = AudioFile.new(track.local_path)
+      @audio_file = AudioFile.new(track.local_path)
+      @started_at = nil
 
       unless @audio_file.okay?
         error("Audio file could not be read")

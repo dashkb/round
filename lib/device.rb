@@ -32,7 +32,7 @@ module Device
         info("Player paused")
         sleep 1
       elsif playing?
-        info_line
+        status_line
         sleep 1
       else
         info("Fetch next track")
@@ -41,12 +41,15 @@ module Device
       end
     end
 
-    def info_line
+    def status_line
       @ui_count ||= 1
       if (@ui_count -= 1) == 0
         @ui_count = 5
-        info("Playing [#{format_playtime(position)}] #{@now_playing}")
+        info(info_line)
       end
+    end
+    def info_line
+      "Playing [#{format_playtime(position)}] #{@now_playing}"
     end
 
     def position

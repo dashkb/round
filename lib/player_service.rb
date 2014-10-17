@@ -25,7 +25,7 @@ module PlayerService
   def send(*args)
     JSON.parse(Round.zmq_client.send(args.join(' ')))
   rescue ZmqClient::ServerDown
-    {status: 'zmq server down'}
+    {state: 'stopped', error: 'zmq down'}
   end
 
   def context

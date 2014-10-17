@@ -4,7 +4,6 @@ class AudioFile
   def initialize(path)
     @path = path.gsub('%20', ' ')
     @okay = false
-    @position = 0
 
     open
   end
@@ -25,8 +24,6 @@ class AudioFile
 
   def read(frames)
     return nil unless okay?
-
-    @position += frames / @file.rate
     @file.read(frames)
   end
 end
