@@ -8,6 +8,7 @@ gem 'sinatra-contrib'
 gem 'activesupport'
 
 gem 'foreman'
+gem 'dotenv'
 gem 'puma'
 gem 'rake'
 gem 'therubyracer'

@@ -87,6 +87,7 @@ DEPENDENCIES
   activesupport
   coffee-script
   coreaudio
+  dotenv
   foreman
   haml
   pry

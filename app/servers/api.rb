@@ -1,5 +1,7 @@
 require 'sinatra/json'
 require 'lib/paginator'
+require 'lib/player_service'
+require 'lib/queue_service'
 
 class ApiServer < Sinatra::Base
   helpers Sinatra::JSON
@@ -23,5 +25,23 @@ class ApiServer < Sinatra::Base
   get '/tracks' do
     pager = Paginator.new(Track, params.slice('page'))
     json pager.as_json
+  end
+
+  get '/status' do
+    json PlayerService.status
+  end
+
+  get '/queue' do
+    json QueueService.all.map(&:to_i)
+  end
+  post '/queue' do
+    track = Track[params[:id]]
+    if track.nil?
+      status 404
+      json status: 'not found'
+    else
+      QueueService.add(track)
+      json status: 'OK'
+    end
   end
 end

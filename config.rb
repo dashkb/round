@@ -3,6 +3,8 @@ Bundler.require
 require 'sinatra/base'
 require 'active_support/core_ext'
 
+Dotenv.load
+
 APP_ROOT = File.expand_path('..', __FILE__)
 $LOAD_PATH.unshift(APP_ROOT) unless $LOAD_PATH.include?(APP_ROOT)
 
@@ -24,7 +26,11 @@ module Round
     @redis ||= Redis.new(host: redis_url.host, port: redis_url.port, password: redis_url.password)
   end
   def redis_url
-    @redis_url ||= URI.parse(ENV.fetch('REDIS_URL', 'redis://localhost:5100'))
+    @redis_url ||= URI.parse(ENV.fetch('REDIS_URL', 'redis://localhost:5200'))
+  end
+
+  def zmq_client
+    @zmq_client ||= create_zmq_client
   end
 
   def init
@@ -40,5 +46,11 @@ module Round
     require 'app/models/track'
     require 'app/models/history'
     require 'app/models/selection'
+  end
+
+  private
+  def create_zmq_client
+    require 'lib/zmq_client'
+    ZmqClient.new(controller_endpoint)
   end
 end

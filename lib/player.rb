@@ -2,6 +2,7 @@ require 'lib/controller'
 require 'lib/device/core_audio'
 require 'lib/device/fake'
 require 'lib/interface'
+require 'lib/queue_service'
 
 # Manages threads that control and play audio.
 module Player
@@ -63,11 +64,9 @@ module Player
   def api_status
     {
       now_playing: device.now_playing.as_json(true),
+      position:    device.position,
       state:       device.paused? ? 'paused' : 'playing'
     }
-  end
-  def api_queue(track)
-    'OK'
   end
   def api_skip
     device.skip
@@ -87,16 +86,12 @@ module Player
     # Only allow traps to be set once
     return if @trapped
     @trapped = true
-    %w{INT KILL TERM}.each do |signal|
-      Signal.trap(signal) do
-        interface.warn("#{signal} received!")
-        stop
-      end
+    at_exit do
+      stop
     end
   end
   def register
     controller.on(:status, method(:api_status))
-    controller.on(:queue, method(:api_queue))
     controller.on(:skip, method(:api_skip))
     controller.on(:pause, method(:api_pause))
     controller.on(:play, method(:api_play))
