@@ -14,6 +14,7 @@ module Device
       @buffer_size = 2 ** 16
       @device      = ::CoreAudio.default_output_device
       @buffer      = @device.output_buffer(@buffer_size)
+      @channels    = @device.output_stream.channels
     end
 
     def start
@@ -33,11 +34,14 @@ module Device
     def playing?
       if (buffer = read_buffer)
         @started_at ||= Time.now.to_i
-        @buffer << buffer
+        @buffer << fill_channels(buffer)
         return true
       else
         return false
       end
+    rescue => e
+      debug("Error: #{e.message}")
+      return false
     end
 
     protected
@@ -61,6 +65,25 @@ module Device
 
     def read_buffer
       @audio_file.try(:okay?) && @audio_file.read(@buffer_size)
+    end
+
+    # If we are playing on a device with more channels than the device we need to fill the rest of the channels with 0
+    # data (silence).
+    def fill_channels(buffer)
+      if buffer.dim <  @channels
+        full = NArray.sint(@channels, @buffer_size)
+        @buffer_size.times do |i|
+          full[i * @channels + 0] = buffer[i * buffer.dim + 0]
+          full[i * @channels + 1] = buffer[i * buffer.dim + 1]
+        end
+
+        return full
+      elsif buffer.dim > @channels
+        # We don't currently support down-sampling tracks with more channels than we support
+        return nil
+      else
+        return buffer
+      end
     end
   end
 end
