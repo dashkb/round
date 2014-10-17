@@ -8,10 +8,14 @@ require.config
     'view'       : '/assets/lib/view'
 
 require [
+  'jquery'
+  'backbone'
   'app'
   'loader'
   'router'
 ], (
+  $
+  Backbone
   app
   Loader
   Router
@@ -19,4 +23,7 @@ require [
   loader = new Loader
   router = new Router
 
-  loader.dequeue()
+  $('body').append(loader.render().el)
+  loader.dequeue ->
+    loader.remove()
+    Backbone.history.start(pushState: true)

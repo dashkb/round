@@ -20,5 +20,5 @@ define [
           @trigger('sync:page', this, data, {})
           fetch(data.page + 1)
 
-      fetch = (page) -> $.getJSON("#{url}?page=#{page}").done(success)
+      fetch = (page) -> $.getJSON(url, {page: page}).done(success)
       fetch(1)

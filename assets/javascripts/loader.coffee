@@ -6,26 +6,26 @@ define [
   View
 ) ->
   class Loader extends View
-    constructor: ->
-      @listenTo(app.genres,  'sync', -> @done('genres'))
-      @listenTo(app.artists, 'sync', -> @done('artists'))
-      @listenTo(app.albums , 'sync', -> @done('albums'))
-      @listenTo(app.tracks,  'sync', -> @done('tracks'))
+    'id' : 'app-loader'
 
-      @queue = [
-        app.genres,
-        app.artists,
-        app.albums,
-        app.tracks
-      ]
+    initialize: ->
+      @queue = ['genres', 'artists', 'albums', 'tracks']
 
-    done: (type) ->
-      console.log('finished', type)
-      @dequeue()
+    render: ->
+      @$el.html('<h1>Loading Data</h1>')
+      return this
 
-    dequeue: ->
-      next = @queue.shift()
-      if next?
-        next.fetchAllPages()
+    done: (type, done) -> @dequeue(done)
+
+    dequeue: (done) ->
+      type = @queue.shift()
+      if (obj = app[type])?
+        @update(type)
+        @listenToOnce(obj, 'sync', => @done(type, done))
+        obj.fetchAllPages()
       else
-        console.log('all done')
+        @update('Finished Loading')
+        done()
+
+    update: (type) ->
+      @$('h1').html("Loading #{type}...")

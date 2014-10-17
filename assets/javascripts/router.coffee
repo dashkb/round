@@ -1,6 +1,6 @@
 define [
-  'lib/router'
+  'backbone'
 ], (
-  BaseRouter
+  Backbone
 ) ->
-  class Router extends BaseRouter
+  class Router extends Backbone.Router
