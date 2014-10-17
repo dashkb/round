@@ -23,8 +23,10 @@ module Device
       end
     end
     def skip
+      info("Fetch next track")
       stop_current
       next_from_queue
+      info("Fetched #{@now_playing}")
     end
 
     def process
@@ -35,10 +37,7 @@ module Device
         status_line
         sleep 1
       else
-        info("Fetch next track")
-        stop_current
-        next_from_queue
-        info("Fetched #{@now_playing}")
+        skip
       end
     end
 
