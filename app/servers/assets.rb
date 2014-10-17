@@ -18,6 +18,17 @@ class AssetsServer < Sinatra::Base
     File.join(APP_ROOT, 'vendor', 'fonts')
   ]
 
+  get %r{^/(.*)?\.html} do |asset|
+    content_type 'text/javascript'
+
+    settings.javascripts_paths.each do |folder|
+      if File.exist?(filepath = File.join(folder, "#{asset}.mustache"))
+        return File.read(filepath)
+      end
+    end
+
+    status 404
+  end
   get %r{^/(.*)?\.js} do |asset|
     content_type 'text/javascript'
 
