@@ -1,8 +1,6 @@
 define [
-  'app'
   'lib/view'
 ], (
-  app
   View
 ) ->
   class Loader extends View

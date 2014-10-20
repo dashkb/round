@@ -1,10 +1,8 @@
 define [
   'lib/view'
-  'app'
   'stache!./status'
 ], (
   View
-  app
   template
 ) ->
   formatTime = (time) ->

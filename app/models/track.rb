@@ -22,7 +22,8 @@ class Track < Sequel::Model
       album:     self.album_id,
       name:      self.name,
       sort_name: self.sort_name,
-      runtime:   self.runtime
+      runtime:   self.runtime,
+      track_num: self.track_num.to_s.rjust(2, '0')
     }
 
     if deep

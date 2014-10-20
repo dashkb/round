@@ -1,24 +1,42 @@
 define [
+  'underscore'
   'lib/model'
   'lib/view'
-  'app'
+  'collections/queue'
+  'views/queue'
   'stache!./browse'
 ], (
+  _
   Model
   View
-  app
+  Queue
+  QueueView
   template
 ) ->
   class CollectionView extends View
     'tagName' : 'ul'
+
+    initialize: ->
+      @listenTo(@model, 'change:search', @renderAll)
 
     click: (e) ->
       @model.set('chosen', e.target.dataset.id) if @model?
 
     each: (callback) ->
       @collection.each (record) =>
-        if @filterPass(record)
-          callback(record)
+        return if @searchPass(record) is false
+        return if @filterPass(record) is false
+        callback(record)
+
+    searchPass: (record) ->
+      query = @model.get('search')
+      return unless query?.length >= 3
+
+      return @searchRecord(record, query)
+
+    searchRecord: (record, query) ->
+      value = record.get('name')
+      return value.toLowerCase().indexOf(query.toLowerCase()) >= 0
 
     filterPass: (record) ->
       filterBy = parseInt(@model.get('filter'))
@@ -66,24 +84,42 @@ define [
   class TrackList extends CollectionView
     'filterOn' : 'artist'
 
+    each: (callback) ->
+      noFilter = _.isNaN(parseInt(@model.get('filter')))
+      noSearch = not (@model.get('search')?.length >= 3)
+      return if noFilter and noSearch
+      super
+
+    searchRecord: (record, query) ->
+      return true if super
+      value = app.albums.get(record.get('album'))?.get('name')
+      return value && value.toLowerCase().indexOf(query.toLowerCase()) >= 0
+
     renderRecord: (record) ->
       li = super
       album = app.albums.get(record.get('album'))
-      li.innerHTML = "#{record.get('name')} <small>on #{album.get('name')}</small>"
+      li.innerHTML = "#{record.get('track_num')}. #{record.get('name')} <small>on #{album.get('name')}</small>"
       return li
 
   class BrowsePage extends View
     'id'       : 'browse-page'
     'template' : template
 
+    events:
+      'keyup [name="search"]': 'search'
+
     initialize: ->
+      @search = _.debounce(@search, 500)
+
       @genre  = new Model()
       @artist = new Model()
       @track  = new Model()
+      @queue  = new Queue()
 
       @genres  = new GenreList(collection: app.genres, model: @genre)
       @artists = new ArtistList(collection: app.artists, model: @artist)
       @tracks  = new TrackList(collection: app.tracks, model: @track)
+      @queues  = new QueueView(collection: @queue)
 
       @listenTo(@genre, 'change:chosen', @updateGenre)
       @listenTo(@artist, 'change:chosen', @updateArtist)
@@ -93,6 +129,8 @@ define [
       super
       @$('.genres').html(@genres.render().el)
       @$('.artists').html(@artists.render().el)
+      @$('.tracks').html(@tracks.render().el)
+      @$('.queue').html(@queues.render().el)
       return this
 
     remove: ->
@@ -100,6 +138,7 @@ define [
       @genres.remove()
       @artists.remove()
       @tracks.remove()
+      @queues.remove()
 
     updateGenre: ->
       @artist.set('filter', @genre.get('chosen'))
@@ -107,10 +146,14 @@ define [
 
     updateArtist: ->
       @track.set('filter', @artist.get('chosen'))
-      @tracks.remove()
-      @$('.tracks').html(@tracks.render().el)
+      @tracks.renderAll()
 
     queueTrack: ->
-      console.log(@track.get('chosen'))
-      $.post('/api/queue', {id: @track.get('chosen')})
-        .done(-> alert('Track Queued!'))
+      if @queue.length < 10
+        @queue.push(@track.get('chosen'))
+      else
+        alert('You may only queue 10 tracks at a time!')
+
+    search: (e) ->
+      @artist.set('search', e.target.value)
+      @track.set('search', e.target.value)

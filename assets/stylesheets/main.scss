@@ -1,5 +1,6 @@
 body {
   margin-bottom: 50px;
+  font-size: 1.2em;
 }
 .status-view {
   .progress {
@@ -66,6 +67,17 @@ body {
     }
   }
 
+  .search {
+    padding: 0.5em;
+
+    input {
+      width: 100%;
+      font-size: 1.2em;
+      border: 1px solid black;
+      border-radius: 0.5em;
+      padding: 0.25em;
+    }
+  }
   .genres {
     float: left;
     background: #eee;
@@ -83,5 +95,13 @@ body {
   .genres, .artists {
     height: 12.5em;
     overflow: scroll;
+  }
+  .queue {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #eee;
+    font-weight: bold;
+    padding: 0.5em;
   }
 }

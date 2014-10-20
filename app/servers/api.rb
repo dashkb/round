@@ -35,14 +35,19 @@ class ApiServer < Sinatra::Base
     json QueueService.all.map(&:to_i)
   end
   post '/queue' do
-    track = Track[params[:id]]
-    if track.nil?
-      status 404
-      json status: 'not found'
-    else
+    params[:ids].each do |id|
+      track = Track[id]
+      next unless track.present?
+
+      selection = Selection.create(
+        track_id: id,
+        queued_at: Time.now,
+        requested_by: params[:name]
+      )
       QueueService.add(track)
-      json status: 'OK'
     end
+
+    json status: 'OK'
   end
 
   get '/history' do
