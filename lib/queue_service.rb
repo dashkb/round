@@ -11,7 +11,7 @@ module QueueService
   end
 
   def next
-    next_from_queue || pick_random
+    add_history(next_from_queue || pick_random)
   end
   def all
     Round.redis.lrange(QUEUE_NAME, 0, -1)
@@ -53,5 +53,10 @@ module QueueService
 
     offset = 1 + (rand * (query.count) - 1).round
     query.offset(offset).limit(1).first
+  end
+
+  def add_history(track)
+    History.create(track_id: track.id, played_at: Time.now)
+    return track
   end
 end

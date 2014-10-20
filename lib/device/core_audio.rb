@@ -40,7 +40,7 @@ module Device
         return false
       end
     rescue => e
-      debug("Error: #{e.message}")
+      error("Error: #{e.message}")
       return false
     end
 

@@ -44,4 +44,8 @@ class ApiServer < Sinatra::Base
       json status: 'OK'
     end
   end
+
+  get '/history' do
+    json History.order('played_at DESC').limit(50)
+  end
 end

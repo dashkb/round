@@ -35,7 +35,6 @@ module Device
         sleep 1
       elsif playing?
         status_line
-        sleep 1
       else
         skip
       end
