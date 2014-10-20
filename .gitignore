@@ -1,3 +1,6 @@
+build/
+dist/
+node_modules/
 db/round.db
 db/redis.rdb
 db/appendonly.aof
