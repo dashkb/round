@@ -18,15 +18,25 @@ module Player
   end
 
   def device
-    @device ||= if ENV['FAKE_PLAYER'].present?
-                  Device::Fake.new(interface)
-                else
-                  Device::CoreAudio.new(interface)
-                end
+    @device ||= load_device_class.new(interface)
   end
   def device=(device)
     raise RuntimeError, 'cannot change the device while player is started' if started?
     @device = device
+  end
+  def load_device_class
+    device_name = ENV.fetch('DEVICE', default_device_name)
+    require "lib/device/#{device_name}"
+    "Device::#{device_name.camelcase}".constantize
+  end
+  def default_device_name
+    platform = Gem::Platform.local
+    if platform.os == 'darwin'
+      'core_audio'
+    else
+      warn("Unknown platform, cannot determine proper device for handling music. Falling back to Fake")
+      'fake'
+    end
   end
 
   def interface

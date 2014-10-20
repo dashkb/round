@@ -17,7 +17,10 @@ gem 'pry-awesome_print'
 gem 'pry-coolline'
 gem 'redis'
 
-gem 'coreaudio'
+if RUBY_PLATFORM =~ /darwin/
+  gem 'coreaudio'
+end
+
 gem 'taglib-ruby'
 gem 'zmq'
 

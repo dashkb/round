@@ -8,6 +8,7 @@ module Device
     include Device
 
     def playing?
+      sleep 1
       @now_playing.present? && position < @now_playing.runtime
     end
 
