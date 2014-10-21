@@ -32,7 +32,7 @@ class ApiServer < Sinatra::Base
   end
 
   get '/queue' do
-    json QueueService.all.map(&:to_i)
+    json QueueService.all.map(&:as_json)
   end
   post '/queue' do
     params[:ids].each do |id|
@@ -44,7 +44,7 @@ class ApiServer < Sinatra::Base
         queued_at: Time.now,
         requested_by: params[:name]
       )
-      QueueService.add(track)
+      QueueService.add(selection)
     end
 
     json status: 'OK'

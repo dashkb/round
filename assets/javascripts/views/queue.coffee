@@ -12,6 +12,7 @@ define [
 
     events:
       'click .queue-now': 'sendQueue'
+      'click .cancel': -> Backbone.history.navigate('/', trigger: true)
 
     initialize: ->
       @listenTo(@collection, 'clear sort', @render)

@@ -14,13 +14,13 @@ module QueueService
     add_history(next_from_queue || pick_random)
   end
   def all
-    Round.redis.lrange(QUEUE_NAME, 0, -1)
+    Round.redis.lrange(QUEUE_NAME, 0, -1).map { |id| Selection[id] }
   end
-  def add(track)
-    Round.redis.rpush(QUEUE_NAME, track.id)
+  def add(selection)
+    Round.redis.rpush(QUEUE_NAME, selection.id)
   end
   def remove(track)
-    Round.redis.lrem(QUEUE_NAME, 0, track.id)
+    Round.redis.lrem(QUEUE_NAME, 0, selection.id)
   end
   def clear
     Round.redis.del(QUEUE_NAME)
@@ -28,8 +28,9 @@ module QueueService
 
   def next_from_queue
     while next_id = Round.redis.lpop(QUEUE_NAME)
-      track = Track[next_id]
-      return track if track.present?
+      @selection = Selection[next_id]
+      return @selection.track if @selection.present?
+      @selection = nil
     end
   end
 
@@ -56,7 +57,9 @@ module QueueService
   end
 
   def add_history(track)
-    History.create(track_id: track.id, played_at: Time.now)
+    data = {track_id: track.id, played_at: Time.now}
+    data[:selection_id] = @selection.id if @selection.present?
+    History.create(data)
     return track
   end
 end
