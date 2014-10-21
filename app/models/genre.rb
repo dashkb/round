@@ -1,5 +1,5 @@
 class Genre < Sequel::Model
-  def as_json
+  def as_json(options={})
     {
       id:        self.id,
       name:      self.name,

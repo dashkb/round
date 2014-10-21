@@ -15,7 +15,7 @@ class Paginator
     @results ||= @model.where(@query).order('sort_name ASC').limit(@per_page).offset(@offset)
   end
 
-  def as_json
+  def as_json(options={})
     {
       page:    @page,
       pages:   self.pages,

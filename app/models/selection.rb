@@ -2,7 +2,7 @@ class Selection < Sequel::Model
   many_to_one :track
   one_to_one :history
 
-  def as_json
+  def as_json(options={})
     {
       id:           self.id,
       track:        self.track_id,

@@ -73,7 +73,7 @@ module Player
 
   def api_status
     {
-      now_playing: device.now_playing.as_json(true),
+      now_playing: device.now_playing.as_json(deep: true),
       position:    device.position,
       state:       device.paused? ? 'paused' : 'playing'
     }

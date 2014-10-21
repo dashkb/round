@@ -12,19 +12,19 @@ class ApiServer < Sinatra::Base
 
   get '/genres' do
     pager = Paginator.new(Genre, params.slice('page'))
-    json pager.as_json
+    json pager
   end
   get '/artists' do
     pager = Paginator.new(Artist, params.slice('page'))
-    json pager.as_json
+    json pager
   end
   get '/albums' do
     pager = Paginator.new(Album, params.slice('page'))
-    json pager.as_json
+    json pager
   end
   get '/tracks' do
     pager = Paginator.new(Track, params.slice('page'))
-    json pager.as_json
+    json pager
   end
 
   get '/status' do
@@ -32,7 +32,7 @@ class ApiServer < Sinatra::Base
   end
 
   get '/queue' do
-    json QueueService.all.map(&:as_json)
+    json QueueService.all
   end
   post '/queue' do
     params[:ids].each do |id|
@@ -51,6 +51,6 @@ class ApiServer < Sinatra::Base
   end
 
   get '/history' do
-    json History.order('played_at DESC').limit(50)
+    json History.order(Sequel.desc(:played_at)).limit(50)
   end
 end

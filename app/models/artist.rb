@@ -8,7 +8,7 @@ class Artist < Sequel::Model
     self.name
   end
 
-  def as_json
+  def as_json(options={})
     {
       id:        self.id,
       genres:    self.genres.map(&:id),

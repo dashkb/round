@@ -58,7 +58,10 @@ module QueueService
 
   def add_history(track)
     data = {track_id: track.id, played_at: Time.now}
-    data[:selection_id] = @selection.id if @selection.present?
+    if @selection.present?
+      data[:selection_id] = @selection.id
+      @selection = nil
+    end
     History.create(data)
     return track
   end

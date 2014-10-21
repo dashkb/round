@@ -14,7 +14,7 @@ class Track < Sequel::Model
     File.join(source.root, self.filename)
   end
 
-  def as_json(deep=false)
+  def as_json(options={})
     json = {
       id:        self.id,
       genre:     self.genre_id,
@@ -26,7 +26,7 @@ class Track < Sequel::Model
       track_num: self.track_num.to_s.rjust(2, '0')
     }
 
-    if deep
+    if options[:deep]
       json[:genre]  = genre.as_json
       json[:artist] = artist.as_json
       json[:album]  = album.as_json

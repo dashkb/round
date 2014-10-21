@@ -19,7 +19,7 @@ define [
     templateContext: ->
       length: @items.length
       entries: @items.map (entry) ->
-        track = app.tracks.get(entry.id)
+        track = app.tracks.get(entry.track)
         artist = app.artists.get(track.get('artist'))
 
         {
