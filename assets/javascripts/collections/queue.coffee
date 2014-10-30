@@ -47,19 +47,23 @@ define [
       return unless @has(id)
 
       item  = @items[id]
-      return if item.position is 0 or (item.position - 1) is @length
-
-      top    = @order.slice(0, item.position - 1)
-      bottom = @order.slice(item.position + 1)
-      above  = top.pop()
-
-      @order = top.concat(id, above, bottom)
-      @updatePositions()
+      return if item.position is 0
+      @swap(item.position)
 
     down: (id) ->
       return unless @has(id)
       item = @items[id]
-      @up(@at(item.position + 1))
+      return if (item.position + 1) is @length
+      @swap(item.position + 1)
+
+    swap: (pos) ->
+      id     = @order[pos]
+      top    = @order.slice(0, pos)
+      bottom = @order.slice(pos + 1)
+      above  = top.pop()
+
+      @order = top.concat(id, above, bottom)
+      @updatePositions()
 
     updatePositions: ->
       @order.forEach (n, i) => @items[n].position = i

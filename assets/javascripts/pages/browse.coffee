@@ -1,5 +1,6 @@
 define [
   'underscore'
+  'jquery'
   'lib/model'
   'lib/view'
   'collections/queue'
@@ -7,6 +8,7 @@ define [
   'stache!./browse'
 ], (
   _
+  $
   Model
   View
   Queue
@@ -16,11 +18,15 @@ define [
   class CollectionView extends View
     'tagName' : 'ul'
 
+    events:
+      'click li' : 'click'
+
     initialize: ->
       @listenTo(@model, 'change:search', @renderAll)
 
     click: (e) ->
-      @model.set('chosen', e.target.dataset.id) if @model?
+      target = $(e.target).closest('li')
+      @model.set('chosen', target.data('id')) if @model?
 
     each: (callback) ->
       @collection.each (record) =>
@@ -67,7 +73,6 @@ define [
       li = document.createElement('li')
       li.dataset.id = record.id
       li.innerHTML = record.get('name')
-      li.addEventListener('click', @click.bind(this))
       return li
 
   class GenreList extends CollectionView
@@ -115,6 +120,7 @@ define [
       @artist = new Model()
       @track  = new Model()
       @queue  = new Queue()
+      console.log(@queue)
 
       @genres  = new GenreList(collection: app.genres, model: @genre)
       @artists = new ArtistList(collection: app.artists, model: @artist)
