@@ -1,8 +1,10 @@
 define [
+  'jquery'
   'backbone'
   'lib/view'
   'stache!./queue'
 ], (
+  $
   Backboke
   View
   template
@@ -13,20 +15,25 @@ define [
     events:
       'click .queue-now': 'sendQueue'
       'click .cancel': -> Backbone.history.navigate('/', trigger: true)
+      'click .remove': 'removeItem'
+      'click .move-up': 'moveUp'
+      'click .move-down': 'moveDown'
 
     initialize: ->
       @listenTo(@collection, 'clear sort', @render)
 
     templateContext: ->
       length: @collection.length
-      entries: @collection.map (entry) ->
+      entries: @collection.map (entry) =>
         track = app.tracks.get(entry.id)
         artist = app.artists.get(track.get('artist'))
 
         {
-          id:     track.id
-          name:   track.get('name')
-          artist: artist.get('name')
+          'id'           : track.id
+          'name'         : track.get('name')
+          'artist'       : artist.get('name')
+          'canMoveUp?'   : (entry.position > 0)
+          'canMoveDown?' : (entry.position + 1 < @collection.length)
         }
 
     sendQueue: ->
@@ -42,3 +49,18 @@ define [
           console.log(data)
           @collection.clear()
           Backbone.history.navigate('/', trigger: true)
+
+    removeItem: (e) ->
+      e.preventDefault()
+      li = $(e.target).closest('li')
+      @collection.remove(li.data('id'))
+
+    moveUp: (e) ->
+      e.preventDefault()
+      li = $(e.target).closest('li')
+      @collection.up(li.data('id'))
+
+    moveDown: (e) ->
+      e.preventDefault()
+      li = $(e.target).closest('li')
+      @collection.down(li.data('id'))

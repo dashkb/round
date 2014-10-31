@@ -3,6 +3,15 @@
 <button class="cancel">Cancel</button>
 <ol class="queue-list">
   {{#entries}}
-  <li data-id="{{id}}">{{name}} by {{artist}}</li>
+  <li data-id="{{id}}">
+    {{name}} by {{artist}}
+    <a href="#" class="remove">X</a>
+    {{#canMoveUp?}}
+    <a href="#" class="move-up">U</a>
+    {{/canMoveUp?}}
+    {{#canMoveDown?}}
+    <a href="#" class="move-down">D</a>
+    {{/canMoveDown?}}
+  </li>
   {{/entries}}
 </ol>

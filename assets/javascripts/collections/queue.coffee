@@ -48,21 +48,18 @@ define [
 
       item  = @items[id]
       return if item.position is 0
-      @swap(item.position)
+      @swap(item.position, item.position - 1)
 
     down: (id) ->
       return unless @has(id)
       item = @items[id]
       return if (item.position + 1) is @length
-      @swap(item.position + 1)
+      @swap(item.position, item.position + 1)
 
-    swap: (pos) ->
-      id     = @order[pos]
-      top    = @order.slice(0, pos)
-      bottom = @order.slice(pos + 1)
-      above  = top.pop()
-
-      @order = top.concat(id, above, bottom)
+    swap: (from, to) ->
+      tmp = @order[to]
+      @order[to] = @order[from]
+      @order[from] = tmp
       @updatePositions()
 
     updatePositions: ->
