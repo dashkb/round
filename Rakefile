@@ -68,3 +68,20 @@ namespace :import do
     end
   end
 end
+
+task :whitelist do
+  Round.init
+  require 'lib/access_list_service'
+  require 'lib/player_service'
+  require 'lib/queue_service'
+
+  AccessListService.clear
+  Genre.all.each do |genre|
+    print "Whitelist #{genre.name}? [y/N] "
+    answer = STDIN.gets.chomp.downcase
+
+    if answer == 'y'
+      AccessListService.whitelist(:genre, genre.id)
+    end
+  end
+end
