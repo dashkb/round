@@ -23,10 +23,7 @@ module Device
       end
     end
     def skip
-      info("Fetch next track")
       stop_current
-      next_from_queue
-      info("Fetched #{@now_playing}")
     end
 
     def process
@@ -36,7 +33,8 @@ module Device
       elsif playing?
         status_line
       else
-        skip
+        next_from_queue
+        info("Fetched #{@now_playing}")
       end
     end
 
@@ -57,10 +55,12 @@ module Device
 
     protected
     def stop_current
+      debug("Stopped current")
       @now_playing = nil
     end
 
     def play_track(track)
+      debug("No playing: #{track}")
       @now_playing = track
     end
 

@@ -14,7 +14,7 @@ class Interface
 
   def initialize(device=STDOUT)
     @device  = device
-    @level   = DEBUG
+    @level   = INFO
     @queue   = Queue.new
   end
 

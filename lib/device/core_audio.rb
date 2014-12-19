@@ -1,3 +1,4 @@
+require 'benchmark'
 require 'lib/audio_file'
 require 'lib/device'
 require 'lib/queue_service'
@@ -44,16 +45,14 @@ module Device
       return false
     end
 
-    protected
-    def stop_current
+    def skip
       @audio_file.try(:close)
-
+      debug("Closed audio file")
       @audio_file  = nil
-      super
     end
 
+    protected
     def play_track(track)
-      super
       @audio_file = AudioFile.new(track.local_path)
       @started_at = nil
 
@@ -61,6 +60,9 @@ module Device
         error("Audio file could not be read")
         stop_current
       end
+
+      debug("Audio file opened")
+      super
     end
 
     def read_buffer
@@ -72,10 +74,13 @@ module Device
     def fill_channels(buffer)
       if buffer.dim <  @channels
         full = NArray.sint(@channels, @buffer_size)
-        @buffer_size.times do |i|
-          full[i * @channels + 0] = buffer[i * buffer.dim + 0]
-          full[i * @channels + 1] = buffer[i * buffer.dim + 1]
+        crap = Benchmark.realtime do
+          @buffer_size.times do |i|
+            full[i * @channels + 0] = buffer[i * buffer.dim + 0]
+            full[i * @channels + 1] = buffer[i * buffer.dim + 1]
+          end
         end
+        debug("Fill took #{crap} seconds")
 
         return full
       elsif buffer.dim > @channels
