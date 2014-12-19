@@ -33,6 +33,16 @@ module Round
     @zmq_client ||= create_zmq_client
   end
 
+  def vlc_host
+    ENV.fetch('VLC_HOST', '127.0.0.1')
+  end
+  def vlc_port
+    ENV.fetch('VLC_PORT', 9999)
+  end
+  def vlc_path
+    ENV.fetch('VLC_PATH', '/Applications/VLC.app/Contents/MacOS/VLC')
+  end
+
   def init
     # Setup connections early (so we fail fast)
     self.database

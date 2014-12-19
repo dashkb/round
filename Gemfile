@@ -21,6 +21,7 @@ if RUBY_PLATFORM =~ /darwin/
   gem 'coreaudio'
 end
 
+gem 'vlc-client'
 gem 'taglib-ruby'
 gem 'zmq'
 
