@@ -63,7 +63,6 @@ module Device
           sleep 0.1
           return true if client.playing?
         rescue
-          retry
         end
       end
 
