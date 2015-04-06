@@ -15,13 +15,17 @@ class ZmqClient
     @retries  = retries
     @timeout  = timeout
 
-    connect
-    at_exit do
-      @socket.close
-    end
+    @connected = false
+    @at_exited = false
+  end
+
+  def connected?
+    @connected == true
   end
 
   def send(msg)
+    connect! unless connected?
+
     @retries.times do |try|
       raise SendFailed.new(msg) unless @socket.send(msg)
       if ZMQ.select([@socket], nil, nil, @timeout)
@@ -35,14 +39,50 @@ class ZmqClient
     end
 
     raise ServerDown
+  rescue ZMQ::Error => e
+    # If we hit this error, reconnect and resend!
+    if e.message =~ /Cross thread violation for/
+      reconnect!
+      return send(msg)
+    end
+
+    raise
+  end
+
+  def connect!
+    return if connected?
+
+    connect
+    @connected = true
+
+    unless @at_exited
+      at_exit { disconnect! }
+      @at_exited = true
+    end
+  end
+
+  def disconnect!
+    return unless connected?
+
+    begin
+      @socket.close
+    rescue ZMQ::Error => e
+    end
+
+    @connected = false
+  end
+
+  def reconnect!
+    disconnect!
+    connect!
   end
 
   private
   def connect
-    @context = ZMQ::Context.new(1)
+    @context ||= ZMQ::Context.new(1)
     @socket  = @context.socket(ZMQ::REQ)
 
-    @socket.setsockopt(ZMQ::LINGER, 0)
+    #@socket.setsockopt(ZMQ::LINGER, 0)
     @socket.connect(@endpoint)
   end
 end
