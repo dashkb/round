@@ -25,14 +25,13 @@ module Player
     @device = device
   end
   def load_device_class
-    device_name = ENV.fetch('DEVICE', default_device_name)
+    device_name = ENV.fetch('DEVICE') { default_device_name }
     require "lib/device/#{device_name}"
     "Device::#{device_name.camelcase}".constantize
   end
   def default_device_name
-    platform = Gem::Platform.local
-    if platform.os == 'darwin'
-      'core_audio'
+    case Gem::Platform.local
+    when 'darwin' then 'core_audio'
     else
       warn("Unknown platform, cannot determine proper device for handling music. Falling back to Fake")
       'fake'
