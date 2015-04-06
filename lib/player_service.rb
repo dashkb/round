@@ -27,24 +27,4 @@ module PlayerService
   rescue ZmqClient::ServerDown
     {state: 'stopped', error: 'zmq down'}
   end
-
-  def context
-    @context ||= ZMQ::Context.new
-  end
-  def socket
-    @socket ||= context.socket(ZMQ::REQ).tap do |socket|
-      socket.connect(Round.controller_endpoint)
-      trap
-    end
-  end
-
-  private
-  def trap
-    %w{INT KILL TERM QUIT EXIT}.each do |signal|
-      Signal.trap(signal) do
-        socket.close
-        context.close
-      end
-    end
-  end
 end

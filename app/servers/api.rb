@@ -53,4 +53,17 @@ class ApiServer < Sinatra::Base
   get '/history' do
     json History.order(Sequel.desc(:played_at)).limit(50)
   end
+
+  get '/admin/pause' do
+    PlayerService.pause
+    json status: 'OK'
+  end
+  get '/admin/play' do
+    PlayerService.play
+    json status: 'OK'
+  end
+  get '/admin/skip' do
+    PlayerService.skip
+    json status: 'OK'
+  end
 end

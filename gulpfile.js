@@ -42,4 +42,4 @@ gulp.task('watch', function() {
   gulp.watch('assets/javascripts/**/*', ['default']);
 });
 
-gulp.task('default', ['clean', 'coffee', 'mustache', 'package'])
+gulp.task('default', ['clean', 'package'])

@@ -24,15 +24,25 @@ define [
     initialize: (options) ->
       @layout = options.layout
 
-    idle: -> @setPage(new IdlePage)
+    idle: ->
+      @layout.hideStatus()
+      @setPage(new IdlePage)
 
-    browse: -> @setPage(new BrowsePage)
+    browse: ->
+      @layout.showStatus()
+      @setPage(new BrowsePage)
 
-    queue: -> @setPage(new QueuePage)
+    queue: ->
+      @layout.showStatus()
+      @setPage(new QueuePage)
 
-    history: -> @setPage(new HistoryPage)
+    history: ->
+      @layout.showStatus()
+      @setPage(new HistoryPage)
 
-    admin: -> @setPage(new AdminPage)
+    admin: ->
+      @layout.showStatus()
+      @setPage(new AdminPage)
 
     setPage: (page) ->
       @layout.set('#content', page)

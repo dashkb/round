@@ -51,6 +51,57 @@ body {
     }
   }
 }
+#admin {
+  position: fixed;
+  top: 0.5em;
+  right: 0.5em;
+
+  .btn {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.4em;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    border-radius: 4px;
+
+    &:active {
+      box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    }
+  }
+  .btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+
+    &:hover, &:active, &:focus {
+      background-color: #e6e6e6;
+      border-color: #adadad;
+    }
+  }
+  .btn-group {
+    > .btn {
+      position: relative;
+      float: left;
+
+      &:first-child {
+        margin-left: 0;
+      }
+      &:first-child:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      &:not(:first-child):not(:last-child) {
+        border-radius: 0;
+      }
+      &:last-child:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}
 #browse-page {
   ul {
     list-style: none;

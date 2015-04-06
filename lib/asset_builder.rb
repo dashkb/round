@@ -20,11 +20,13 @@ module AssetBuilder
 
   def coffeescript(path)
     get(path) do |raw|
+      puts "BUILDING COFFEE #{path}"
       CoffeeScript.compile(raw)
     end
   end
   def scss(path)
     get(path) do |raw|
+      puts "BUILDING SASS #{path}"
       Sass::Engine.new(raw, syntax: :scss).render
     end
   end

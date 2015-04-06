@@ -29,6 +29,24 @@ define [
     stop: ->
       stopStatus()
 
+    pingAdmin: ->
+      return unless @is_admin
+
+      clearTimeout(@clearAdminTimer) if @clearAdminTimer
+      @clearAdminTimer = setTimeout((=> @clearAdmin()), 5 * 60 * 1000)
+
+
+    makeAdmin: ->
+      return if @is_admin
+      @is_admin = true
+      @trigger('change:admin', @is_admin)
+      @pingAdmin()
+
+    clearAdmin: ->
+      return unless @is_admin
+      @is_admin = false
+      @trigger('change:admin', @is_admin)
+
   statusOn = false
 
   startStatus = ->

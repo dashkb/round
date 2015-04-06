@@ -23,6 +23,10 @@ define [
       @updateStatus()
       return this
 
+    remove: ->
+      @stopListening(app, 'status')
+      super
+
     updateStatus: ->
       if app.playerStatus.state is 'stopped'
         @stopped()
