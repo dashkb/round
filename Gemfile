@@ -23,7 +23,7 @@ end
 
 gem 'vlc-client'
 gem 'taglib-ruby'
-gem 'zmq'
+gem 'rbczmq'
 
 gem 'coffee-script'
 gem 'haml'
