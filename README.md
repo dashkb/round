@@ -2,7 +2,8 @@
 
 This branch is a complete rewrite of CYMK. There are several goals behind the rewrite, but the primary goal is to make the
 interface as snappy as possible. We are moving away from a Rails application and using Sinatra, and the services are rewritten
-to use threads cleanly. This rewrite also returns us to CoreAudio for complete control over audio.
+to use threads cleanly. This rewrite also returns us to CoreAudio for complete control over audio (although VLC is still
+supported).
 
 ## Setup
 
