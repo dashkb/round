@@ -58,11 +58,12 @@ module Device
     def playing?
       sleep 0.5
 
-      3.times do
+      3.times do |n|
         begin
           sleep 0.1
           return true if client.playing?
-        rescue
+        rescue => e
+          puts "Failed to get VLC status attempt #{n}: #{e.message}"
         end
       end
 
