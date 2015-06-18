@@ -1,21 +1,7 @@
 import React from 'react';
 import Router, { Route, Link, RouteHandler, DefaultRoute } from 'react-router';
-import { Dispatcher, start } from './flux';
-
-class PlayerStatus extends React.Component {
-  render() {
-    return (
-      <section id="status">Status</section>
-    );
-  }
-}
-class AdminControls extends React.Component {
-  render() {
-    return (
-      <section id="admin">Admin</section>
-    );
-  }
-}
+import * as Flux from './flux';
+import { AdminControls, PlayerStatus } from './components';
 
 class Home extends React.Component {
   render() {
@@ -72,7 +58,7 @@ let routes = (
   </Route>
 );
 
-start();
+Flux.start();
 Router.run(routes, Router.HistoryLocation, function(Handler) {
   React.render(<Handler/>, document.body);
 });

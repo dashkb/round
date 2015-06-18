@@ -2,52 +2,44 @@ body {
   margin-bottom: 50px;
   font-size: 1.2em;
 }
-.status-view {
+#status {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: #eee;
+
+  .runtime, .state {
+    display: none;
+  }
+  .track-title, .artist-name {
+    display: inline-block;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+  }
+  .track-title {
+    margin-left: 1em;
+    font-size: 1.5em;
+
+    &:after {
+      content: 'by';
+      padding-left: 1em;
+      padding-right: 1em;
+      font-weight: normal;
+      font-size: 0.75em;
+    }
+  }
+  .artist-name {
+    margin-right: 1em;
+  }
   .progress {
+    height: 2px;
     width: 100%;
-    height: 5px;
     background: #ccc;
 
     .progress-bar {
       width: 0%;
       height: 100%;
       background: #f00;
-    }
-  }
-}
-#status {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-
-  .status-view {
-    background: #eee;
-
-    .runtime, .state {
-      display: none;
-    }
-    .track-title, .artist-name {
-      display: inline-block;
-      margin-top: 0.25em;
-      margin-bottom: 0.25em;
-    }
-    .track-title {
-      margin-left: 1em;
-      font-size: 1.5em;
-
-      &:after {
-        content: 'by';
-        padding-left: 1em;
-        padding-right: 1em;
-        font-weight: normal;
-        font-size: 0.75em;
-      }
-    }
-    .artist-name {
-      margin-right: 1em;
-    }
-    .progress {
-      height: 2px;
     }
   }
 }
