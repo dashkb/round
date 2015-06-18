@@ -10,6 +10,31 @@ class ApiServer < Sinatra::Base
     content_type 'text/json', :charset => 'utf-8'
   end
 
+  get '/init-data' do
+    content_type 'text/javascript', :charset => 'utf-8'
+    headers['Content-Encoding'] = 'gzip'
+
+    unless $init_data
+      data = <<-JS
+        var GENRES  = #{JSON.generate(Genre.order('sort_namee ASC').map(&:as_json))};
+        var ARTISTS = #{JSON.generate(Artist.order('sort_namee ASC').map(&:as_json))};
+        var ALBUMS  = #{JSON.generate(Album.order('sort_namee ASC').map(&:as_json))};
+        var TRACKS  = #{JSON.generate(Track.order('sort_namee ASC').map(&:as_json))};
+        JS
+
+      $init_data = StringIO.new.tap do |io|
+        gz = Zlib::GzipWriter.new(io)
+        begin
+          gz.write(data)
+        ensure
+          gz.close
+        end
+      end.string
+    end
+
+    return $init_data
+  end
+
   get '/genres' do
     pager = Paginator.new(Genre, params.slice('page'))
     json pager
