@@ -16,13 +16,13 @@ function makeToFn(context, action, prereqs=[]) {
 
 let baseStore = {
   register: function(callback, context=null) {
-    this[_callbacks].push({
+    this._private[_callbacks].push({
       callback: callback,
       context:  context
     });
   },
   unregister: function(callback) {
-    this[_callbacks] = this[_callbacks].filter((spec) => spec.callback === callback);
+    this._private[_callbacks] = this._private[_callbacks].filter((spec) => spec.callback === callback);
   },
 
   listen: function(property, fn) {
@@ -63,10 +63,7 @@ let baseImpl = {
           `Store ${this.displayName} attempted to register twice for action ${action.displayName}.`)
 
     let context = this;
-
-    function after(...args) {
-      return {to: makeToFn(context, action, args)};
-    }
+    let after = (...args) => ({to: makeToFn(context, action, args)});
 
     return {after: after, to: makeToFn(context, action)};
   }
