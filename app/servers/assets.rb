@@ -22,6 +22,10 @@ class AssetsServer < Sinatra::Base
     content_type 'text/javascript'
     File.read(File.join(APP_ROOT, 'dist', 'main.js'))
   end
+  get '/main.js.map' do
+    content_type 'text/javascript'
+    File.read(File.join(APP_ROOT, 'dist', 'main.js.map'))
+  end
   get %r{^/(.*)?\.html} do |asset|
     content_type 'text/javascript'
 
