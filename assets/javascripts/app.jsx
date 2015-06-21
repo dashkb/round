@@ -1,7 +1,7 @@
 import React from 'react';
 import Router, { Route, Link, RouteHandler, DefaultRoute } from 'react-router';
 import * as Flux from './flux';
-import { AdminControls, PlayerStatus } from './components';
+import { AdminControls, Browse, PlayerStatus } from './components';
 
 class Home extends React.Component {
   render() {
@@ -9,17 +9,6 @@ class Home extends React.Component {
       <ul>
         <li><h2>Home</h2></li>
         <li><Link to="browse">Browse</Link></li>
-        <li><Link to="queue">Queue</Link></li>
-      </ul>
-    );
-  }
-}
-class Browse extends React.Component {
-  render() {
-    return (
-      <ul>
-        <li><h2>Browse</h2></li>
-        <li><Link to="app">Home</Link></li>
         <li><Link to="queue">Queue</Link></li>
       </ul>
     );
@@ -58,7 +47,12 @@ let routes = (
   </Route>
 );
 
-Flux.start();
+Flux.start({
+  genres:  GENRES,
+  artists: ARTISTS,
+  albums:  ALBUMS,
+  tracks:  TRACKS
+});
 Router.run(routes, Router.HistoryLocation, function(Handler) {
   React.render(<Handler/>, document.body);
 });

@@ -56,7 +56,11 @@ let statusStore = createStore('Player Status', {
 
   public: {
     getStatus: function() {
-      return this.status;
+      return {
+        status:   this.status.state,
+        position: this.status.position,
+        playing:  this.status.now_playing
+      }
     }
   }
 });
