@@ -105,3 +105,30 @@ export default function createStore(displayName, options) {
 
   return store;
 }
+
+export function connectToStores(Component, stores, getStateFromStores) {
+  const StoreConnection = React.createClass({
+    getInitialState() {
+      return getStateFromStores(this.props);
+    },
+
+    componentDidMount() {
+      stores.forEach(store => store.register(this.handleStoresChanged, this));
+    },
+    componentWillUnmount() {
+      stores.forEach(store => store.unregister(this.handleStoresChanged, this));
+    },
+
+    handleStoresChanged() {
+      if (this.isMounted()) {
+        this.setState(getStateFromStores(this.props));
+      }
+    },
+
+    render() {
+      return <Component {...this.props} {...this.state} />;
+    }
+  });
+
+  return StoreConnection;
+}

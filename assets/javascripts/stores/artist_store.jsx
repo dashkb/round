@@ -6,9 +6,7 @@ let artistStore = createStore('Artists', {
   },
 
   public: {
-    getAll: function() {
-      return this.artists;
-    }
+    getAll: function() { return this.artists; }
   }
 });
 

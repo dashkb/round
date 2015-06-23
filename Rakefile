@@ -23,6 +23,30 @@ task :pry do
   binding.pry
 end
 
+task :export do
+  Round.init
+
+  output = File.open('export.json', 'w+')
+  output << "[\n"
+
+  Track.order(:album_id, :track_num).each do |track|
+    out = {
+      name: track.name,
+      runtime: track.runtime,
+      track_num: track.track_num,
+      artist: track.artist.name,
+      album: track.album.name,
+      genre: track.genre.name,
+      filename: track.filename,
+      source: track.source.as_json
+    }
+    output << "  #{out.to_json},\n"
+  end
+
+  output << "]"
+  output.close
+end
+
 task :player do
   Round.init
   require 'lib/player'

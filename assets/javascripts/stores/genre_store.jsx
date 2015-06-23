@@ -6,9 +6,7 @@ let genreStore = createStore('Genres', {
   },
 
   public: {
-    getAll: function() {
-      return this.genres;
-    }
+    getAll: function() { return this.genres; }
   }
 });
 
