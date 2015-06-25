@@ -19,7 +19,7 @@ class ApiServer < Sinatra::Base
         var GENRES  = #{JSON.generate(Genre.order(:sort_name, :name).map(&:as_json))};
         var ARTISTS = #{JSON.generate(Artist.order(:sort_name, :name).map(&:as_json))};
         var ALBUMS  = #{JSON.generate(Album.order(:sort_name, :name).map(&:as_json))};
-        var TRACKS  = #{JSON.generate(Track.order(:sort_name, :name).map { |t| t.as_json(deep: true) })};
+        var TRACKS  = #{JSON.generate(Track.order(:artist_id, :album_id, :track_num).map { |t| t.as_json(deep: true) })};
         JS
 
       $init_data = StringIO.new.tap do |io|

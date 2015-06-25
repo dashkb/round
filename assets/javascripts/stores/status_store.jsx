@@ -1,5 +1,6 @@
 import { createStore } from 'flux';
-import { ajax, IdentFactory } from 'utils';
+import ajax from 'lib/ajax';
+import IdentFactory from 'lib/ident_factory';
 import * as StatusActions from 'actions/player_status';
 
 let streamIdent = new IdentFactory('Streaming');
