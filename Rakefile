@@ -26,25 +26,21 @@ end
 task :export do
   Round.init
 
-  output = File.open('export.json', 'w+')
-  output << "[\n"
+  gzipped = StringIO.new
+  gzipper = Zlib::GzipWriter.new(gzipped)
 
-  Track.order(:album_id, :track_num).each do |track|
-    out = {
-      name: track.name,
-      runtime: track.runtime,
-      track_num: track.track_num,
-      artist: track.artist.name,
-      album: track.album.name,
-      genre: track.genre.name,
-      filename: track.filename,
-      source: track.source.as_json
-    }
-    output << "  #{out.to_json},\n"
+  begin
+    gzipper.write(<<-JS.strip_heredoc)
+      var GENRES  = #{JSON.generate(Genre.order(:sort_name, :name).map(&:as_json))};
+      var ARTISTS = #{JSON.generate(Artist.order(:sort_name, :name).map(&:as_json))};
+      var ALBUMS  = #{JSON.generate(Album.order(:sort_name, :name).map(&:as_json))};
+      var TRACKS  = #{JSON.generate(Track.order(:artist_id, :album_id, :track_num).map { |t| t.as_json(deep: true) })};
+      JS
+  ensure
+    gzipper.close
   end
 
-  output << "]"
-  output.close
+  File.open('dist/init-data.js.gz', 'wb+') { |io| io << gzipped.string }
 end
 
 task :player do

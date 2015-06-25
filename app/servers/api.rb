@@ -13,26 +13,7 @@ class ApiServer < Sinatra::Base
   get '/init-data' do
     content_type 'text/javascript', :charset => 'utf-8'
     headers['Content-Encoding'] = 'gzip'
-
-    unless $init_data
-      data = <<-JS
-        var GENRES  = #{JSON.generate(Genre.order(:sort_name, :name).map(&:as_json))};
-        var ARTISTS = #{JSON.generate(Artist.order(:sort_name, :name).map(&:as_json))};
-        var ALBUMS  = #{JSON.generate(Album.order(:sort_name, :name).map(&:as_json))};
-        var TRACKS  = #{JSON.generate(Track.order(:artist_id, :album_id, :track_num).map { |t| t.as_json(deep: true) })};
-        JS
-
-      $init_data = StringIO.new.tap do |io|
-        gz = Zlib::GzipWriter.new(io)
-        begin
-          gz.write(data)
-        ensure
-          gz.close
-        end
-      end.string
-    end
-
-    return $init_data
+    $init_data ||= File.read('dist/init-data.js.gz')
   end
 
   get '/genres' do
