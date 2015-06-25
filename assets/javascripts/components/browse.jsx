@@ -2,8 +2,9 @@ import React from 'react';
 import Component from 'component';
 import ArtistList from './browse/artists';
 import GenreList from './browse/genres';
-import TrackList from './browse/tracks';
+import Queue from './browse/queue';
 import SearchBox from './browse/search_box';
+import TrackList from './browse/tracks';
 
 class List extends Component {
   mapFiltered(func) {
@@ -63,8 +64,7 @@ export default class Browse extends Component {
             searchTerm={this.state.searchTerm}
             artistScope={this.state.artistScope} />
         </section>
-        <section id="queue">
-        </section>
+        <Queue />
       </div>
     );
   }

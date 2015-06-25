@@ -1,31 +1,8 @@
 import React from 'react';
-import Router, { Route, Link, RouteHandler, DefaultRoute } from 'react-router';
+import Router, { Route, RouteHandler, DefaultRoute } from 'react-router';
 import Component from './component';
 import * as Flux from './flux';
-import { AdminControls, Browse, PlayerStatus } from './components';
-
-class Home extends Component {
-  render() {
-    return (
-      <ul>
-        <li><h2>Home</h2></li>
-        <li><Link to="browse">Browse</Link></li>
-        <li><Link to="queue">Queue</Link></li>
-      </ul>
-    );
-  }
-}
-class Queue extends Component {
-  render() {
-    return (
-      <ul>
-        <li><h2>Queue</h2></li>
-        <li><Link to="app">Home</Link></li>
-        <li><Link to="browse">Browse</Link></li>
-      </ul>
-    );
-  }
-}
+import { AdminControls, Browse, NowPlaying, PlayerStatus, Queue } from './components';
 
 class App extends Component {
   render() {
@@ -44,7 +21,7 @@ let routes = (
   <Route name="app" path="/" handler={App}>
     <Route name="browse" handler={Browse} />
     <Route name="queue" handler={Queue} />
-    <DefaultRoute handler={Home} />
+    <DefaultRoute handler={NowPlaying} />
   </Route>
 );
 

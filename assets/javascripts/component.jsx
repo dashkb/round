@@ -25,7 +25,17 @@ export default class Component extends React.Component {
     this.bind(methods);
   }
 
+  transitionTo(name) {
+    this.context.router.transitionTo(name);
+  }
+  clickTo(name) {
+    return () => this.context.router.transitionTo(name);
+  }
+
   _getInitialState() {
     return {};
   }
 }
+Component.contextTypes = {
+  router: React.PropTypes.func.isRequired
+};
