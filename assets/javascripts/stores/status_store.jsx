@@ -9,6 +9,7 @@ export default createStore('Player Status', {
   initialize: function() {
     this.status = {};
     this.streamID = null;
+    this.count = 0;
 
     this.dispatch(StatusActions.fetch).to(this.fetchStatus);
     this.dispatch(StatusActions.startStream).to(this.startStream);
@@ -35,6 +36,7 @@ export default createStore('Player Status', {
   },
 
   startStream: function(payload) {
+    this.count += 1;
     if (this.streamID) {
       return false;
     }
@@ -45,7 +47,8 @@ export default createStore('Player Status', {
     this.fetchStatus({ streamID, interval: payload.interval });
   },
   stopStream: function(payload) {
-    if (!this.streamID) {
+    this.count = Math.max(0, this.count - 1);
+    if (this.count > 0 || !this.streamID) {
       return false;
     }
 

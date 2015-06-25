@@ -16,14 +16,16 @@ function makeToFn(context, action, prereqs=[]) {
 }
 
 let baseStore = {
-  register: function(callback, context=null) {
+  register: function(callback, context) {
     this._private[_callbacks].push({
       callback: callback,
       context:  context
     });
   },
-  unregister: function(callback) {
-    this._private[_callbacks] = this._private[_callbacks].filter((spec) => spec.callback === callback);
+  unregister: function(callback, context) {
+    this._private[_callbacks] = this._private[_callbacks].filter(function(spec) {
+      return !(spec.callback === callback && spec.context === context);
+    });
   },
 
   listen: function(property, fn) {
@@ -105,31 +107,4 @@ export default function createStore(displayName, options) {
   }
 
   return store;
-}
-
-export function connectToStores(Component, stores, getStateFromStores) {
-  const StoreConnection = React.createClass({
-    getInitialState() {
-      return getStateFromStores(this.props);
-    },
-
-    componentDidMount() {
-      stores.forEach(store => store.register(this.handleStoresChanged, this));
-    },
-    componentWillUnmount() {
-      stores.forEach(store => store.unregister(this.handleStoresChanged, this));
-    },
-
-    handleStoresChanged() {
-      if (this.isMounted()) {
-        this.setState(getStateFromStores(this.props));
-      }
-    },
-
-    render() {
-      return <Component {...this.props} {...this.state} />;
-    }
-  });
-
-  return StoreConnection;
 }

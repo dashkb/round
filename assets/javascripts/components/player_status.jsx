@@ -1,23 +1,18 @@
 import React from 'react';
 import Component from 'component';
+import Mixins from 'mixins';
 import * as StatusActions from 'actions/player_status';
 import StatusStore from 'stores/status_store';
-
-let statusUpdateHandler = function() {
-  this.setState(StatusStore.getStatus());
-};
 
 export default class PlayerStatus extends Component {
   componentDidMount() {
     StatusActions.startStream();
-    StatusStore.register(statusUpdateHandler, this);
-  }
-  componentWillMount() {
-    statusUpdateHandler.call(this);
   }
   componentWillUnmount() {
     StatusActions.stopStream();
-    StatusStore.unregister(statusUpdateHandler, this);
+  }
+  onStatusChange() {
+    return StatusStore.getStatus();
   }
 
   render() {
@@ -67,3 +62,7 @@ export default class PlayerStatus extends Component {
     );
   }
 }
+
+Mixins(PlayerStatus, [
+  StatusStore.listenWith('onStatusChange')
+])
