@@ -1,6 +1,6 @@
-import { createStore } from '../flux';
+import { createStore } from 'flux';
 
-let albumStore = createStore('Albums', {
+export default createStore('Albums', {
   initialize: function(options) {
     this.albums = options.albums;
   },
@@ -11,5 +11,3 @@ let albumStore = createStore('Albums', {
     }
   }
 });
-
-export default albumStore;

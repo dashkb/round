@@ -1,4 +1,4 @@
-import { createAction } from '../flux';
+import { createAction } from 'flux';
 
 let update = createAction('Status Update', (status) => ({ status }));
 let fetch = createAction('Status Fetch', (streamID, interval) => ({ streamID, interval }));

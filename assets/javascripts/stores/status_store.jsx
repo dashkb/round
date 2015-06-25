@@ -1,11 +1,10 @@
-import { createStore } from '../flux';
-import ajax from '../ajax';
-import { IdentFactory } from '../utils';
-import * as StatusActions from '../actions/player_status';
+import { createStore } from 'flux';
+import { ajax, IdentFactory } from 'utils';
+import * as StatusActions from 'actions/player_status';
 
 let streamIdent = new IdentFactory('Streaming');
 
-let statusStore = createStore('Player Status', {
+export default createStore('Player Status', {
   initialize: function() {
     this.status = {};
     this.streamID = null;
@@ -64,5 +63,3 @@ let statusStore = createStore('Player Status', {
     }
   }
 });
-
-export default statusStore;

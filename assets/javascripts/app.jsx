@@ -1,9 +1,10 @@
 import React from 'react';
 import Router, { Route, Link, RouteHandler, DefaultRoute } from 'react-router';
+import Component from './component';
 import * as Flux from './flux';
 import { AdminControls, Browse, PlayerStatus } from './components';
 
-class Home extends React.Component {
+class Home extends Component {
   render() {
     return (
       <ul>
@@ -14,7 +15,7 @@ class Home extends React.Component {
     );
   }
 }
-class Queue extends React.Component {
+class Queue extends Component {
   render() {
     return (
       <ul>
@@ -26,7 +27,7 @@ class Queue extends React.Component {
   }
 }
 
-class App extends React.Component {
+class App extends Component {
   render() {
     return (
       <div>

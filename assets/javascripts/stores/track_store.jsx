@@ -1,6 +1,6 @@
-import { createStore } from '../flux';
+import { createStore } from 'flux';
 
-let trackStore = createStore('Tracks', {
+export default createStore('Tracks', {
   initialize: function(options) {
     this.tracks = options.tracks;
   },
@@ -11,5 +11,3 @@ let trackStore = createStore('Tracks', {
     }
   }
 });
-
-export default trackStore;

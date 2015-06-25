@@ -9,8 +9,9 @@ var gulp       = require('gulp'),
     watchify   = require('watchify');
 
 var buildOptions = {
-  entries:    'assets/javascripts/app.jsx',
+  entries:    ['assets/javascripts/app.jsx'],
   extensions: ['.jsx'],
+  paths:      ['./node_modules', './assets/javascripts'],
   debug:      true
 };
 var finalOptions = assign({}, watchify.args, buildOptions);

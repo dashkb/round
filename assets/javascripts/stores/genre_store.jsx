@@ -1,6 +1,6 @@
-import { createStore } from '../flux';
+import { createStore } from 'flux';
 
-let genreStore = createStore('Genres', {
+export default createStore('Genres', {
   initialize: function(options) {
     this.genres = options.genres;
   },
@@ -9,5 +9,3 @@ let genreStore = createStore('Genres', {
     getAll: function() { return this.genres; }
   }
 });
-
-export default genreStore;

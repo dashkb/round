@@ -1,4 +1,5 @@
-import { assert, IdentFactory } from '../utils';
+import assert from 'lib/assert';
+import IdentFactory from 'lib/ident_factory';
 import Dispatcher from './dispatcher';
 
 let actionIdents = new IdentFactory('Action_ID');

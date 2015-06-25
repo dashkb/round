@@ -1,6 +1,7 @@
 import assign from 'lodash.assign';
+import assert from 'lib/assert';
+import IdentFactory from 'lib/ident_factory';
 import { Dispatcher, start } from './';
-import { assert, IdentFactory } from '../utils';
 
 function makeToFn(context, action, prereqs=[]) {
   return function(callback) {

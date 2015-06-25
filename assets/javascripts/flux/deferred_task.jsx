@@ -1,5 +1,5 @@
 import { start, Dispatcher } from './';
-import { assert } from '../utils';
+import assert from 'lib/assert';
 
 function makeDeferred(context, fn) {
   if (typeof fn === 'string')

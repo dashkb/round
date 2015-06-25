@@ -1,30 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router';
-import assign from 'lodash.assign';
-import { connectToStores } from '../flux/store';
-import { debounce } from '../utils';
-import * as SearchActions from '../actions/search';
-import { GenreStore, ArtistStore, TrackStore } from '../stores';
+import Component from 'component';
+import ArtistList from './browse/artists';
+import GenreList from './browse/genres';
+import TrackList from './browse/tracks';
+import SearchBox from './browse/search_box';
 
-class List extends React.Component {
-  render() {
-    return (
-      <ul className={this.props.className}>
-      {this.mapFiltered(this.renderItem.bind(this))}
-      </ul>
-    );
-  }
-
-  renderItem(item) {
-    return (
-      <li key={item.id} onClick={this.onClick.bind(this, item.id)}>{item.name}</li>
-    );
-  }
-
-  onClick(itemID) {
-    this.props.onClick(itemID);
-  }
-
+class List extends Component {
   mapFiltered(func) {
     var ret = [];
     for (let item of this.state.list) {
@@ -51,107 +32,10 @@ class List extends React.Component {
     return true;
   }
 }
-List.propTypes = {
-  className: React.PropTypes.string,
-  searchTerm: React.PropTypes.string,
-  scopeBy: React.PropTypes.node,
-  onClick: React.PropTypes.func
-};
-class GenreList extends List {
-  constructor(props) {
-    super(assign({}, props, {className: 'genres'}))
 
-    this.state = {
-      list:   GenreStore.getAll(),
-    };
-  }
-}
-class ArtistList extends List {
-  constructor(props) {
-    super(assign({}, props, {className: 'artists'}))
-
-    this.state = {
-      list: ArtistStore.getAll()
-    };
-  }
-
-  scopePass(item) {
-    if (typeof(this.props.scopeBy) === 'number') {
-      return (item.genres.indexOf(this.props.scopeBy) >= 0)
-    }
-
-    return true;
-  }
-}
-class TrackList extends List {
-  constructor(props) {
-    super(assign({}, props, {className: 'tracks'}))
-
-    this.state = {
-      list: TrackStore.getAll()
-    };
-  }
-
-  shouldShow(item) {
-    if (typeof(this.props.scopeBy) !== 'number' && !(this.props.searchTerm && this.props.searchTerm.length > 2)) {
-      return false;
-    } else {
-      return super.shouldShow(item);
-    }
-  }
-
-  scopePass(item) {
-    if (typeof(this.props.scopeBy) === 'number') {
-      return (item.artist === this.props.scopeBy);
-    }
-
-    return true;
-  }
-}
-
-class SearchBox extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      searchTerm: ''
-    };
-  }
-
-  render() {
-    return (
-      <input
-        type="search" ref="search"
-        className="search-box"
-        placeholder="Search by Artist, Album or Track"
-        onKeyUp={this.updateSearch.bind(this)} />
-    );
-  }
-
-  updateSearch() {
-    if (this.updateTimer) {
-      clearTimeout(this.updateTimer);
-    }
-    this.updateTimer = setTimeout(this.doUpdate.bind(this), 150);
-  }
-
-  doUpdate() {
-    console.log('Do Update');
-    let searchTerm = this.refs.search.getDOMNode().value;
-    this.setState({ searchTerm });
-    this.props.onUpdate(searchTerm);
-    delete this.updateTimer;
-  }
-}
-SearchBox.propTypes = {
-  onUpdate: React.PropTypes.func
-};
-
-class Browse extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+export default class Browse extends Component {
+  _getInitialState() {
+    return {
       searchTerm: null,
       genreScope: null,
       artistScope: null
@@ -162,26 +46,24 @@ class Browse extends React.Component {
     return (
       <div id="browse-page">
         <section className="search">
-          <SearchBox
-            onUpdate={this.doSearch.bind(this)} />
+          <SearchBox onUpdate={this.doSearch} />
         </section>
-        <section className="genres">
-          <GenreList
-            onClick={this.clickGenre.bind(this)} />
+        <section id="genres">
+          <GenreList onSelect={this.selectGenre} />
         </section>
-        <section className="artists">
+        <section id="artists">
           <ArtistList
+            onSelect={this.selectArtist}
             searchTerm={this.state.searchTerm}
-            scopeBy={this.state.genreScope}
-            onClick={this.clickArtist.bind(this)} />
+            genreScope={this.state.genreScope} />
         </section>
-        <section className="tracks">
+        <section id="tracks">
           <TrackList
+            onSelect={this.selectTrack}
             searchTerm={this.state.searchTerm}
-            scopeBy={this.state.artistScope}
-            onClick={this.clickTrack.bind(this)} />
+            artistScope={this.state.artistScope} />
         </section>
-        <section className="queue">
+        <section id="queue">
         </section>
       </div>
     );
@@ -191,10 +73,11 @@ class Browse extends React.Component {
     this.setState({ searchTerm });
   }
 
-  clickTrack(trackScope) {
+  selectTrack(track) {
+    console.log('Add to queue', track);
   }
 
-  clickArtist(artistScope) {
+  selectArtist(artistScope) {
     // Clear the scoping if we click the same item again
     if (this.state.artistScope === artistScope) {
       this.setState({artistScope: null});
@@ -203,7 +86,7 @@ class Browse extends React.Component {
     }
   }
 
-  clickGenre(genreScope) {
+  selectGenre(genreScope) {
     // Clear the scoping if we click the same item again
     if (this.state.genreScope === genreScope) {
       this.setState({genreScope: null});
@@ -212,5 +95,3 @@ class Browse extends React.Component {
     }
   }
 }
-
-export default Browse;

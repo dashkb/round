@@ -1,6 +1,6 @@
-import { createStore } from '../flux';
+import { createStore } from 'flux';
 
-let artistStore = createStore('Artists', {
+export default createStore('Artists', {
   initialize: function(options) {
     this.artists = options.artists;
   },
@@ -9,5 +9,3 @@ let artistStore = createStore('Artists', {
     getAll: function() { return this.artists; }
   }
 });
-
-export default artistStore;

@@ -1,11 +1,10 @@
 import React from 'react';
+import Component from 'component';
 
-class AdminControls extends React.Component {
+export default class AdminControls extends Component {
   render() {
     return (
       <section id="admin">Admin</section>
     );
   }
 }
-
-export default AdminControls;

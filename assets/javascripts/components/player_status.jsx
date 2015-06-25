@@ -1,17 +1,13 @@
 import React from 'react';
-import * as StatusActions from '../actions/player_status';
-import StatusStore from '../stores/status_store';
+import Component from 'component';
+import * as StatusActions from 'actions/player_status';
+import StatusStore from 'stores/status_store';
 
 let statusUpdateHandler = function() {
   this.setState(StatusStore.getStatus());
 };
 
-class PlayerStatus extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
+export default class PlayerStatus extends Component {
   componentDidMount() {
     StatusActions.startStream();
     StatusStore.register(statusUpdateHandler, this);
@@ -71,5 +67,3 @@ class PlayerStatus extends React.Component {
     );
   }
 }
-
-export default PlayerStatus;
