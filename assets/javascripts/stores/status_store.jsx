@@ -1,4 +1,4 @@
-import { createStore } from 'flux';
+import createStore from 'flux/store';
 import ajax from 'lib/ajax';
 import IdentFactory from 'lib/ident_factory';
 import * as StatusActions from 'actions/player_status';

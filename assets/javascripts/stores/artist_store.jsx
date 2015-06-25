@@ -1,4 +1,4 @@
-import { createStore } from 'flux';
+import createStore from 'flux/store';
 
 export default createStore('Artists', {
   initialize: function(options) {
