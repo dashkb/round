@@ -38,10 +38,14 @@ class ApiServer < Sinatra::Base
   end
 
   get '/queue' do
-    json QueueService.all
+    json QueueService.all.as_json(deep: true)
   end
   post '/queue' do
     params[:ids].each do |id|
+      if id.is_a?(Array)
+        id = id.last
+      end
+
       track = Track[id]
       next unless track.present?
 
