@@ -5,9 +5,15 @@ function objectToQuery(obj, prefix) {
     let val = obj[prop],
         key = prefix ? `${prefix}[${prop}]` : prop;
 
-    query.push((typeof val === 'object') ?
-               objectToQuery(val, key) :
-               `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+    if (Array.isArray(val)) {
+      for (let v of val) {
+        query.push(`${encodeURIComponent(key + '[]')}=${encodeURIComponent(v)}`);
+      }
+    } else {
+      query.push((typeof val === 'object') ?
+                objectToQuery(val, key) :
+                `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+    }
   }
 
   return query.join('&');
@@ -43,8 +49,6 @@ export default function ajax(options, callback) {
   if (options.method.toLowerCase() != 'get' && options.data) {
     params = objectToQuery(options.data);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('Content-length', params.length);
-    xhr.setRequestHeader('Connection', 'close');
   }
 
   xhr.send(params);

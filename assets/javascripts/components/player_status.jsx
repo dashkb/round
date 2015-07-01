@@ -57,8 +57,7 @@ export default class PlayerStatus extends Component {
   }
   renderStopped() {
     return (
-      <section id="status">
-      </section>
+      <section id="status">Nothing Playing</section>
     );
   }
 }

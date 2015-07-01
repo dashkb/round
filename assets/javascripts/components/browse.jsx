@@ -5,34 +5,7 @@ import GenreList from './browse/genres';
 import Queue from './browse/queue';
 import SearchBox from './browse/search_box';
 import TrackList from './browse/tracks';
-
-class List extends Component {
-  mapFiltered(func) {
-    var ret = [];
-    for (let item of this.state.list) {
-      if (this.shouldShow(item)) {
-        ret.push(func(item));
-      }
-    }
-    return ret;
-  }
-
-  shouldShow(item) {
-    return this.scopePass(item) && this.filterPass(item);
-  }
-  // Scoping should be redefined in concrete classes
-  scopePass(item) {
-    return true;
-  }
-  filterPass(item) {
-    if (this.props.searchTerm && this.props.searchTerm.length > 2) {
-      let check = (item.name.toLowerCase().indexOf(this.props.searchTerm.toLowerCase()) >= 0);
-      return check;
-    }
-
-    return true;
-  }
-}
+import * as QueueActions from 'actions/queue';
 
 export default class Browse extends Component {
   _getInitialState() {
@@ -74,7 +47,7 @@ export default class Browse extends Component {
   }
 
   selectTrack(track) {
-    console.log('Add to queue', track);
+    QueueActions.add(track);
   }
 
   selectArtist(artistScope) {

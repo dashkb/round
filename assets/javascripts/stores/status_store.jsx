@@ -37,23 +37,23 @@ export default createStore('Player Status', {
 
   startStream: function(payload) {
     this.count += 1;
-    if (this.streamID) {
-      return false;
+
+    if (!this.streamID) {
+      let streamID = streamIdent.next();
+      this.streamID = streamID;
+      setTimeout(() => this.fetchStatus({ streamID, interval: payload.interval }));
     }
 
-    let streamID = streamIdent.next();
-    this.streamID = streamID;
     this.trigger();
-    this.fetchStatus({ streamID, interval: payload.interval });
   },
   stopStream: function(payload) {
     this.count = Math.max(0, this.count - 1);
-    if (this.count > 0 || !this.streamID) {
-      return false;
+
+    if (this.count === 0 && this.streamID) {
+      this.streamID = null;
+      clearTimeout(this.streamTimer);
     }
 
-    this.streamID = null;
-    clearTimeout(this.streamTimer);
     this.trigger();
   },
 
