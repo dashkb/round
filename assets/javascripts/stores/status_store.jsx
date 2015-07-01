@@ -17,15 +17,26 @@ export default createStore('Player Status', {
   },
 
   fetchStatus: function(payload) {
-    let self = this,
-        wait = (payload.interval || 1000);
+    let wait = (payload.interval || 1000);
 
-    ajax('/api/status', function(status) {
-      self.updateStatus({ status });
+    ajax({
+      method: 'get',
+      url:    '/api/status',
+      success: status => {
+        this.updateStatus({ status });
 
-      if (self.streamID === payload.streamID) {
-        let handler = () => StatusActions.fetch(payload.streamID, wait);
-        self.streamTimer = setTimeout(handler, wait);
+        if (this.streamID === payload.streamID) {
+          let handler = () => StatusActions.fetch(payload.streamID, wait);
+          this.streamTimer = setTimeout(handler, wait);
+        }
+      },
+      failure: () => {
+        console.error(`Failed to fetch status, waiting for ${wait * 10}ms before trying again.`);
+
+        if (this.streamID === payload.streamID) {
+          let handler = () => StatusActions.fetch(payload.streamID, wait);
+          this.streamTimer = setTimeout(handler, wait * 10);
+        }
       }
     });
   },

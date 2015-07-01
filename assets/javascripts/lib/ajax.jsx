@@ -36,11 +36,11 @@ export default function ajax(options, callback) {
   });
   xhr.addEventListener('error', function(e) {
     if (options.failure)
-      options.failure(JSON.parse(xhr.response), xhr, e);
+      options.failure(xhr, e);
   });
   xhr.addEventListener('abort', function(e) {
     if (options.aborted)
-      options.aborted(JSON.parse(xhr.response), xhr, e);
+      options.aborted(xhr, e);
   });
 
   xhr.open(options.method, options.url, true);
