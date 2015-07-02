@@ -13,7 +13,7 @@ module Device
     end
 
     def position
-      return Float::INFINITY if @started_at.nil?
+      return 0 if @started_at.nil?
       (Time.now - @started_at).round
     end
 

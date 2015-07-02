@@ -2,7 +2,7 @@ import React from 'react';
 import Component from 'component';
 import Mixins from 'mixins';
 import * as QueueActions from 'actions/queue';
-import QueueStore from 'stores/queue_store';
+import QueueStore from 'stores/queue';
 
 export default class Queue extends Component {
   onQueueChange() {

@@ -2,7 +2,7 @@ import React from 'react';
 import Component from 'component';
 import Mixins from 'mixins';
 import * as StatusActions from 'actions/player_status';
-import StatusStore from 'stores/status_store';
+import StatusStore from 'stores/status';
 
 export default class NowPlaying extends Component {
   componentDidMount() {

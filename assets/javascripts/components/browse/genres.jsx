@@ -1,6 +1,6 @@
 import React from 'react';
 import Component from 'component';
-import GenreStore from 'stores/genre_store';
+import GenreStore from 'stores/genres';
 
 export default class GenreList extends Component {
   _getInitialState() {

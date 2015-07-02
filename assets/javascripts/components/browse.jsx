@@ -1,10 +1,6 @@
 import React from 'react';
 import Component from 'component';
-import ArtistList from './browse/artists';
-import GenreList from './browse/genres';
-import Queue from './browse/queue';
-import SearchBox from './browse/search_box';
-import TrackList from './browse/tracks';
+import { ArtistList, GenreList, Queue, SearchBox, TrackList } from './browse';
 import * as QueueActions from 'actions/queue';
 
 export default class Browse extends Component {

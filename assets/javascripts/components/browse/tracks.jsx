@@ -1,6 +1,6 @@
 import React from 'react';
 import Component from 'component';
-import TrackStore from 'stores/track_store';
+import TrackStore from 'stores/tracks';
 
 export default class TrackList extends Component {
   _getInitialState() {

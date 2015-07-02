@@ -1,6 +1,6 @@
 import React from 'react';
 import Component from 'component';
-import ArtistStore from 'stores/artist_store';
+import ArtistStore from 'stores/artists';
 
 export default class ArtistList extends Component {
   _getInitialState() {
