@@ -18,37 +18,21 @@ class AssetsServer < Sinatra::Base
     File.join(APP_ROOT, 'vendor', 'fonts')
   ]
 
-  get '/main.js' do
+  get '/bundle.js' do
     content_type 'text/javascript'
-    File.read(File.join(APP_ROOT, 'dist', 'main.js'))
+    File.read(File.join(APP_ROOT, 'build', 'bundle.js'))
   end
-  get '/main.js.map' do
+  get '/bundle.js.map' do
     content_type 'text/javascript'
-    File.read(File.join(APP_ROOT, 'dist', 'main.js.map'))
+    File.read(File.join(APP_ROOT, 'dist', 'bundle.js.map'))
   end
-  get %r{^/(.*)?\.html} do |asset|
+  get '/vendor.bundle.js' do
     content_type 'text/javascript'
-
-    settings.javascripts_paths.each do |folder|
-      if File.exist?(filepath = File.join(folder, "#{asset}.mustache"))
-        return File.read(filepath)
-      end
-    end
-
-    status 404
+    File.read(File.join(APP_ROOT, 'build', 'vendor.bundle.js'))
   end
-  get %r{^/(.*)?\.js} do |asset|
+  get '/vendor.bundle.js.map' do
     content_type 'text/javascript'
-
-    settings.javascripts_paths.each do |folder|
-      if File.exist?(filepath = File.join(folder, "#{asset}.js"))
-        return File.read(filepath)
-      elsif File.exist?(filepath = File.join(folder, "#{asset}.coffee"))
-        return AssetBuilder.coffeescript(filepath)
-      end
-    end
-
-    status 404
+    File.read(File.join(APP_ROOT, 'dist', 'vendor.bundle.js.map'))
   end
   get %r{^/(.*)?\.css} do |asset|
     content_type 'text/css'

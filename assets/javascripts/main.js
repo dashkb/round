@@ -1,6 +1,6 @@
 import React from 'react';
 import Router from 'react-router';
-import BrowserHistory from 'react-router/lib/HashHistory';
+import BrowserHistory from 'react-router/lib/BrowserHistory';
 import { createRedux  } from 'redux';
 import { connect, provide } from 'redux/react';
 
