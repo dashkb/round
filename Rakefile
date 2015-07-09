@@ -23,26 +23,6 @@ task :pry do
   binding.pry
 end
 
-task :export do
-  Round.init
-
-  gzipped = StringIO.new
-  gzipper = Zlib::GzipWriter.new(gzipped)
-
-  begin
-    gzipper.write(<<-JS.strip_heredoc)
-      var GENRES  = #{JSON.generate(Genre.order(:sort_name, :name).map(&:as_json))};
-      var ARTISTS = #{JSON.generate(Artist.order(:sort_name, :name).map(&:as_json))};
-      var ALBUMS  = #{JSON.generate(Album.order(:sort_name, :name).map(&:as_json))};
-      var TRACKS  = #{JSON.generate(Track.order(:artist_id, :album_id, :track_num).map { |t| t.as_json(deep: true) })};
-      JS
-  ensure
-    gzipper.close
-  end
-
-  File.open('dist/init-data.js.gz', 'wb+') { |io| io << gzipped.string }
-end
-
 task :player do
   Round.init
   require 'lib/player'
@@ -85,23 +65,6 @@ namespace :import do
         puts "[%-6s] Finished %d tracks (iteration took %s seconds)!" % [elapsed.round(4), counter, iterated]
         iteration = Time.now
       end
-    end
-  end
-end
-
-task :whitelist do
-  Round.init
-  require 'lib/access_list_service'
-  require 'lib/player_service'
-  require 'lib/queue_service'
-
-  AccessListService.clear
-  Genre.all.each do |genre|
-    print "Whitelist #{genre.name}? [y/N] "
-    answer = STDIN.gets.chomp.downcase
-
-    if answer == 'y'
-      AccessListService.whitelist(:genre, genre.id)
     end
   end
 end
