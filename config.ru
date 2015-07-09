@@ -1,5 +1,4 @@
 require File.expand_path('../config.rb', __FILE__)
-Round.init
 
 map '/api' do
   require 'app/servers/api'

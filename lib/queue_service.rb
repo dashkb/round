@@ -30,7 +30,6 @@ module QueueService
     while next_id = Round.redis.lpop(QUEUE_NAME)
       @selection = Selection[next_id]
       return @selection.track if @selection.present?
-      @selection = nil
     end
   end
 

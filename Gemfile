@@ -6,10 +6,11 @@ gem 'sqlite3'
 gem 'sinatra', require: false
 gem 'sinatra-contrib'
 gem 'activesupport'
+gem 'rack-cors', require: 'rack/cors'
 
 gem 'foreman'
 gem 'dotenv'
-gem 'puma'
+gem 'unicorn'
 gem 'rake'
 gem 'therubyracer'
 gem 'pry'

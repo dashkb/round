@@ -38,7 +38,7 @@ module AccessListService
   def remove(type, item_id)
     list = read
     list[type.to_s] ||= {}
-    list[type.to_s].delete(item_id)
+    list[type.to_s].delete(item_id.to_s)
 
     write(list)
   end
@@ -47,7 +47,7 @@ module AccessListService
     write({})
   end
 
-  def to_hash
+  def to_hash(with_records: false)
     result = {
       allow_genres: [],
       block_genres: [],
@@ -58,16 +58,16 @@ module AccessListService
     list = AccessListService.read
     (list['genre'] || {}).each do |genre_id, allow|
       if allow
-        result[:allow_genres] << genre_id
+        result[:allow_genres] << (with_records ? Genre[genre_id] : genre_id)
       else
-        result[:block_genres] << genre_id
+        result[:block_genres] << (with_records ? Genre[genre_id] : genre_id)
       end
     end
     (list['artist'] || {}).each do |artist_id, allow|
       if allow
-        result[:allow_artists] << artist_id
+        result[:allow_artists] << (with_records ? Artist[artist_id] : artist_id)
       else
-        result[:block_artists] << artist_id
+        result[:block_artists] << (with_records ? Artist[artist_id] : artist_id)
       end
     end
 

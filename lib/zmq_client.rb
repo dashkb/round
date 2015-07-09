@@ -42,11 +42,12 @@ class ZmqClient
   rescue ZMQ::Error => e
     # If we hit this error, reconnect and resend!
     if e.message =~ /Cross thread violation for/
+      sleep(0.1)
       reconnect!
       return send(msg)
     end
 
-    raise
+    raise e
   end
 
   def connect!
@@ -73,16 +74,32 @@ class ZmqClient
   end
 
   def reconnect!
+    puts "NEED TO RECONNECT!"
     disconnect!
     connect!
   end
 
   private
   def connect
-    @context ||= ZMQ::Context.new(1)
-    @socket  = @context.socket(ZMQ::REQ)
+    attempts = 5
 
-    #@socket.setsockopt(ZMQ::LINGER, 0)
-    @socket.connect(@endpoint)
+    begin
+      @context ||= ZMQ::Context.new(1)
+      puts "USE SOCKET #{ZMQ::REQ}"
+      @socket = @context.socket(ZMQ::REQ)
+
+      @socket.connect(@endpoint)
+    rescue ZMQ::Error => e
+      if attempts > 0
+        puts "CONNECT ATTEMPT #{6 - attempt} FAILED"
+        attempts -= 1
+
+        sleep(0.1)
+        retry
+      else
+        puts "FAILED AFTER 5 ATTEMPTS"
+        raise e
+      end
+    end
   end
 end
