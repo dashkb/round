@@ -15,33 +15,36 @@ export default class AdminPanel {
     router: PropTypes.object.isRequired
   }
 
+  componentWillMount() {
+    this.boundLogin = ::this.login;
+    this.actions    = bindActionCreators(adminActions, this.props.dispatch);
+  }
+
   render() {
     if (!this.props.isAdmin) {
       return (
         <section id="admin">
           <div className="btn-group">
             <button className="btn btn-default login">
-              <i onClick={this.login.bind(this)} className="fa fa-2x fa-gear"></i>
+              <i onClick={this.boundLogin} className="fa fa-2x fa-gear"></i>
             </button>
           </div>
         </section>
       );
     }
 
-    const actions = bindActionCreators(adminActions, this.props.dispatch);
-
     let toggleButton;
     if (this.props.playing) {
-      toggleButton = <button className="btn btn-default pause" onClick={actions.pause}><i className="fa fa-2x fa-pause"/></button>
+      toggleButton = <button className="btn btn-default pause" onClick={this.actions.pause}><i className="fa fa-2x fa-pause"/></button>
     } else {
-      toggleButton = <button className="btn btn-default play" onClick={actions.play}><i className="fa fa-2x fa-play"/></button>
+      toggleButton = <button className="btn btn-default play" onClick={this.actions.play}><i className="fa fa-2x fa-play"/></button>
     }
 
     return (
       <section id="admin">
         <div className="btn-group">
           {toggleButton}
-          <button className="btn btn-default skip" onClick={actions.skip}><i className="fa fa-2x fa-forward"/></button>
+          <button className="btn btn-default skip" onClick={this.actions.skip}><i className="fa fa-2x fa-forward"/></button>
           <button className="btn btn-default dash" onClick={this.clickTo('admin')}><i className="fa fa-2x fa-dashboard"/></button>
         </div>
       </section>
@@ -50,7 +53,7 @@ export default class AdminPanel {
 
   login() {
     let password = prompt('Enter your password!');
-    this.props.dispatch(adminActions.login(password));
+    this.actions.login(password);
   }
 
   clickTo(page) {

@@ -121,7 +121,9 @@ class ApiServer < Sinatra::Base
   end
 
   get '/admin/access_lists' do
-    json AccessListService.to_hash(with_records: true)
+    json AccessListService.to_hash(with_records: true).merge(
+      saved_lists: AccessList.all.as_json(shallow: true)
+    )
   end
   post '/admin/access_lists' do
     if params['allowed']
@@ -136,5 +138,29 @@ class ApiServer < Sinatra::Base
     AccessListService.remove(params['store'], params['id'])
 
     json status: 'OK'
+  end
+
+  post '/admin/access_lists/save' do
+    if params['name'].blank?
+      halt(422)
+    else
+      AccessList.create(
+        name: params['name'],
+        list: AccessListService.read
+      )
+
+      json status: 'OK'
+    end
+  end
+  post '/admin/access_lists/load' do
+    list = AccessList[params['id']]
+
+    if list.nil?
+      halt(404)
+    else
+      AccessListService.write(list.list)
+
+      json status: 'OK'
+    end
   end
 end

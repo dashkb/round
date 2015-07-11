@@ -151,3 +151,15 @@ body {
     padding: 0.5em;
   }
 }
+#dashboard {
+  .rules {
+    float: left;
+    width: 49%;
+  }
+  .lists {
+    float: right;
+    width: 49%;
+    margin: 0;
+    padding: 0;
+  }
+}

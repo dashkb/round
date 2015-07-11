@@ -228,14 +228,19 @@ class QueueList {
     router: PropTypes.object.isRequired
   }
 
+  componentWillMount() {
+    this.boundSend = ::this.sendQueue;
+    this.boundCancel = ::this.cancelQueue;
+  }
+
   render() {
     const { queue } = this.props;
 
     return (
       <section className="queue">
         {queue.length} / 10 items ready to queue.
-        <button onClick={this.sendQueue.bind(this)}>Queue Now</button>
-        <button onClick={this.cancelQueue.bind(this)}>Cancel</button>
+        <button onClick={this.boundSend}>Queue Now</button>
+        <button onClick={this.boundCancel}>Cancel</button>
 
         <ol className="queue-list">
         {queue.map(track => {

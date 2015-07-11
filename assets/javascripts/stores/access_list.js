@@ -28,32 +28,35 @@ export default createStore(defaultState, {
     allowed_genres:  new Set(action.allow_genres),
     blocked_genres:  new Set(action.block_genres),
     allowed_artists: new Set(action.allow_artists),
-    blocked_artists: new Set(action.block_artists)
+    blocked_artists: new Set(action.block_artists),
+    saved_lists:     action.saved_lists
   }),
   [ACCESS_LIST_FETCH_FAILURE]: (state) => ({
     ...state,
     loading: false
   }),
   [ACCESS_LIST_BLACKLIST_SUCCESS]: (state, action) => {
-    let listName = `blocked_${action.store}s`;
+    let listName = `blocked_${action.store}s`,
+        list     = state[listName] || new Set();
 
     return {
       ...state,
-      [listName]: state[listName].add(action.item)
+      [listName]: list.add(action.item)
     }
   },
   [ACCESS_LIST_WHITELIST_SUCCESS]: (state, action) => {
-    let listName = `allowed_${action.store}s`;
+    let listName = `allowed_${action.store}s`,
+        list     = state[listName] || new Set();
 
     return {
       ...state,
-      [listName]: state[listName].add(action.item)
+      [listName]: list.add(action.item)
     }
   },
   [ACCESS_LIST_REMOVE_SUCCESS]: (state, action) => {
     // TODO look at ImmutableJS for an immutable set -_-
-    state[`blocked_${action.store}s`].delete(action.item);
-    state[`allowed_${action.store}s`].delete(action.item);
+    state[`blocked_${action.store}s`] && state[`blocked_${action.store}s`].delete(action.item);
+    state[`allowed_${action.store}s`] && state[`allowed_${action.store}s`].delete(action.item);
 
     return state;
   }

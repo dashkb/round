@@ -48,6 +48,7 @@ module Round
     self.database
     self.redis
 
+    require 'app/models/access_list'
     require 'app/models/source'
     require 'app/models/genre'
     require 'app/models/artist'
