@@ -9,6 +9,15 @@ class ApiServer < Sinatra::Base
 
   before do
     content_type 'text/json', :charset => 'utf-8'
+
+    if request.content_type == 'application/json'
+      request.body.rewind
+      body = request.body.read.to_s
+
+      if body
+        params.merge!(JSON.parse(body))
+      end
+    end
   end
 
   use Rack::Cors do
@@ -25,12 +34,6 @@ class ApiServer < Sinatra::Base
     headers['Access-Control-Allow-Headers'] = 'Accepts,Content-Type'
 
     halt 200
-  end
-
-  get '/init-data' do
-    content_type 'text/javascript', :charset => 'utf-8'
-    headers['Content-Encoding'] = 'gzip'
-    $init_data ||= File.read('dist/init-data.js.gz')
   end
 
   get '/genres' do
@@ -60,9 +63,7 @@ class ApiServer < Sinatra::Base
     json(upcoming: QueueService.all.as_json(deep: true))
   end
   post '/queue' do
-    data = JSON.parse(request.body.read)
-
-    data['ids'].each do |id|
+    params['ids'].each do |id|
       if id.is_a?(Array)
         id = id.last
       end
@@ -73,7 +74,7 @@ class ApiServer < Sinatra::Base
       selection = Selection.create(
         track_id: id,
         queued_at: Time.now,
-        requested_by: data['name']
+        requested_by: params['name']
       )
       QueueService.add(selection)
     end
@@ -87,35 +88,79 @@ class ApiServer < Sinatra::Base
 
   get '/admin/pause' do
     PlayerService.pause
+
     json status: 'OK'
   end
+
   get '/admin/play' do
     PlayerService.play
+
     json status: 'OK'
   end
+
+  # Queue a track at the top of the list and then skip the current track so it plays immediately!
+  post '/admin/play' do
+    track = Track[params['id']]
+    halt(404) if track.nil?
+
+    selection = Selection.create(
+      track_id: track.id,
+      queued_at: Time.now,
+      requested_by: params['name']
+    )
+    QueueService.addTop(selection)
+    PlayerService.skip
+
+    json status: 'OK'
+  end
+
   get '/admin/skip' do
     PlayerService.skip
+
     json status: 'OK'
   end
 
   get '/admin/access_lists' do
-    json AccessListService.to_hash(with_records: true)
+    json AccessListService.to_hash(with_records: true).merge(
+      saved_lists: AccessList.all.as_json(shallow: true)
+    )
   end
   post '/admin/access_lists' do
-    data = JSON.parse(request.body.read)
-
-    if data['allowed']
-      AccessListService.whitelist(data['store'], data['id'])
+    if params['allowed']
+      AccessListService.whitelist(params['store'], params['id'])
     else
-      AccessListService.blacklist(data['store'], data['id'])
+      AccessListService.blacklist(params['store'], params['id'])
     end
 
     json status: 'OK'
   end
   delete '/admin/access_lists' do
-    data = JSON.parse(request.body.read)
-    AccessListService.remove(data['store'], data['id'])
+    AccessListService.remove(params['store'], params['id'])
 
     json status: 'OK'
+  end
+
+  post '/admin/access_lists/save' do
+    if params['name'].blank?
+      halt(422)
+    else
+      AccessList.create(
+        name: params['name'],
+        list: AccessListService.read
+      )
+
+      json status: 'OK'
+    end
+  end
+  post '/admin/access_lists/load' do
+    list = AccessList[params['id']]
+
+    if list.nil?
+      halt(404)
+    else
+      AccessListService.write(list.list)
+
+      json status: 'OK'
+    end
   end
 end

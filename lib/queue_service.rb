@@ -19,6 +19,9 @@ module QueueService
   def add(selection)
     Round.redis.rpush(QUEUE_NAME, selection.id)
   end
+  def addTop(selection)
+    Round.redis.lpush(QUEUE_NAME, selection.id)
+  end
   def remove(track)
     Round.redis.lrem(QUEUE_NAME, 0, selection.id)
   end

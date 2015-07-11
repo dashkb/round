@@ -4181,6 +4181,8 @@ webpackJsonp([0],[
 	exports.blacklist = blacklist;
 	exports.whitelist = whitelist;
 	exports.remove = remove;
+	exports.save = save;
+	exports.load = load;
 	
 	var _lib = __webpack_require__(223);
 	
@@ -4231,6 +4233,26 @@ webpackJsonp([0],[
 	    var data = { store: store, id: item.id };
 	    _lib.client.del('admin/access_lists', { data: data }).then(function (result) {
 	      return dispatch({ store: store, item: item, type: _constantsActions.ACCESS_LIST_REMOVE_SUCCESS });
+	    }, function (error) {
+	      return dispatch({ error: error, type: ACCESS_LIST_REMOVE_FAILURE });
+	    });
+	  };
+	}
+	
+	function save(name) {
+	  return function (dispatch) {
+	    var data = { name: name };
+	    _lib.client.post('admin/access_lists/save', { data: data }).then(function (result) {
+	      return dispatch({ name: name, type: _constantsActions.ACCESS_LIST_SAVE });
+	    });
+	  };
+	}
+	
+	function load(id) {
+	  return function (dispatch) {
+	    var data = { id: id };
+	    _lib.client.post('admin/access_lists/load', { data: data }).then(function (result) {
+	      return dispatch({ id: id, type: _constantsActions.ACCESS_LIST_LOAD });
 	    });
 	  };
 	}
@@ -4288,17 +4310,35 @@ webpackJsonp([0],[
 	exports.ACCESS_LIST_FETCH_FAILURE = ACCESS_LIST_FETCH_FAILURE;
 	var ACCESS_LIST_BLACKLIST = 'ACCESS_LIST_BLACKLIST';
 	exports.ACCESS_LIST_BLACKLIST = ACCESS_LIST_BLACKLIST;
+	var ACCESS_LIST_BLACKLIST_SUCCESS = 'ACCESS_LIST_BLACKLIST';
+	exports.ACCESS_LIST_BLACKLIST_SUCCESS = ACCESS_LIST_BLACKLIST_SUCCESS;
+	var ACCESS_LIST_BLACKLIST_FAILURE = 'ACCESS_LIST_BLACKLIST';
+	exports.ACCESS_LIST_BLACKLIST_FAILURE = ACCESS_LIST_BLACKLIST_FAILURE;
 	var ACCESS_LIST_WHITELIST = 'ACCESS_LIST_WHITELIST';
 	exports.ACCESS_LIST_WHITELIST = ACCESS_LIST_WHITELIST;
+	var ACCESS_LIST_WHITELIST_SUCCESS = 'ACCESS_LIST_WHITELIST';
+	exports.ACCESS_LIST_WHITELIST_SUCCESS = ACCESS_LIST_WHITELIST_SUCCESS;
+	var ACCESS_LIST_WHITELIST_FAILURE = 'ACCESS_LIST_WHITELIST';
+	exports.ACCESS_LIST_WHITELIST_FAILURE = ACCESS_LIST_WHITELIST_FAILURE;
 	var ACCESS_LIST_REMOVE = 'ACCESS_LIST_REMOVE';
-	
 	exports.ACCESS_LIST_REMOVE = ACCESS_LIST_REMOVE;
+	var ACCESS_LIST_REMOVE_SUCCESS = 'ACCESS_LIST_REMOVE';
+	exports.ACCESS_LIST_REMOVE_SUCCESS = ACCESS_LIST_REMOVE_SUCCESS;
+	var ACCESS_LIST_REMOVE_FAILURE = 'ACCESS_LIST_REMOVE';
+	exports.ACCESS_LIST_REMOVE_FAILURE = ACCESS_LIST_REMOVE_FAILURE;
+	var ACCESS_LIST_SAVE = 'ACCESS_LIST_SAVE';
+	exports.ACCESS_LIST_SAVE = ACCESS_LIST_SAVE;
+	var ACCESS_LIST_LOAD = 'ACCESS_LIST_LOAD';
+	
+	exports.ACCESS_LIST_LOAD = ACCESS_LIST_LOAD;
 	var ADMIN_LOGIN = 'ADMIN_LOGIN';
 	exports.ADMIN_LOGIN = ADMIN_LOGIN;
 	var ADMIN_LOGOUT = 'ADMIN_LOGOUT';
 	exports.ADMIN_LOGOUT = ADMIN_LOGOUT;
 	var ADMIN_PLAY = 'ADMIN_PLAY';
 	exports.ADMIN_PLAY = ADMIN_PLAY;
+	var ADMIN_PLAY_NOW = 'ADMIN_PLAY_NOW';
+	exports.ADMIN_PLAY_NOW = ADMIN_PLAY_NOW;
 	var ADMIN_PAUSE = 'ADMIN_PAUSE';
 	exports.ADMIN_PAUSE = ADMIN_PAUSE;
 	var ADMIN_SKIP = 'ADMIN_SKIP';
@@ -4360,6 +4400,7 @@ webpackJsonp([0],[
 	exports.play = play;
 	exports.pause = pause;
 	exports.skip = skip;
+	exports.playNow = playNow;
 	
 	var _lib = __webpack_require__(223);
 	
@@ -4367,6 +4408,16 @@ webpackJsonp([0],[
 	
 	var stayLoggedInFor = 5 * 60 * 1000;
 	var passwords = new _Set(['test']);
+	
+	function requireAdmin(callback) {
+	  return function (dispatch, getState) {
+	    if (!getState().Admin.isAdmin) {
+	      return;
+	    } else {
+	      callback(dispatch, getState);
+	    }
+	  };
+	}
 	
 	function login(password) {
 	  return function (dispatch, getState) {
@@ -4399,39 +4450,37 @@ webpackJsonp([0],[
 	}
 	
 	function play() {
-	  return function (dispatch, getState) {
-	    if (!getState().Admin.isAdmin) {
-	      return;
-	    }
-	
+	  return requireAdmin(function (dispatch, getState) {
 	    _lib.client.get('admin/play').then(function (result) {
 	      return dispatch({ type: _constantsActions.ADMIN_PLAY });
 	    });
-	  };
+	  });
 	}
 	
 	function pause() {
-	  return function (dispatch, getState) {
-	    if (!getState().Admin.isAdmin) {
-	      return;
-	    }
-	
+	  return requireAdmin(function (dispatch, getState) {
 	    _lib.client.get('admin/pause').then(function (result) {
 	      return dispatch({ type: _constantsActions.ADMIN_PAUSE });
 	    });
-	  };
+	  });
 	}
 	
 	function skip() {
-	  return function (dispatch, getState) {
-	    if (!getState().Admin.isAdmin) {
-	      return;
-	    }
-	
+	  return requireAdmin(function (dispatch, getState) {
 	    _lib.client.get('admin/skip').then(function (result) {
 	      return dispatch({ type: _constantsActions.ADMIN_SKIP });
 	    });
-	  };
+	  });
+	}
+	
+	function playNow(track) {
+	  return requireAdmin(function (dispatch, getState) {
+	    var data = { id: track.id };
+	
+	    _lib.client.post('admin/play', { data: data }).then(function (result) {
+	      return dispatch({ type: _constantsActions.ADMIN_PLAY_NOW });
+	    });
+	  });
 	}
 
 /***/ },
@@ -5309,6 +5358,12 @@ webpackJsonp([0],[
 	  }
 	
 	  _createClass(AdminPanel, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.boundLogin = this.login.bind(this);
+	      this.actions = (0, _redux.bindActionCreators)(_actions.adminActions, this.props.dispatch);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      if (!this.props.isAdmin) {
@@ -5321,25 +5376,23 @@ webpackJsonp([0],[
 	            _react2['default'].createElement(
 	              'button',
 	              { className: 'btn btn-default login' },
-	              _react2['default'].createElement('i', { onClick: this.login.bind(this), className: 'fa fa-2x fa-gear' })
+	              _react2['default'].createElement('i', { onClick: this.boundLogin, className: 'fa fa-2x fa-gear' })
 	            )
 	          )
 	        );
 	      }
 	
-	      var actions = (0, _redux.bindActionCreators)(_actions.adminActions, this.props.dispatch);
-	
 	      var toggleButton = undefined;
 	      if (this.props.playing) {
 	        toggleButton = _react2['default'].createElement(
 	          'button',
-	          { className: 'btn btn-default pause', onClick: actions.pause },
+	          { className: 'btn btn-default pause', onClick: this.actions.pause },
 	          _react2['default'].createElement('i', { className: 'fa fa-2x fa-pause' })
 	        );
 	      } else {
 	        toggleButton = _react2['default'].createElement(
 	          'button',
-	          { className: 'btn btn-default play', onClick: actions.play },
+	          { className: 'btn btn-default play', onClick: this.actions.play },
 	          _react2['default'].createElement('i', { className: 'fa fa-2x fa-play' })
 	        );
 	      }
@@ -5353,7 +5406,7 @@ webpackJsonp([0],[
 	          toggleButton,
 	          _react2['default'].createElement(
 	            'button',
-	            { className: 'btn btn-default skip', onClick: actions.skip },
+	            { className: 'btn btn-default skip', onClick: this.actions.skip },
 	            _react2['default'].createElement('i', { className: 'fa fa-2x fa-forward' })
 	          ),
 	          _react2['default'].createElement(
@@ -5368,7 +5421,7 @@ webpackJsonp([0],[
 	    key: 'login',
 	    value: function login() {
 	      var password = prompt('Enter your password!');
-	      this.props.dispatch(_actions.adminActions.login(password));
+	      this.actions.login(password);
 	    }
 	  }, {
 	    key: 'clickTo',
@@ -5768,28 +5821,42 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'renderItem',
 	    value: function renderItem(track) {
+	      var playNowButton = undefined;
+	      if (this.props.isAdmin) {
+	        playNowButton = _react2['default'].createElement(
+	          'button',
+	          { className: 'play-now', onClick: this.playNowHandler(track) },
+	          'Play Now!'
+	        );
+	      }
+	
 	      return _react2['default'].createElement(
 	        'li',
 	        { key: track.id, onClick: this.clickHandler(track) },
-	        track.track_num,
-	        '. ',
-	        track.name,
 	        _react2['default'].createElement(
-	          'small',
-	          null,
-	          ' on ',
+	          'a',
+	          { onClick: this.clickHandler(track) },
+	          track.track_num,
+	          '. ',
+	          track.name,
 	          _react2['default'].createElement(
-	            'strong',
+	            'small',
 	            null,
-	            track.album.name
-	          ),
-	          ' by ',
-	          _react2['default'].createElement(
-	            'strong',
-	            null,
-	            track.artist.name
+	            ' on ',
+	            _react2['default'].createElement(
+	              'strong',
+	              null,
+	              track.album.name
+	            ),
+	            ' by ',
+	            _react2['default'].createElement(
+	              'strong',
+	              null,
+	              track.artist.name
+	            )
 	          )
-	        )
+	        ),
+	        playNowButton
 	      );
 	    }
 	  }, {
@@ -5801,6 +5868,15 @@ webpackJsonp([0],[
 	        return _this7.props.dispatch(_actions.queueActions.add(track));
 	      };
 	    }
+	  }, {
+	    key: 'playNowHandler',
+	    value: function playNowHandler(track) {
+	      var _this8 = this;
+	
+	      return function () {
+	        return _this8.props.dispatch(_actions.adminActions.playNow(track));
+	      };
+	    }
 	  }]);
 	
 	  var _TrackList = TrackList;
@@ -5808,7 +5884,8 @@ webpackJsonp([0],[
 	    return {
 	      items: state.Tracks.tracks,
 	      artist: state.Browse.artist,
-	      search: state.Browse.search
+	      search: state.Browse.search,
+	      isAdmin: state.Admin.isAdmin
 	    };
 	  })(TrackList) || TrackList;
 	  return TrackList;
@@ -5820,9 +5897,15 @@ webpackJsonp([0],[
 	  }
 	
 	  _createClass(QueueList, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.boundSend = this.sendQueue.bind(this);
+	      this.boundCancel = this.cancelQueue.bind(this);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this8 = this;
+	      var _this9 = this;
 	
 	      var queue = this.props.queue;
 	
@@ -5833,12 +5916,12 @@ webpackJsonp([0],[
 	        ' / 10 items ready to queue.',
 	        _react2['default'].createElement(
 	          'button',
-	          { onClick: this.sendQueue.bind(this) },
+	          { onClick: this.boundSend },
 	          'Queue Now'
 	        ),
 	        _react2['default'].createElement(
 	          'button',
-	          { onClick: this.cancelQueue.bind(this) },
+	          { onClick: this.boundCancel },
 	          'Cancel'
 	        ),
 	        _react2['default'].createElement(
@@ -5853,17 +5936,17 @@ webpackJsonp([0],[
 	              track.artist.name,
 	              _react2['default'].createElement(
 	                'a',
-	                { className: 'remove', onClick: _this8.removeHandler(track) },
+	                { className: 'remove', onClick: _this9.removeHandler(track) },
 	                'X'
 	              ),
 	              _react2['default'].createElement(
 	                'a',
-	                { className: 'move-up', onClick: _this8.moveUpHandler(track) },
+	                { className: 'move-up', onClick: _this9.moveUpHandler(track) },
 	                'U'
 	              ),
 	              _react2['default'].createElement(
 	                'a',
-	                { className: 'move-down', onClick: _this8.moveDownHandler(track) },
+	                { className: 'move-down', onClick: _this9.moveDownHandler(track) },
 	                'D'
 	              )
 	            );
@@ -5896,28 +5979,28 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'removeHandler',
 	    value: function removeHandler(track) {
-	      var _this9 = this;
+	      var _this10 = this;
 	
 	      return function () {
-	        return _this9.props.dispatch(_actions.queueActions.remove(track));
+	        return _this10.props.dispatch(_actions.queueActions.remove(track));
 	      };
 	    }
 	  }, {
 	    key: 'moveUpHandler',
 	    value: function moveUpHandler(track) {
-	      var _this10 = this;
+	      var _this11 = this;
 	
 	      return function () {
-	        return _this10.props.dispatch(_actions.queueActions.up(track));
+	        return _this11.props.dispatch(_actions.queueActions.up(track));
 	      };
 	    }
 	  }, {
 	    key: 'moveDownHandler',
 	    value: function moveDownHandler(track) {
-	      var _this11 = this;
+	      var _this12 = this;
 	
 	      return function () {
-	        return _this11.props.dispatch(_actions.queueActions.down(track));
+	        return _this12.props.dispatch(_actions.queueActions.down(track));
 	      };
 	    }
 	  }], [{
@@ -5953,13 +6036,13 @@ webpackJsonp([0],[
 	  _createClass(Browse, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      var _this12 = this;
+	      var _this13 = this;
 	
 	      this.updateData();
 	
 	      // Refresh the access lists every couple of seconds so it doesn't get super stale
 	      this.timer = setInterval(function () {
-	        return _this12.updateData();
+	        return _this13.updateData();
 	      }, 2 * 1000);
 	    }
 	  }, {
@@ -6502,6 +6585,7 @@ webpackJsonp([0],[
 	      var _this = this;
 	
 	      this.updateData();
+	      this.boundSave = this.saveList.bind(this);
 	
 	      // Refresh the access lists every couple of seconds so it doesn't get super stale
 	      this.timer = setInterval(function () {
@@ -6527,7 +6611,7 @@ webpackJsonp([0],[
 	
 	      return _react2['default'].createElement(
 	        'div',
-	        null,
+	        { id: 'dashboard' },
 	        _react2['default'].createElement(
 	          'nav',
 	          null,
@@ -6548,29 +6632,55 @@ webpackJsonp([0],[
 	          )
 	        ),
 	        _react2['default'].createElement(
-	          'h3',
-	          null,
-	          'Allowed Genres'
+	          'button',
+	          { className: 'save-list', onClick: this.boundSave },
+	          'Save this List!'
 	        ),
-	        this.showList('genre', 'allowed'),
 	        _react2['default'].createElement(
-	          'h3',
-	          null,
-	          'Blocked Genres'
+	          'section',
+	          { className: 'rules' },
+	          _react2['default'].createElement(
+	            'h3',
+	            null,
+	            'Allowed Genres'
+	          ),
+	          this.showList('genre', 'allowed'),
+	          _react2['default'].createElement(
+	            'h3',
+	            null,
+	            'Blocked Genres'
+	          ),
+	          this.showList('genre', 'blocked'),
+	          _react2['default'].createElement(
+	            'h3',
+	            null,
+	            'Allowed Artists'
+	          ),
+	          this.showList('artist', 'allowed'),
+	          _react2['default'].createElement(
+	            'h3',
+	            null,
+	            'Blocked Artists'
+	          ),
+	          this.showList('artist', 'blocked')
 	        ),
-	        this.showList('genre', 'blocked'),
 	        _react2['default'].createElement(
-	          'h3',
-	          null,
-	          'Allowed Artists'
-	        ),
-	        this.showList('artist', 'allowed'),
-	        _react2['default'].createElement(
-	          'h3',
-	          null,
-	          'Blocked Artists'
-	        ),
-	        this.showList('artist', 'blocked')
+	          'ul',
+	          { className: 'lists' },
+	          this.props.saved_lists.map(function (list) {
+	            return _react2['default'].createElement(
+	              'li',
+	              { key: list.id },
+	              list.name,
+	              ' ',
+	              _react2['default'].createElement(
+	                'button',
+	                { onClick: _this2.loadHandler(list) },
+	                'Load!'
+	              )
+	            );
+	          })
+	        )
 	      );
 	    }
 	  }, {
@@ -6640,6 +6750,25 @@ webpackJsonp([0],[
 	      };
 	    }
 	  }, {
+	    key: 'saveList',
+	    value: function saveList() {
+	      var name = prompt('Give me a name for the list.');
+	      if (name === null) {
+	        return;
+	      }
+	
+	      this.props.dispatch(_actions.accessListActions.save(name));
+	    }
+	  }, {
+	    key: 'loadHandler',
+	    value: function loadHandler(list) {
+	      var _this4 = this;
+	
+	      return function () {
+	        return _this4.props.dispatch(_actions.accessListActions.load(list.id));
+	      };
+	    }
+	  }, {
 	    key: 'updateData',
 	    value: function updateData() {
 	      this.props.dispatch(_actions.accessListActions.fetch());
@@ -6651,6 +6780,7 @@ webpackJsonp([0],[
 	      blocked_genres: _react.PropTypes.instanceOf(_Set),
 	      allowed_artists: _react.PropTypes.instanceOf(_Set),
 	      blocked_artists: _react.PropTypes.instanceOf(_Set),
+	      saved_lists: _react.PropTypes.array,
 	      isAdmin: _react.PropTypes.bool.isRequired
 	    },
 	    enumerable: true
@@ -6782,24 +6912,27 @@ webpackJsonp([0],[
 	    allowed_genres: new _Set(action.allow_genres),
 	    blocked_genres: new _Set(action.block_genres),
 	    allowed_artists: new _Set(action.allow_artists),
-	    blocked_artists: new _Set(action.block_artists)
+	    blocked_artists: new _Set(action.block_artists),
+	    saved_lists: action.saved_lists
 	  };
 	}), _defineProperty(_createStore, _constantsActions.ACCESS_LIST_FETCH_FAILURE, function (state) {
 	  return _extends({}, state, {
 	    loading: false
 	  });
 	}), _defineProperty(_createStore, _constantsActions.ACCESS_LIST_BLACKLIST_SUCCESS, function (state, action) {
-	  var listName = 'blocked_' + action.store + 's';
+	  var listName = 'blocked_' + action.store + 's',
+	      list = state[listName] || new _Set();
 	
-	  return _extends({}, state, _defineProperty({}, listName, state[listName].add(action.item)));
+	  return _extends({}, state, _defineProperty({}, listName, list.add(action.item)));
 	}), _defineProperty(_createStore, _constantsActions.ACCESS_LIST_WHITELIST_SUCCESS, function (state, action) {
-	  var listName = 'allowed_' + action.store + 's';
+	  var listName = 'allowed_' + action.store + 's',
+	      list = state[listName] || new _Set();
 	
-	  return _extends({}, state, _defineProperty({}, listName, state[listName].add(action.item)));
+	  return _extends({}, state, _defineProperty({}, listName, list.add(action.item)));
 	}), _defineProperty(_createStore, _constantsActions.ACCESS_LIST_REMOVE_SUCCESS, function (state, action) {
 	  // TODO look at ImmutableJS for an immutable set -_-
-	  state['blocked_' + action.store + 's']['delete'](action.item);
-	  state['allowed_' + action.store + 's']['delete'](action.item);
+	  state['blocked_' + action.store + 's'] && state['blocked_' + action.store + 's']['delete'](action.item);
+	  state['allowed_' + action.store + 's'] && state['allowed_' + action.store + 's']['delete'](action.item);
 	
 	  return state;
 	}), _createStore));

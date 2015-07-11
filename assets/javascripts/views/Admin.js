@@ -13,6 +13,7 @@ export default class Admin {
     blocked_genres:  PropTypes.instanceOf(Set),
     allowed_artists: PropTypes.instanceOf(Set),
     blocked_artists: PropTypes.instanceOf(Set),
+    saved_lists:     PropTypes.array,
     isAdmin: PropTypes.bool.isRequired
   }
   static contextTypes = {
@@ -21,6 +22,7 @@ export default class Admin {
 
   componentWillMount() {
     this.updateData();
+    this.boundSave = ::this.saveList;
 
     // Refresh the access lists every couple of seconds so it doesn't get super stale
     this.timer = setInterval(() => this.updateData(), 2 * 1000);
@@ -36,24 +38,38 @@ export default class Admin {
     }
 
     return (
-      <div>
+      <div id="dashboard">
         <nav>
           <Link to="/">Now Playing</Link>
           <Link to="browse">Browse</Link>
           <Link to="queue">Queue</Link>
         </nav>
 
-        <h3>Allowed Genres</h3>
-        {this.showList('genre', 'allowed')}
+        <button className="save-list" onClick={this.boundSave}>Save this List!</button>
 
-        <h3>Blocked Genres</h3>
-        {this.showList('genre', 'blocked')}
+        <section className="rules">
+          <h3>Allowed Genres</h3>
+          {this.showList('genre', 'allowed')}
 
-        <h3>Allowed Artists</h3>
-        {this.showList('artist', 'allowed')}
+          <h3>Blocked Genres</h3>
+          {this.showList('genre', 'blocked')}
 
-        <h3>Blocked Artists</h3>
-        {this.showList('artist', 'blocked')}
+          <h3>Allowed Artists</h3>
+          {this.showList('artist', 'allowed')}
+
+          <h3>Blocked Artists</h3>
+          {this.showList('artist', 'blocked')}
+        </section>
+        <ul className="lists">
+        {this.props.saved_lists.map(list => {
+          return (
+            <li key={list.id}>
+              {list.name}{' '}
+              <button onClick={this.loadHandler(list)}>Load!</button>
+            </li>
+          );
+        })}
+        </ul>
       </div>
     );
   }
@@ -81,6 +97,18 @@ export default class Admin {
 
   clearEntry(store, item) {
     return () => this.props.dispatch(accessListActions.remove(store, item));
+  }
+
+  saveList() {
+    let name = prompt('Give me a name for the list.');
+    if (name === null) {
+      return;
+    }
+
+    this.props.dispatch(accessListActions.save(name));
+  }
+  loadHandler(list) {
+    return () => this.props.dispatch(accessListActions.load(list.id));
   }
 
   updateData() {

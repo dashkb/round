@@ -11,7 +11,9 @@ import {
   ACCESS_LIST_WHITELIST_FAILED,
   ACCESS_LIST_REMOVE,
   ACCESS_LIST_REMOVE_SUCCESS,
-  ACCESS_LIST_REMOVE_FAILED
+  ACCESS_LIST_REMOVE_FAILED,
+  ACCESS_LIST_SAVE,
+  ACCESS_LIST_LOAD
 } from '../constants/actions';
 
 export function fetch() {
@@ -54,6 +56,24 @@ export function remove(store, item) {
     const data = { store, id: item.id };
     client.del('admin/access_lists', { data }).then(
       (result) => dispatch({ store, item, type: ACCESS_LIST_REMOVE_SUCCESS }),
+      (error) => dispatch({ error, type: ACCESS_LIST_REMOVE_FAILURE })
+    );
+  };
+}
+
+export function save(name) {
+  return dispatch => {
+    const data = { name };
+    client.post('admin/access_lists/save', { data }).then(
+      (result) => dispatch({ name, type: ACCESS_LIST_SAVE })
+    );
+  };
+}
+export function load(id) {
+  return dispatch => {
+    const data = { id };
+    client.post('admin/access_lists/load', { data }).then(
+      (result) => dispatch({ id, type: ACCESS_LIST_LOAD })
     );
   };
 }
