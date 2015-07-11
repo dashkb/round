@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'redux/react';
 import { debounce } from '../lib';
-import { accessListActions, browseActions, queueActions } from '../actions';
+import { accessListActions, adminActions, browseActions, queueActions } from '../actions';
 
 @connect(state => ({})) // So we get this.props.dispatch!
 class SearchBox {
@@ -163,9 +163,10 @@ class ArtistList extends FilterList {
 }
 
 @connect(state => ({
-  items:  state.Tracks.tracks,
-  artist: state.Browse.artist,
-  search: state.Browse.search
+  items:   state.Tracks.tracks,
+  artist:  state.Browse.artist,
+  search:  state.Browse.search,
+  isAdmin: state.Admin.isAdmin
 }))
 class TrackList extends FilterList {
   isVisible(track) {
@@ -187,21 +188,32 @@ class TrackList extends FilterList {
   }
 
   renderItem(track) {
+    let playNowButton;
+    if (this.props.isAdmin) {
+      playNowButton = <button className="play-now" onClick={this.playNowHandler(track)}>Play Now!</button>;
+    }
+
     return (
       <li key={track.id} onClick={this.clickHandler(track)}>
-        {track.track_num}. {track.name}
-        <small>
-          {' on '}
-          <strong>{track.album.name}</strong>
-          {' by '}
-          <strong>{track.artist.name}</strong>
-        </small>
+        <a onClick={this.clickHandler(track)}>
+          {track.track_num}. {track.name}
+          <small>
+            {' on '}
+            <strong>{track.album.name}</strong>
+            {' by '}
+            <strong>{track.artist.name}</strong>
+          </small>
+        </a>
+        {playNowButton}
       </li>
     );
   }
 
   clickHandler(track) {
     return () => this.props.dispatch(queueActions.add(track))
+  }
+  playNowHandler(track) {
+    return () => this.props.dispatch(adminActions.playNow(track))
   }
 }
 

@@ -25,11 +25,12 @@ export const ACCESS_LIST_BLACKLIST     = 'ACCESS_LIST_BLACKLIST';
 export const ACCESS_LIST_WHITELIST     = 'ACCESS_LIST_WHITELIST';
 export const ACCESS_LIST_REMOVE        = 'ACCESS_LIST_REMOVE';
 
-export const ADMIN_LOGIN  = 'ADMIN_LOGIN';
-export const ADMIN_LOGOUT = 'ADMIN_LOGOUT';
-export const ADMIN_PLAY   = 'ADMIN_PLAY';
-export const ADMIN_PAUSE  = 'ADMIN_PAUSE';
-export const ADMIN_SKIP   = 'ADMIN_SKIP';
+export const ADMIN_LOGIN    = 'ADMIN_LOGIN';
+export const ADMIN_LOGOUT   = 'ADMIN_LOGOUT';
+export const ADMIN_PLAY     = 'ADMIN_PLAY';
+export const ADMIN_PLAY_NOW = 'ADMIN_PLAY_NOW';
+export const ADMIN_PAUSE    = 'ADMIN_PAUSE';
+export const ADMIN_SKIP     = 'ADMIN_SKIP';
 
 export const STATUS_STREAM_START  = 'STATUS_STREAM_START';
 export const STATUS_STREAM_STOP   = 'STATUS_STREAM_STOP';
