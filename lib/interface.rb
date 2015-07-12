@@ -16,6 +16,9 @@ class Interface
     @device  = device
     @level   = INFO
     @queue   = Queue.new
+
+    # Don't batch that output!
+    device.sync = true
   end
 
   def stop
