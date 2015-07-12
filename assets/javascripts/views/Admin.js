@@ -61,7 +61,7 @@ export default class Admin {
           {this.showList('artist', 'blocked')}
         </section>
         <ul className="lists">
-        {this.props.saved_lists.map(list => {
+        {(this.props.saved_lists || []).map(list => {
           return (
             <li key={list.id}>
               {list.name}{' '}
