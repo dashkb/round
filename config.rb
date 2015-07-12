@@ -40,7 +40,13 @@ module Round
     ENV.fetch('VLC_PORT', 9999)
   end
   def vlc_path
-    ENV.fetch('VLC_PATH', '/Applications/VLC.app/Contents/MacOS/VLC')
+    platform = Gem::Platform.local
+    default_path = case platform.to_s
+                   when 'x86_64-linux' then '/usr/bin/vlc'
+                   when 'darwin' then '/Applications/VLC.app/Contents/MacOS/VLC'
+                   else '/unknown/platform/set/VLC_PATH'
+                   end
+    ENV.fetch('VLC_PATH', default_path)
   end
 
   def init

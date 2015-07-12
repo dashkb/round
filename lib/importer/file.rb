@@ -2,7 +2,7 @@ require 'taglib'
 require 'lib/importer/track'
 
 module Importer
-  class File
+  class FileImporter
     def initialize(source)
       @source = source
       @root = Pathname.new(source.root)
@@ -36,7 +36,7 @@ module Importer
         'Year'         => tags.year
       }
 
-      if Importer::Track.call(meta, @source)
+      if Importer::TrackImporter.call(meta, @source)
         true
       else
         "Unable to save track for #{relative.to_s}"

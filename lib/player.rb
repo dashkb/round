@@ -30,10 +30,12 @@ module Player
     "Device::#{device_name.camelcase}".constantize
   end
   def default_device_name
-    case Gem::Platform.local
+    platform = Gem::Platform.local
+    case platform.to_s
+    when 'x86_64-linux' then 'vlc'
     when 'darwin' then 'core_audio'
     else
-      warn("Unknown platform, cannot determine proper device for handling music. Falling back to Fake")
+      warn("Unknown platform, '#{platform}', cannot determine proper device for handling music. Falling back to Fake")
       'fake'
     end
   end

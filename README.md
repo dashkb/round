@@ -15,12 +15,18 @@ assets already built for you!*
 
 ```
 $ rvm install 2.2.1
-$ brew install sqlite redis node
+$ brew install sqlite redis node taglib
 $ gem install bundler foreman
 $ bundle install
 $ npm install
 $ bundle exec rake db:migrate
 ```
+
+Ubuntu version (do this instead of brew):
+```
+$ sudo apt-get install sqlite3 redis-server nodejs libtag1-dev
+```
+
 
 When developing locally, you can use the `Fake` player by creating a `.env` file with the following contents:
 

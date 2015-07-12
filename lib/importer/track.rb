@@ -1,5 +1,5 @@
 module Importer
-  class Track
+  class TrackImporter
     class NullRecord
       # Everything is nil on a null record!
       def method_missing(method, *args); nil; end

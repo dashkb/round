@@ -49,7 +49,7 @@ namespace :import do
     require 'find'
     require 'lib/importer/file'
 
-    importer = Importer::File.new(source)
+    importer = Importer::FileImporter.new(source)
     counter = 0
     started = Time.now
     iteration = Time.now
