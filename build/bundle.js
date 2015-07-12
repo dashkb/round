@@ -6667,7 +6667,7 @@ webpackJsonp([0],[
 	        _react2['default'].createElement(
 	          'ul',
 	          { className: 'lists' },
-	          this.props.saved_lists.map(function (list) {
+	          (this.props.saved_lists || []).map(function (list) {
 	            return _react2['default'].createElement(
 	              'li',
 	              { key: list.id },
