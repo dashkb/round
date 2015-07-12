@@ -47,6 +47,19 @@ module AccessListService
     write({})
   end
 
+  def clear_invalid!
+    lists = self.read
+
+    if lists['genre']
+      lists['genre'].reject! { |id, allow| Genre[id].nil? }
+    end
+    if lists['artist']
+      lists['artist'].reject! { |id, allow| Artist[id].nil? }
+    end
+
+    write(lists)
+  end
+
   def to_hash(with_records: false)
     result = {
       allow_genres: [],
@@ -55,7 +68,7 @@ module AccessListService
       block_artists: []
     }
 
-    list = AccessListService.read
+    list = self.read
     (list['genre'] || {}).each do |genre_id, allow|
       if allow
         result[:allow_genres] << (with_records ? Genre[genre_id] : genre_id)

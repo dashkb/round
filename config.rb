@@ -16,7 +16,7 @@ module Round
   end
 
   def database
-    @database ||= Sequel.connect(self.database_url)
+    @database ||= Sequel.connect(self.database_url, logger: Logger.new('log/queries.log'))
   end
   def database_url
     @database_url ||= ENV.fetch('DATABASE_URL', 'sqlite://db/round.db')

@@ -33,6 +33,7 @@ module Device
       elsif playing?
         status_line
       else
+        info("Fetching new track")
         next_from_queue
         info("Fetched #{@now_playing}")
       end

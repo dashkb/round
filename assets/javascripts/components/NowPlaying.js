@@ -16,7 +16,7 @@ export default class NowPlaying {
   }
 
   render() {
-    if (this.props.stopped) {
+    if (this.props.stopped || !this.props.track) {
       return (
         <section id={this.props.id}>Nothing Playing! You should pick a song...</section>
       );

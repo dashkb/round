@@ -22,7 +22,7 @@ class ApiServer < Sinatra::Base
 
   use Rack::Cors do
     allow do
-      origins 'http://localhost:8080'
+      origins '*'
       resource '*',
         methods: [:get, :post, :put, :delete, :options]
     end
@@ -30,7 +30,7 @@ class ApiServer < Sinatra::Base
 
   options '*' do
     headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,DELETE,OPTIONS'
-    headers['Access-Control-Allow-Origin']  = 'http://localhost:8080'
+    headers['Access-Control-Allow-Origin']  = '*'
     headers['Access-Control-Allow-Headers'] = 'Accepts,Content-Type'
 
     halt 200

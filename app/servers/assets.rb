@@ -24,7 +24,7 @@ class AssetsServer < Sinatra::Base
   end
   get '/bundle.js.map' do
     content_type 'text/javascript'
-    File.read(File.join(APP_ROOT, 'dist', 'bundle.js.map'))
+    File.read(File.join(APP_ROOT, 'build', 'bundle.js.map'))
   end
   get '/vendor.bundle.js' do
     content_type 'text/javascript'
@@ -32,7 +32,7 @@ class AssetsServer < Sinatra::Base
   end
   get '/vendor.bundle.js.map' do
     content_type 'text/javascript'
-    File.read(File.join(APP_ROOT, 'dist', 'vendor.bundle.js.map'))
+    File.read(File.join(APP_ROOT, 'build', 'vendor.bundle.js.map'))
   end
   get %r{^/(.*)?\.css} do |asset|
     content_type 'text/css'

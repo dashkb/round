@@ -36,26 +36,48 @@ module QueueService
     end
   end
 
-  def pick_random
+  def pick_random(try_again: true)
     access_lists = AccessListService.to_hash
+    queries = {genre: [], artist: []}
+    values  = []
 
-    query = Track
     unless access_lists[:allow_genres].empty?
-      query = query.where(genre_id: access_lists[:allow_genres])
+      queries[:genre] << 'genre_id IN ?'
+      values << access_lists[:allow_genres]
     end
     unless access_lists[:block_genres].empty?
-      query = query.exclude(genre_id: access_lists[:block_genres])
+      queries[:genre] << 'genre_id NOT IN ?'
+      values << access_lists[:block_genres]
     end
 
     unless access_lists[:allow_artists].empty?
-      query = query.where(artist_id: access_lists[:allow_artists])
+      queries[:artist] << 'artist_id IN ?'
+      values << access_lists[:allow_artists]
     end
     unless access_lists[:block_artists].empty?
-      query = query.exclude(artist_id: access_lists[:block_artists])
+      queries[:artist] << 'artist_id NOT IN ?'
+      values << access_lists[:block_artists]
     end
 
+    query = [];
+    unless queries[:genre].empty?
+      query << "(#{queries[:genre].join(' AND ')})"
+    end
+    unless queries[:artist].empty?
+      query << "(#{queries[:artist].join(' AND ')})"
+    end
+
+    query = Track.where(query.join(' OR '), *values)
     offset = 1 + (rand * (query.count) - 1).round
-    query.offset(offset).limit(1).first
+    track = query.offset(offset).limit(1).first
+
+    if track.nil? && try_again
+      # Access List is probably fucked up some how. Clear out any invalid genres or artists then try again
+      AccessListService.clear_invalid!
+      return pick_random(try_again: false)
+    else
+      return track
+    end
   end
 
   def add_history(track)

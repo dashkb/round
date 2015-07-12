@@ -1,7 +1,7 @@
 import superagent from 'superagent';
 
 function formatUrl(path) {
-  return `http://localhost:5000/api/${path}`;
+  return `/api/${path}`;
 }
 
 class Client {
