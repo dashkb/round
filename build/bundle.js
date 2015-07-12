@@ -4112,7 +4112,7 @@ webpackJsonp([0],[
 	
 	exports.accessListActions = _accessListActions;
 	
-	var _adminActions2 = __webpack_require__(277);
+	var _adminActions2 = __webpack_require__(276);
 	
 	var _adminActions = _interopRequireWildcard(_adminActions2);
 	
@@ -4178,6 +4178,7 @@ webpackJsonp([0],[
 	  value: true
 	});
 	exports.fetch = fetch;
+	exports.clear = clear;
 	exports.blacklist = blacklist;
 	exports.whitelist = whitelist;
 	exports.remove = remove;
@@ -4186,7 +4187,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	function fetch() {
 	  return function (dispatch) {
@@ -4195,7 +4196,19 @@ webpackJsonp([0],[
 	    _lib.client.get('admin/access_lists').then(function (result) {
 	      return dispatch(_extends({}, result, { type: _constantsActions.ACCESS_LIST_FETCH_SUCCESS }));
 	    }, function (error) {
-	      return dispatch({ error: error, type: _constantsActions.ACCESS_LIST_FETCH_FAILURE });
+	      return dispatch({ error: error, type: _constantsActions.ACCESS_LIST_FETCH_FAILED });
+	    });
+	  };
+	}
+	
+	function clear() {
+	  return function (dispatch) {
+	    dispatch({ type: _constantsActions.ACCESS_LIST_CLEAR_START });
+	
+	    _lib.client.post('admin/access_lists/clear').then(function (result) {
+	      return dispatch(_extends({}, result, { type: _constantsActions.ACCESS_LIST_CLEAR_SUCCESS }));
+	    }, function (error) {
+	      return dispatch({ error: error, type: _constantsActions.ACCESS_LIST_CLEAR_FAILED });
 	    });
 	  };
 	}
@@ -4208,7 +4221,7 @@ webpackJsonp([0],[
 	    _lib.client.post('admin/access_lists', { data: data }).then(function (result) {
 	      return dispatch({ store: store, item: item, type: _constantsActions.ACCESS_LIST_BLACKLIST_SUCCESS });
 	    }, function (error) {
-	      return dispatch({ error: error, type: ACCESS_LIST_BLACKLIST_FAILURE });
+	      return dispatch({ error: error, type: _constantsActions.ACCESS_LIST_BLACKLIST_FAILED });
 	    });
 	  };
 	}
@@ -4221,7 +4234,7 @@ webpackJsonp([0],[
 	    return _lib.client.post('admin/access_lists', { data: data }).then(function (result) {
 	      return dispatch({ store: store, item: item, type: _constantsActions.ACCESS_LIST_WHITELIST_SUCCESS });
 	    }, function (error) {
-	      return dispatch({ error: error, type: ACCESS_LIST_WHITELIST_FAILURE });
+	      return dispatch({ error: error, type: _constantsActions.ACCESS_LIST_WHITELIST_FAILED });
 	    });
 	  };
 	}
@@ -4234,7 +4247,7 @@ webpackJsonp([0],[
 	    _lib.client.del('admin/access_lists', { data: data }).then(function (result) {
 	      return dispatch({ store: store, item: item, type: _constantsActions.ACCESS_LIST_REMOVE_SUCCESS });
 	    }, function (error) {
-	      return dispatch({ error: error, type: ACCESS_LIST_REMOVE_FAILURE });
+	      return dispatch({ error: error, type: _constantsActions.ACCESS_LIST_REMOVE_FAILED });
 	    });
 	  };
 	}
@@ -4259,138 +4272,11 @@ webpackJsonp([0],[
 
 /***/ },
 /* 276 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-	var GENRE_FETCH_START = 'GENRE_FETCH_START';
-	exports.GENRE_FETCH_START = GENRE_FETCH_START;
-	var GENRE_FETCH_COMPLETE = 'GENRE_FETCH_COMPLETE';
-	exports.GENRE_FETCH_COMPLETE = GENRE_FETCH_COMPLETE;
-	var GENRE_FETCH_SUCCESS = 'GENRE_FETCH_SUCCESS';
-	exports.GENRE_FETCH_SUCCESS = GENRE_FETCH_SUCCESS;
-	var GENRE_FETCH_FAILURE = 'GENRE_FETCH_FAILURE';
-	
-	exports.GENRE_FETCH_FAILURE = GENRE_FETCH_FAILURE;
-	var ARTIST_FETCH_START = 'ARTIST_FETCH_START';
-	exports.ARTIST_FETCH_START = ARTIST_FETCH_START;
-	var ARTIST_FETCH_COMPLETE = 'ARTIST_FETCH_COMPLETE';
-	exports.ARTIST_FETCH_COMPLETE = ARTIST_FETCH_COMPLETE;
-	var ARTIST_FETCH_SUCCESS = 'ARTIST_FETCH_SUCCESS';
-	exports.ARTIST_FETCH_SUCCESS = ARTIST_FETCH_SUCCESS;
-	var ARTIST_FETCH_FAILURE = 'ARTIST_FETCH_FAILURE';
-	
-	exports.ARTIST_FETCH_FAILURE = ARTIST_FETCH_FAILURE;
-	var ALBUM_FETCH_START = 'ALBUM_FETCH_START';
-	exports.ALBUM_FETCH_START = ALBUM_FETCH_START;
-	var ALBUM_FETCH_COMPLETE = 'ALBUM_FETCH_COMPLETE';
-	exports.ALBUM_FETCH_COMPLETE = ALBUM_FETCH_COMPLETE;
-	var ALBUM_FETCH_SUCCESS = 'ALBUM_FETCH_SUCCESS';
-	exports.ALBUM_FETCH_SUCCESS = ALBUM_FETCH_SUCCESS;
-	var ALBUM_FETCH_FAILURE = 'ALBUM_FETCH_FAILURE';
-	
-	exports.ALBUM_FETCH_FAILURE = ALBUM_FETCH_FAILURE;
-	var TRACK_FETCH_START = 'TRACK_FETCH_START';
-	exports.TRACK_FETCH_START = TRACK_FETCH_START;
-	var TRACK_FETCH_COMPLETE = 'TRACK_FETCH_COMPLETE';
-	exports.TRACK_FETCH_COMPLETE = TRACK_FETCH_COMPLETE;
-	var TRACK_FETCH_SUCCESS = 'TRACK_FETCH_SUCCESS';
-	exports.TRACK_FETCH_SUCCESS = TRACK_FETCH_SUCCESS;
-	var TRACK_FETCH_FAILURE = 'TRACK_FETCH_FAILURE';
-	
-	exports.TRACK_FETCH_FAILURE = TRACK_FETCH_FAILURE;
-	var ACCESS_LIST_FETCH_START = 'ACCESS_LIST_FETCH_START';
-	exports.ACCESS_LIST_FETCH_START = ACCESS_LIST_FETCH_START;
-	var ACCESS_LIST_FETCH_SUCCESS = 'ACCESS_LIST_FETCH_SUCCESS';
-	exports.ACCESS_LIST_FETCH_SUCCESS = ACCESS_LIST_FETCH_SUCCESS;
-	var ACCESS_LIST_FETCH_FAILURE = 'ACCESS_LIST_FETCH_FAILURE';
-	exports.ACCESS_LIST_FETCH_FAILURE = ACCESS_LIST_FETCH_FAILURE;
-	var ACCESS_LIST_BLACKLIST = 'ACCESS_LIST_BLACKLIST';
-	exports.ACCESS_LIST_BLACKLIST = ACCESS_LIST_BLACKLIST;
-	var ACCESS_LIST_BLACKLIST_SUCCESS = 'ACCESS_LIST_BLACKLIST';
-	exports.ACCESS_LIST_BLACKLIST_SUCCESS = ACCESS_LIST_BLACKLIST_SUCCESS;
-	var ACCESS_LIST_BLACKLIST_FAILURE = 'ACCESS_LIST_BLACKLIST';
-	exports.ACCESS_LIST_BLACKLIST_FAILURE = ACCESS_LIST_BLACKLIST_FAILURE;
-	var ACCESS_LIST_WHITELIST = 'ACCESS_LIST_WHITELIST';
-	exports.ACCESS_LIST_WHITELIST = ACCESS_LIST_WHITELIST;
-	var ACCESS_LIST_WHITELIST_SUCCESS = 'ACCESS_LIST_WHITELIST';
-	exports.ACCESS_LIST_WHITELIST_SUCCESS = ACCESS_LIST_WHITELIST_SUCCESS;
-	var ACCESS_LIST_WHITELIST_FAILURE = 'ACCESS_LIST_WHITELIST';
-	exports.ACCESS_LIST_WHITELIST_FAILURE = ACCESS_LIST_WHITELIST_FAILURE;
-	var ACCESS_LIST_REMOVE = 'ACCESS_LIST_REMOVE';
-	exports.ACCESS_LIST_REMOVE = ACCESS_LIST_REMOVE;
-	var ACCESS_LIST_REMOVE_SUCCESS = 'ACCESS_LIST_REMOVE';
-	exports.ACCESS_LIST_REMOVE_SUCCESS = ACCESS_LIST_REMOVE_SUCCESS;
-	var ACCESS_LIST_REMOVE_FAILURE = 'ACCESS_LIST_REMOVE';
-	exports.ACCESS_LIST_REMOVE_FAILURE = ACCESS_LIST_REMOVE_FAILURE;
-	var ACCESS_LIST_SAVE = 'ACCESS_LIST_SAVE';
-	exports.ACCESS_LIST_SAVE = ACCESS_LIST_SAVE;
-	var ACCESS_LIST_LOAD = 'ACCESS_LIST_LOAD';
-	
-	exports.ACCESS_LIST_LOAD = ACCESS_LIST_LOAD;
-	var ADMIN_LOGIN = 'ADMIN_LOGIN';
-	exports.ADMIN_LOGIN = ADMIN_LOGIN;
-	var ADMIN_LOGOUT = 'ADMIN_LOGOUT';
-	exports.ADMIN_LOGOUT = ADMIN_LOGOUT;
-	var ADMIN_PLAY = 'ADMIN_PLAY';
-	exports.ADMIN_PLAY = ADMIN_PLAY;
-	var ADMIN_PLAY_NOW = 'ADMIN_PLAY_NOW';
-	exports.ADMIN_PLAY_NOW = ADMIN_PLAY_NOW;
-	var ADMIN_PAUSE = 'ADMIN_PAUSE';
-	exports.ADMIN_PAUSE = ADMIN_PAUSE;
-	var ADMIN_SKIP = 'ADMIN_SKIP';
-	
-	exports.ADMIN_SKIP = ADMIN_SKIP;
-	var STATUS_STREAM_START = 'STATUS_STREAM_START';
-	exports.STATUS_STREAM_START = STATUS_STREAM_START;
-	var STATUS_STREAM_STOP = 'STATUS_STREAM_STOP';
-	exports.STATUS_STREAM_STOP = STATUS_STREAM_STOP;
-	var STATUS_STREAM_UPDATE = 'STATUS_STREAM_UPDATE';
-	
-	exports.STATUS_STREAM_UPDATE = STATUS_STREAM_UPDATE;
-	var BROWSE_SELECT_GENRE = 'BROWSE_SELECT_GENRE';
-	exports.BROWSE_SELECT_GENRE = BROWSE_SELECT_GENRE;
-	var BROWSE_SELECT_ARTIST = 'BROWSE_SELECT_ARTIST';
-	exports.BROWSE_SELECT_ARTIST = BROWSE_SELECT_ARTIST;
-	var BROWSE_SET_SEARCH = 'BROWSE_SET_SEARCH';
-	
-	exports.BROWSE_SET_SEARCH = BROWSE_SET_SEARCH;
-	var QUEUE_ADD = 'QUEUE_ADD';
-	exports.QUEUE_ADD = QUEUE_ADD;
-	var QUEUE_REMOVE = 'QUEUE_REMOVE';
-	exports.QUEUE_REMOVE = QUEUE_REMOVE;
-	var QUEUE_CLEAR = 'QUEUE_CLEAR';
-	exports.QUEUE_CLEAR = QUEUE_CLEAR;
-	var QUEUE_UP = 'QUEUE_UP';
-	exports.QUEUE_UP = QUEUE_UP;
-	var QUEUE_DOWN = 'QUEUE_DOWN';
-	exports.QUEUE_DOWN = QUEUE_DOWN;
-	var QUEUE_SAVE = 'QUEUE_SAVE';
-	exports.QUEUE_SAVE = QUEUE_SAVE;
-	var QUEUE_FETCH_START = 'QUEUE_FETCH_START';
-	exports.QUEUE_FETCH_START = QUEUE_FETCH_START;
-	var QUEUE_FETCH_SUCCESS = 'QUEUE_FETCH_SUCCESS';
-	exports.QUEUE_FETCH_SUCCESS = QUEUE_FETCH_SUCCESS;
-	var QUEUE_FETCH_FAILURE = 'QUEUE_FETCH_FAILURE';
-	
-	exports.QUEUE_FETCH_FAILURE = QUEUE_FETCH_FAILURE;
-	var HISTORY_FETCH_START = 'HISTORY_FETCH_START';
-	exports.HISTORY_FETCH_START = HISTORY_FETCH_START;
-	var HISTORY_FETCH_SUCCESS = 'HISTORY_FETCH_SUCCESS';
-	exports.HISTORY_FETCH_SUCCESS = HISTORY_FETCH_SUCCESS;
-	var HISTORY_FETCH_FAILURE = 'HISTORY_FETCH_FAILURE';
-	exports.HISTORY_FETCH_FAILURE = HISTORY_FETCH_FAILURE;
-
-/***/ },
-/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var _Set = __webpack_require__(278)['default'];
+	var _Set = __webpack_require__(277)['default'];
 	
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
@@ -4404,7 +4290,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var stayLoggedInFor = 5 * 60 * 1000;
 	var passwords = new _Set(['test']);
@@ -4484,31 +4370,31 @@ webpackJsonp([0],[
 	}
 
 /***/ },
-/* 278 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(279), __esModule: true };
+	module.exports = { "default": __webpack_require__(278), __esModule: true };
 
 /***/ },
-/* 279 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(227);
 	__webpack_require__(233);
 	__webpack_require__(238);
-	__webpack_require__(280);
-	__webpack_require__(283);
+	__webpack_require__(279);
+	__webpack_require__(282);
 	module.exports = __webpack_require__(4).core.Set;
 
 /***/ },
-/* 280 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var strong = __webpack_require__(281);
+	var strong = __webpack_require__(280);
 	
 	// 23.2 Set Objects
-	__webpack_require__(282)('Set', function(get){
+	__webpack_require__(281)('Set', function(get){
 	  return function Set(){ return get(this, arguments[0]); };
 	}, {
 	  // 23.2.3.1 Set.prototype.add(value)
@@ -4518,7 +4404,7 @@ webpackJsonp([0],[
 	}, strong);
 
 /***/ },
-/* 281 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4678,7 +4564,7 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 282 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4732,14 +4618,14 @@ webpackJsonp([0],[
 	};
 
 /***/ },
-/* 283 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-	__webpack_require__(284)('Set');
+	__webpack_require__(283)('Set');
 
 /***/ },
-/* 284 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://github.com/DavidBruant/Map-Set.prototype.toJSON
@@ -4756,6 +4642,139 @@ webpackJsonp([0],[
 	};
 
 /***/ },
+/* 284 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var GENRE_FETCH_START = 'GENRE_FETCH_START';
+	exports.GENRE_FETCH_START = GENRE_FETCH_START;
+	var GENRE_FETCH_COMPLETE = 'GENRE_FETCH_COMPLETE';
+	exports.GENRE_FETCH_COMPLETE = GENRE_FETCH_COMPLETE;
+	var GENRE_FETCH_SUCCESS = 'GENRE_FETCH_SUCCESS';
+	exports.GENRE_FETCH_SUCCESS = GENRE_FETCH_SUCCESS;
+	var GENRE_FETCH_FAILURE = 'GENRE_FETCH_FAILURE';
+	
+	exports.GENRE_FETCH_FAILURE = GENRE_FETCH_FAILURE;
+	var ARTIST_FETCH_START = 'ARTIST_FETCH_START';
+	exports.ARTIST_FETCH_START = ARTIST_FETCH_START;
+	var ARTIST_FETCH_COMPLETE = 'ARTIST_FETCH_COMPLETE';
+	exports.ARTIST_FETCH_COMPLETE = ARTIST_FETCH_COMPLETE;
+	var ARTIST_FETCH_SUCCESS = 'ARTIST_FETCH_SUCCESS';
+	exports.ARTIST_FETCH_SUCCESS = ARTIST_FETCH_SUCCESS;
+	var ARTIST_FETCH_FAILURE = 'ARTIST_FETCH_FAILURE';
+	
+	exports.ARTIST_FETCH_FAILURE = ARTIST_FETCH_FAILURE;
+	var ALBUM_FETCH_START = 'ALBUM_FETCH_START';
+	exports.ALBUM_FETCH_START = ALBUM_FETCH_START;
+	var ALBUM_FETCH_COMPLETE = 'ALBUM_FETCH_COMPLETE';
+	exports.ALBUM_FETCH_COMPLETE = ALBUM_FETCH_COMPLETE;
+	var ALBUM_FETCH_SUCCESS = 'ALBUM_FETCH_SUCCESS';
+	exports.ALBUM_FETCH_SUCCESS = ALBUM_FETCH_SUCCESS;
+	var ALBUM_FETCH_FAILURE = 'ALBUM_FETCH_FAILURE';
+	
+	exports.ALBUM_FETCH_FAILURE = ALBUM_FETCH_FAILURE;
+	var TRACK_FETCH_START = 'TRACK_FETCH_START';
+	exports.TRACK_FETCH_START = TRACK_FETCH_START;
+	var TRACK_FETCH_COMPLETE = 'TRACK_FETCH_COMPLETE';
+	exports.TRACK_FETCH_COMPLETE = TRACK_FETCH_COMPLETE;
+	var TRACK_FETCH_SUCCESS = 'TRACK_FETCH_SUCCESS';
+	exports.TRACK_FETCH_SUCCESS = TRACK_FETCH_SUCCESS;
+	var TRACK_FETCH_FAILURE = 'TRACK_FETCH_FAILURE';
+	
+	exports.TRACK_FETCH_FAILURE = TRACK_FETCH_FAILURE;
+	var ACCESS_LIST_FETCH_START = 'ACCESS_LIST_FETCH_START';
+	exports.ACCESS_LIST_FETCH_START = ACCESS_LIST_FETCH_START;
+	var ACCESS_LIST_FETCH_SUCCESS = 'ACCESS_LIST_FETCH_SUCCESS';
+	exports.ACCESS_LIST_FETCH_SUCCESS = ACCESS_LIST_FETCH_SUCCESS;
+	var ACCESS_LIST_FETCH_FAILURE = 'ACCESS_LIST_FETCH_FAILURE';
+	exports.ACCESS_LIST_FETCH_FAILURE = ACCESS_LIST_FETCH_FAILURE;
+	var ACCESS_LIST_CLEAR_START = 'ACCESS_LIST_CLEAR_START';
+	exports.ACCESS_LIST_CLEAR_START = ACCESS_LIST_CLEAR_START;
+	var ACCESS_LIST_CLEAR_SUCCESS = 'ACCESS_LIST_CLEAR_SUCCESS';
+	exports.ACCESS_LIST_CLEAR_SUCCESS = ACCESS_LIST_CLEAR_SUCCESS;
+	var ACCESS_LIST_CLEAR_FAILURE = 'ACCESS_LIST_CLEAR_FAILURE';
+	exports.ACCESS_LIST_CLEAR_FAILURE = ACCESS_LIST_CLEAR_FAILURE;
+	var ACCESS_LIST_BLACKLIST = 'ACCESS_LIST_BLACKLIST';
+	exports.ACCESS_LIST_BLACKLIST = ACCESS_LIST_BLACKLIST;
+	var ACCESS_LIST_BLACKLIST_SUCCESS = 'ACCESS_LIST_BLACKLIST';
+	exports.ACCESS_LIST_BLACKLIST_SUCCESS = ACCESS_LIST_BLACKLIST_SUCCESS;
+	var ACCESS_LIST_BLACKLIST_FAILURE = 'ACCESS_LIST_BLACKLIST';
+	exports.ACCESS_LIST_BLACKLIST_FAILURE = ACCESS_LIST_BLACKLIST_FAILURE;
+	var ACCESS_LIST_WHITELIST = 'ACCESS_LIST_WHITELIST';
+	exports.ACCESS_LIST_WHITELIST = ACCESS_LIST_WHITELIST;
+	var ACCESS_LIST_WHITELIST_SUCCESS = 'ACCESS_LIST_WHITELIST';
+	exports.ACCESS_LIST_WHITELIST_SUCCESS = ACCESS_LIST_WHITELIST_SUCCESS;
+	var ACCESS_LIST_WHITELIST_FAILURE = 'ACCESS_LIST_WHITELIST';
+	exports.ACCESS_LIST_WHITELIST_FAILURE = ACCESS_LIST_WHITELIST_FAILURE;
+	var ACCESS_LIST_REMOVE = 'ACCESS_LIST_REMOVE';
+	exports.ACCESS_LIST_REMOVE = ACCESS_LIST_REMOVE;
+	var ACCESS_LIST_REMOVE_SUCCESS = 'ACCESS_LIST_REMOVE';
+	exports.ACCESS_LIST_REMOVE_SUCCESS = ACCESS_LIST_REMOVE_SUCCESS;
+	var ACCESS_LIST_REMOVE_FAILURE = 'ACCESS_LIST_REMOVE';
+	exports.ACCESS_LIST_REMOVE_FAILURE = ACCESS_LIST_REMOVE_FAILURE;
+	var ACCESS_LIST_SAVE = 'ACCESS_LIST_SAVE';
+	exports.ACCESS_LIST_SAVE = ACCESS_LIST_SAVE;
+	var ACCESS_LIST_LOAD = 'ACCESS_LIST_LOAD';
+	
+	exports.ACCESS_LIST_LOAD = ACCESS_LIST_LOAD;
+	var ADMIN_LOGIN = 'ADMIN_LOGIN';
+	exports.ADMIN_LOGIN = ADMIN_LOGIN;
+	var ADMIN_LOGOUT = 'ADMIN_LOGOUT';
+	exports.ADMIN_LOGOUT = ADMIN_LOGOUT;
+	var ADMIN_PLAY = 'ADMIN_PLAY';
+	exports.ADMIN_PLAY = ADMIN_PLAY;
+	var ADMIN_PLAY_NOW = 'ADMIN_PLAY_NOW';
+	exports.ADMIN_PLAY_NOW = ADMIN_PLAY_NOW;
+	var ADMIN_PAUSE = 'ADMIN_PAUSE';
+	exports.ADMIN_PAUSE = ADMIN_PAUSE;
+	var ADMIN_SKIP = 'ADMIN_SKIP';
+	
+	exports.ADMIN_SKIP = ADMIN_SKIP;
+	var STATUS_STREAM_START = 'STATUS_STREAM_START';
+	exports.STATUS_STREAM_START = STATUS_STREAM_START;
+	var STATUS_STREAM_STOP = 'STATUS_STREAM_STOP';
+	exports.STATUS_STREAM_STOP = STATUS_STREAM_STOP;
+	var STATUS_STREAM_UPDATE = 'STATUS_STREAM_UPDATE';
+	
+	exports.STATUS_STREAM_UPDATE = STATUS_STREAM_UPDATE;
+	var BROWSE_SELECT_GENRE = 'BROWSE_SELECT_GENRE';
+	exports.BROWSE_SELECT_GENRE = BROWSE_SELECT_GENRE;
+	var BROWSE_SELECT_ARTIST = 'BROWSE_SELECT_ARTIST';
+	exports.BROWSE_SELECT_ARTIST = BROWSE_SELECT_ARTIST;
+	var BROWSE_SET_SEARCH = 'BROWSE_SET_SEARCH';
+	
+	exports.BROWSE_SET_SEARCH = BROWSE_SET_SEARCH;
+	var QUEUE_ADD = 'QUEUE_ADD';
+	exports.QUEUE_ADD = QUEUE_ADD;
+	var QUEUE_REMOVE = 'QUEUE_REMOVE';
+	exports.QUEUE_REMOVE = QUEUE_REMOVE;
+	var QUEUE_CLEAR = 'QUEUE_CLEAR';
+	exports.QUEUE_CLEAR = QUEUE_CLEAR;
+	var QUEUE_UP = 'QUEUE_UP';
+	exports.QUEUE_UP = QUEUE_UP;
+	var QUEUE_DOWN = 'QUEUE_DOWN';
+	exports.QUEUE_DOWN = QUEUE_DOWN;
+	var QUEUE_SAVE = 'QUEUE_SAVE';
+	exports.QUEUE_SAVE = QUEUE_SAVE;
+	var QUEUE_FETCH_START = 'QUEUE_FETCH_START';
+	exports.QUEUE_FETCH_START = QUEUE_FETCH_START;
+	var QUEUE_FETCH_SUCCESS = 'QUEUE_FETCH_SUCCESS';
+	exports.QUEUE_FETCH_SUCCESS = QUEUE_FETCH_SUCCESS;
+	var QUEUE_FETCH_FAILURE = 'QUEUE_FETCH_FAILURE';
+	
+	exports.QUEUE_FETCH_FAILURE = QUEUE_FETCH_FAILURE;
+	var HISTORY_FETCH_START = 'HISTORY_FETCH_START';
+	exports.HISTORY_FETCH_START = HISTORY_FETCH_START;
+	var HISTORY_FETCH_SUCCESS = 'HISTORY_FETCH_SUCCESS';
+	exports.HISTORY_FETCH_SUCCESS = HISTORY_FETCH_SUCCESS;
+	var HISTORY_FETCH_FAILURE = 'HISTORY_FETCH_FAILURE';
+	exports.HISTORY_FETCH_FAILURE = HISTORY_FETCH_FAILURE;
+
+/***/ },
 /* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4767,7 +4786,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var fetch = (0, _lib.paginatedFetcher)('artists', [_constantsActions.ARTIST_FETCH_START, _constantsActions.ARTIST_FETCH_COMPLETE, _constantsActions.ARTIST_FETCH_SUCCESS, _constantsActions.ARTIST_FETCH_FAILURE]);
 	exports.fetch = fetch;
@@ -4784,7 +4803,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var fetch = (0, _lib.paginatedFetcher)('albums', [_constantsActions.ALBUM_FETCH_START, _constantsActions.ALBUM_FETCH_COMPLETE, _constantsActions.ALBUM_FETCH_SUCCESS, _constantsActions.ALBUM_FETCH_FAILURE]);
 	exports.fetch = fetch;
@@ -4802,7 +4821,7 @@ webpackJsonp([0],[
 	exports.selectArtist = selectArtist;
 	exports.setSearch = setSearch;
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	function selectGenre(id) {
 	  return {
@@ -4837,7 +4856,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var fetch = (0, _lib.paginatedFetcher)('genres', [_constantsActions.GENRE_FETCH_START, _constantsActions.GENRE_FETCH_COMPLETE, _constantsActions.GENRE_FETCH_SUCCESS, _constantsActions.GENRE_FETCH_FAILURE]);
 	exports.fetch = fetch;
@@ -4857,7 +4876,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	function fetch() {
 	  return function (dispatch) {
@@ -4892,7 +4911,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	function add(track) {
 	  return {
@@ -4974,7 +4993,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var refreshInterval = 1 * 1000;
 	
@@ -5037,7 +5056,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var fetch = (0, _lib.paginatedFetcher)('tracks', [_constantsActions.TRACK_FETCH_START, _constantsActions.TRACK_FETCH_COMPLETE, _constantsActions.TRACK_FETCH_SUCCESS, _constantsActions.TRACK_FETCH_FAILURE]);
 	exports.fetch = fetch;
@@ -5475,7 +5494,7 @@ webpackJsonp([0],[
 	
 	var _getIterator = __webpack_require__(266)['default'];
 	
-	var _Set = __webpack_require__(278)['default'];
+	var _Set = __webpack_require__(277)['default'];
 	
 	var _interopRequireDefault = __webpack_require__(7)['default'];
 	
@@ -6556,7 +6575,7 @@ webpackJsonp([0],[
 	
 	var _getIterator = __webpack_require__(266)['default'];
 	
-	var _Set = __webpack_require__(278)['default'];
+	var _Set = __webpack_require__(277)['default'];
 	
 	var _interopRequireDefault = __webpack_require__(7)['default'];
 	
@@ -6586,6 +6605,7 @@ webpackJsonp([0],[
 	
 	      this.updateData();
 	      this.boundSave = this.saveList.bind(this);
+	      this.boundClear = this.clearList.bind(this);
 	
 	      // Refresh the access lists every couple of seconds so it doesn't get super stale
 	      this.timer = setInterval(function () {
@@ -6635,6 +6655,11 @@ webpackJsonp([0],[
 	          'button',
 	          { className: 'save-list', onClick: this.boundSave },
 	          'Save this List!'
+	        ),
+	        _react2['default'].createElement(
+	          'button',
+	          { className: 'clear-list', onClick: this.boundClear },
+	          'Clear the List!'
 	        ),
 	        _react2['default'].createElement(
 	          'section',
@@ -6769,6 +6794,13 @@ webpackJsonp([0],[
 	      };
 	    }
 	  }, {
+	    key: 'clearList',
+	    value: function clearList() {
+	      if (confirm('Are you sure you wish to clear the entire Access List?')) {
+	        this.props.dispatch(_actions.accessListActions.clear());
+	      }
+	    }
+	  }, {
 	    key: 'updateData',
 	    value: function updateData() {
 	      this.props.dispatch(_actions.accessListActions.fetch());
@@ -6886,7 +6918,7 @@ webpackJsonp([0],[
 	
 	var _defineProperty = __webpack_require__(397)['default'];
 	
-	var _Set = __webpack_require__(278)['default'];
+	var _Set = __webpack_require__(277)['default'];
 	
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
@@ -6896,7 +6928,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  loading: false
@@ -6934,6 +6966,13 @@ webpackJsonp([0],[
 	  state['blocked_' + action.store + 's'] && state['blocked_' + action.store + 's']['delete'](action.item);
 	  state['allowed_' + action.store + 's'] && state['allowed_' + action.store + 's']['delete'](action.item);
 	
+	  return state;
+	}), _defineProperty(_createStore, _constantsActions.ACCESS_LIST_BLACKLIST_FAILED, function (state, action) {
+	  alert('Unable to blacklist item as it would prevent any tracks from playing.');
+	  alert(action.error);
+	  return state;
+	}), _defineProperty(_createStore, _constantsActions.ACCESS_LIST_WHITELIST_FAILED, function (state, action) {
+	  alert('Unable to whitelist item as it would prevent any tracks from playing.');
 	  return state;
 	}), _createStore));
 	module.exports = exports['default'];
@@ -6979,7 +7018,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  isAdmin: false
@@ -7013,7 +7052,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  loaded: false,
@@ -7062,7 +7101,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  loaded: false,
@@ -7111,7 +7150,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {};
 	
@@ -7160,7 +7199,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  loaded: false,
@@ -7207,7 +7246,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  history: []
@@ -7241,7 +7280,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  queue: [], // Things to be queued
@@ -7339,7 +7378,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  playing: false,
@@ -7384,7 +7423,7 @@ webpackJsonp([0],[
 	
 	var _lib = __webpack_require__(223);
 	
-	var _constantsActions = __webpack_require__(276);
+	var _constantsActions = __webpack_require__(284);
 	
 	var defaultState = {
 	  loaded: false,
