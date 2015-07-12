@@ -2,7 +2,10 @@ import { client } from '../lib';
 import {
   ACCESS_LIST_FETCH_START,
   ACCESS_LIST_FETCH_SUCCESS,
-  ACCESS_LIST_FETCH_FAILURE,
+  ACCESS_LIST_FETCH_FAILED,
+  ACCESS_LIST_CLEAR_START,
+  ACCESS_LIST_CLEAR_SUCCESS,
+  ACCESS_LIST_CLEAR_FAILED,
   ACCESS_LIST_BLACKLIST,
   ACCESS_LIST_BLACKLIST_SUCCESS,
   ACCESS_LIST_BLACKLIST_FAILED,
@@ -22,7 +25,17 @@ export function fetch() {
 
     client.get('admin/access_lists').then(
       (result) => dispatch({ ...result, type: ACCESS_LIST_FETCH_SUCCESS }),
-      (error) => dispatch({ error, type: ACCESS_LIST_FETCH_FAILURE })
+      (error) => dispatch({ error, type: ACCESS_LIST_FETCH_FAILED })
+    );
+  };
+}
+export function clear() {
+  return dispatch => {
+    dispatch({type: ACCESS_LIST_CLEAR_START});
+
+    client.post('admin/access_lists/clear').then(
+      (result) => dispatch({ ...result, type: ACCESS_LIST_CLEAR_SUCCESS }),
+      (error) => dispatch({ error, type: ACCESS_LIST_CLEAR_FAILED })
     );
   };
 }
@@ -34,7 +47,7 @@ export function blacklist(store, item) {
     const data = { store, allowed: false, id: item.id };
     client.post('admin/access_lists', { data }).then(
       (result) => dispatch({ store, item, type: ACCESS_LIST_BLACKLIST_SUCCESS }),
-      (error) => dispatch({ error, type: ACCESS_LIST_BLACKLIST_FAILURE })
+      (error) => dispatch({ error, type: ACCESS_LIST_BLACKLIST_FAILED })
     );
   };
 }
@@ -45,7 +58,7 @@ export function whitelist(store, item) {
     const data = { store, allowed: true, id: item.id };
     return client.post('admin/access_lists', { data }).then(
       (result) => dispatch({ store, item, type: ACCESS_LIST_WHITELIST_SUCCESS }),
-      (error) => dispatch({ error, type: ACCESS_LIST_WHITELIST_FAILURE })
+      (error) => dispatch({ error, type: ACCESS_LIST_WHITELIST_FAILED })
     );
   };
 }
@@ -56,7 +69,7 @@ export function remove(store, item) {
     const data = { store, id: item.id };
     client.del('admin/access_lists', { data }).then(
       (result) => dispatch({ store, item, type: ACCESS_LIST_REMOVE_SUCCESS }),
-      (error) => dispatch({ error, type: ACCESS_LIST_REMOVE_FAILURE })
+      (error) => dispatch({ error, type: ACCESS_LIST_REMOVE_FAILED })
     );
   };
 }

@@ -60,6 +60,26 @@ module AccessListService
     write(lists)
   end
 
+  def scope
+    access_lists=self.to_hash
+    query = Track
+
+    unless access_lists[:allow_genres].blank?
+      query = query.where(genre_id: access_lists[:allow_genres])
+    end
+    unless access_lists[:block_genres].blank?
+      query = query.exclude(genre_id: access_lists[:block_genres])
+    end
+    unless access_lists[:allow_artists].blank?
+      query = query.where(artist_id: access_lists[:allow_artists])
+    end
+    unless access_lists[:block_artists].blank?
+      query = query.exclude(artist_id: access_lists[:block_artists])
+    end
+
+    return query
+  end
+
   def to_hash(with_records: false)
     result = {
       allow_genres: [],
@@ -70,17 +90,23 @@ module AccessListService
 
     list = self.read
     (list['genre'] || {}).each do |genre_id, allow|
+      record = Genre[genre_id]
+      next if record.nil?
+
       if allow
-        result[:allow_genres] << (with_records ? Genre[genre_id] : genre_id)
+        result[:allow_genres] << (with_records ? record : genre_id)
       else
-        result[:block_genres] << (with_records ? Genre[genre_id] : genre_id)
+        result[:block_genres] << (with_records ? record : genre_id)
       end
     end
     (list['artist'] || {}).each do |artist_id, allow|
+      record = Artist[artist_id]
+      next if record.nil?
+
       if allow
-        result[:allow_artists] << (with_records ? Artist[artist_id] : artist_id)
+        result[:allow_artists] << (with_records ? record : artist_id)
       else
-        result[:block_artists] << (with_records ? Artist[artist_id] : artist_id)
+        result[:block_artists] << (with_records ? record : artist_id)
       end
     end
 

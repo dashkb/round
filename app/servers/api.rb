@@ -126,16 +126,31 @@ class ApiServer < Sinatra::Base
     )
   end
   post '/admin/access_lists' do
+    # We need to check if this change will limit the number of available tracks too much.
+    previous = AccessListService.read
+
     if params['allowed']
       AccessListService.whitelist(params['store'], params['id'])
     else
       AccessListService.blacklist(params['store'], params['id'])
     end
 
-    json status: 'OK'
+    if AccessListService.scope.count == 0
+      AccessListService.write(previous)
+
+      json error: 'This change would block all tracks!'
+      return 422
+    else
+      json status: 'OK'
+    end
   end
   delete '/admin/access_lists' do
     AccessListService.remove(params['store'], params['id'])
+
+    json status: 'OK'
+  end
+  post '/admin/access_lists/clear' do
+    AccessListService.clear
 
     json status: 'OK'
   end

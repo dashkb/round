@@ -59,5 +59,14 @@ export default createStore(defaultState, {
     state[`allowed_${action.store}s`] && state[`allowed_${action.store}s`].delete(action.item);
 
     return state;
+  },
+  [ACCESS_LIST_BLACKLIST_FAILED]: (state, action) => {
+    alert('Unable to blacklist item as it would prevent any tracks from playing.');
+    alert(action.error);
+    return state;
+  },
+  [ACCESS_LIST_WHITELIST_FAILED]: (state, action) => {
+    alert('Unable to whitelist item as it would prevent any tracks from playing.');
+    return state;
   }
 });

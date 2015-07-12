@@ -23,6 +23,7 @@ export default class Admin {
   componentWillMount() {
     this.updateData();
     this.boundSave = ::this.saveList;
+    this.boundClear = ::this.clearList;
 
     // Refresh the access lists every couple of seconds so it doesn't get super stale
     this.timer = setInterval(() => this.updateData(), 2 * 1000);
@@ -46,6 +47,7 @@ export default class Admin {
         </nav>
 
         <button className="save-list" onClick={this.boundSave}>Save this List!</button>
+        <button className="clear-list" onClick={this.boundClear}>Clear the List!</button>
 
         <section className="rules">
           <h3>Allowed Genres</h3>
@@ -109,6 +111,12 @@ export default class Admin {
   }
   loadHandler(list) {
     return () => this.props.dispatch(accessListActions.load(list.id));
+  }
+
+  clearList() {
+    if (confirm('Are you sure you wish to clear the entire Access List?')) {
+      this.props.dispatch(accessListActions.clear());
+    }
   }
 
   updateData() {
