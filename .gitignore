@@ -5,3 +5,4 @@
 /db/round.db
 /db/redis.rdb
 /db/appendonly.aof
+/log/

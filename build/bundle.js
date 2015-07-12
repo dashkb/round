@@ -1385,7 +1385,7 @@ webpackJsonp([0],[
 	var _superagent2 = _interopRequireDefault(_superagent);
 	
 	function formatUrl(path) {
-	  return 'http://localhost:5000/api/' + path;
+	  return '/api/' + path;
 	}
 	
 	var Client = (function () {
@@ -5190,7 +5190,7 @@ webpackJsonp([0],[
 	  _createClass(NowPlaying, [{
 	    key: 'render',
 	    value: function render() {
-	      if (this.props.stopped) {
+	      if (this.props.stopped || !this.props.track) {
 	        return _react2['default'].createElement(
 	          'section',
 	          { id: this.props.id },
