@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/georgi/audite.git
+  revision: 06d329bc9753d7e5791a8fd2371163462f28e21d
+  ref: 06d329bc9753d7e5791a8fd2371163462f28e21d
+  specs:
+    audite (0.4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -16,8 +23,6 @@ GEM
     coffee-script-source (1.8.0)
     coolline (0.5.0)
       unicode_utils (~> 1.4)
-    coreaudio (0.0.10)
-      narray (~> 0.6.0.0)
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
@@ -34,7 +39,6 @@ GEM
     method_source (0.8.2)
     minitest (5.4.1)
     multi_json (1.10.1)
-    narray (0.6.0.9)
     pry (0.9.12.6)
       coderay (~> 1.0)
       method_source (~> 0.8)
@@ -93,8 +97,8 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  audite!
   coffee-script
-  coreaudio
   dotenv
   foreman
   haml
@@ -114,3 +118,6 @@ DEPENDENCIES
   therubyracer
   unicorn
   vlc-client
+
+BUNDLED WITH
+   1.10.5

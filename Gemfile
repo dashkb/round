@@ -20,6 +20,8 @@ gem 'redis'
 
 if RUBY_PLATFORM =~ /darwin/
   gem 'coreaudio'
+elsif RUBY_PLATFORM =~ /linux/
+  gem 'audite', require: false, github: 'georgi/audite', ref: '06d329bc9753d7e5791a8fd2371163462f28e21d'
 end
 
 gem 'vlc-client'

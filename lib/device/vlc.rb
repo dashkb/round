@@ -13,7 +13,7 @@ module Device
       Round.vlc_path
     end
     def vlc_command
-      "#{vlc_path} --intf rc --rc-host #{bind_host}:#{bind_port}"
+      "#{vlc_path} --alsa-audio-device=hdmi --intf rc --rc-host #{bind_host}:#{bind_port}"
     end
     def client
       @client ||= ::VLC::Client.new(bind_host, bind_port)
@@ -56,11 +56,9 @@ module Device
     end
 
     def playing?
-      sleep 0.5
-
       3.times do |n|
         begin
-          sleep 0.1
+          sleep 0.5
           return true if client.playing?
         rescue => e
           puts "Failed to get VLC status attempt #{n}: #{e.message}"

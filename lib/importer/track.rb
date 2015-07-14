@@ -68,13 +68,13 @@ module Importer
       @track ||= (find_track or build_track)
     end
     def find_track
-      Track.where(
+      ::Track.where(
         filename: @meta['Location'],
         source_id: @source.id
       ).first
     end
     def build_track
-      Track.new(
+      ::Track.new(
         filename: @meta['Location'],
         source_id: @source.id
       )

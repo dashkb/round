@@ -9,7 +9,7 @@ module Importer
     end
 
     def supported?(path)
-      %w{.mp4 .mp3}.include?(File.extname(path))
+      %w{.mp4 .mp3}.include?(::File.extname(path))
     end
 
     def import(path)

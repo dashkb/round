@@ -22,6 +22,12 @@ $ npm install
 $ bundle exec rake db:migrate
 ```
 
+For Linux, the following depenencies are required:
+
+```
+sudo apt-get install libsqlite3-dev sqlite3 taglib1-dev redis-server libjack0 libjack-dev libportaudiocpp0 portaudio19-dev libmpg123-dev
+```
+
 When developing locally, you can use the `Fake` player by creating a `.env` file with the following contents:
 
 ```
@@ -80,6 +86,7 @@ The Device class is the meat of the player. Currently there are 3 different devi
  * `CoreAudio` is for OSX specifically; it directly connects to the CoreAudio system of the OS and pushes raw bits
    through. It will automatically handle filling extra channels if they are present (eg. if you are plugged into HDMI).
  * `VLC` drives an instance of VLC, useful for non-OSX environments or if you encounter issues with `CoreAudio`.
+ * `Audite` is specifically for Linux and uses portaudio to play MP3s.
 
 ## Interface
 
