@@ -6,15 +6,14 @@ module Device
     def initialize(interface)
       super
 
-      @buffer_size = 2 ** 12
-      @device_name = ENV['AUDITE_DEVICE'] || 'hdmi'
+      @buffer_size = 2 ** 14
+      @device_name = ENV['AUDITE_DEVICE']
 
-      puts 'REQUIRE'
       require 'audite'
-      puts 'REQUIRED'
       @device = ::Audite.new(@buffer_size, @device_name)
 
       @device.events.on(:complete) do
+        puts "DONE WITH TRACK!"
         @playing = false
       end
 
@@ -22,17 +21,21 @@ module Device
     end
 
     def pause
-      info("PAUSE")
       @device.stop_stream
+      super
     end
     def stop
-      info("STOP")
       @device.stop_stream
+      @playing = false
+      super
+    end
+    def skip
+      @playing = false
       super
     end
 
     def playing?
-      sleep 1
+      sleep 0.5
       @playing
     end
 
