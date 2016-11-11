@@ -2,12 +2,15 @@ package org.girsbrain.ccamp.round.Data;
 
 import org.greenrobot.greendao.annotation.*;
 
-@Entity
-public class Genre {
+@Entity(nameInDb = "genres")
+public class Genre
+        implements HasId<Long> {
     @Id
+    @Property(nameInDb = "id")
     private Long id;
     
     @NotNull
+    @Property(nameInDb = "name")
     private String name;
 
     @Generated(hash = 1948587236)
